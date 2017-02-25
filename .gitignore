@@ -1,0 +1,8 @@
+# Virtual Environment
+venv/
+
+# Pycharm Project Setting
+.idea/
+
+# Python cache 
+__pycache__/
