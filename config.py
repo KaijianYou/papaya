@@ -16,8 +16,8 @@ import psycopg2
 
 class Config:
     DEBUG = True
-    MAIL_SUBJECT_PREFIX = 'FlaskFB admin'
-    MAIL_SENDER = 'FlaskFB admin <kaijianyou@foxmail.com>'
+    MAIL_SUBJECT_PREFIX = 'FlaskFB - '
+    MAIL_SENDER = 'FlaskFB <kaijianyou@foxmail.com>'
     FLASKFB_ADMIN = os.environ.get('FLASKFB_ADMIN')
     MAIL_SERVER = 'smtp.qq.com'
     MAIL_PORT = 465
