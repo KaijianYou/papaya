@@ -21,7 +21,8 @@ from flask_login import login_user, logout_user, login_required
 from flask_login import current_user
 from . import auth
 from .forms import LoginForm, RegistrationForm
-from .forms import ChangePasswordForm, ResetPasswordForm, ResetPasswordRequestForm
+from .forms import ChangePasswordForm
+from .forms import ResetPasswordForm, ResetPasswordRequestForm
 from .forms import ChangeEmailForm
 from ..models import User
 from .. import db
@@ -31,7 +32,8 @@ from ..emails import send_email
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
+    return test_url.scheme in ('http', 'https') and \
+           ref_url.netloc == test_url.netloc
 
 
 @auth.before_app_request
@@ -146,7 +148,8 @@ def reset_password_request():
             send_email(user.email, 'Reset your password',
                        'auth/email/reset_password', user=user, token=token,
                        next=request.args.get(next))
-            flash('An email with instructions to reset your password has been sent to you')
+            flash('An email with instructions to reset your '
+                  'password has been sent to you')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
 
@@ -181,8 +184,8 @@ def change_email_request():
             send_email(new_email, 'Confirm your email address',
                        '/auth/email/change_email', user=current_user,
                        token=token, next=request.args.get(next))
-            flash('An email with instructions to confirm your new email address '
-                  'has been sent to you.')
+            flash('An email with instructions to confirm your '
+                  'new email address has been sent to you.')
             return redirect(url_for('main.index'))
         else:
             flash('Invalid email or password.')
