@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<p>Dear {{ user.username }},</p>
+
+<p>To confirm your new email address
+    <a href="{{ url_for('auth.change_email', token=token, _external=True) }}">click here</a>.
+</p>
+
+<p>ALternatively, you can paster the following link in your browser's address bar:</p>
+<p>&emsp;{{ url_for('auth.change_email', token=token, _external=True) }}</p>
+
+<p>Sincerely,</p>
+<p>The FlaskFB Team</p>
+
+<p><small>Note: replies to this email address are not monitored.</small></p>
+
+</html>
