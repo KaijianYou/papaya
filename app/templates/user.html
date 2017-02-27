@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}FlaskFB - {{ user.username }}{% endblock title %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>{{ user.username }}</h1>
+
+    {% if user.name or user.location %}
+    <p>
+        {% if user.name %}{{ user.name }}{% endif %}
+        {% if user.location %}
+            From: <a href="http://maps.google.com/?q={{ user.location }}">
+                {{ user.location }}
+            </a>
+        {% endif %}
+    </p>
+    {% endif %}
+
+    {% if current_user.is_administrator() %}
+    <p>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+    {% endif %}
+
+    {% if user.about_me %}<p>About me: {{ user.about_me }}</p>{% endif %}
+
+    <p>
+        Register date {{ moment(user.register_date).format('ddd YYYY/MM/DD, HH:mm:ss') }}
+        <br/>
+        {# 渲染相对时间戳，随着时间的推移自动刷新显示的时间 #}
+        Last visited {{ moment(user.last_visited).fromNow(refresh=True) }}.
+    </p>
+</div>
+{% endblock page_content %}

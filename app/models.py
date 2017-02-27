@@ -10,6 +10,7 @@
 """
 
 
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -86,6 +87,10 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     role_id = db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
     email = db.Column(db.String(64), unique=True, index=True)
+    location = db.Column(db.String(64))
+    about_me = db.Column(db.Text())
+    register_date = db.Column(db.DateTime(), default=datetime.utcnow)
+    last_visited = db.Column(db.DateTime(), default=datetime.utcnow)
     confirmed = db.Column(db.Boolean, default=False)
 
     def __init__(self, **kwargs):
@@ -172,6 +177,11 @@ class User(UserMixin, db.Model):
 
     def is_administrator(self):
         return self.can(Permission.ADMINISTER)
+
+    def update_last_visited(self):
+        self.last_visited = datetime.utcnow()
+        db.session.add(self)
+        # db.session.commit()
 
     def __repr__(self):
         return '<User %s>' % self.name

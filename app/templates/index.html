@@ -12,9 +12,4 @@
     {% endif %}
     </h1>
 </div>
-
-{# 根据客户端电脑中的时区和区域设置渲染日期和时间 #}
-<p>The local date and time is {{ moment(current_time).format('YYYY/MM/DD ddd, HH:mm:ss') }}.</p>
-{# 渲染相对时间戳，而且会随着时间的推移自动刷新显示的时间 #}
-<p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
 {% endblock page_content %}
