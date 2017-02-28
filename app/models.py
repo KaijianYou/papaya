@@ -21,14 +21,6 @@ from . import db
 from . import login_manager
 
 
-class Post(db.Model):
-    __tablename__ = 'posts'
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    authod_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-
-
 # ------------------------------------------------------------------
 # |      操  作        |      位  值       |         说  明          |
 # | 关注他人           | 0b00000001 (0x01) | 关注其他用户             |
@@ -210,6 +202,28 @@ class User(UserMixin, db.Model):
         return '{url}/{hash}?s={size}&d={default}&r={rating}'\
             .format(url=url, hash=hash, size=size, default=default, rating=rating)
 
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            user = User(email=forgery_py.internet.email_address(),
+                        username=forgery_py.internet.user_name(True),
+                        password=forgery_py.lorem_ipsum.word(),
+                        confirmed=True,
+                        real_name=forgery_py.name.full_name(),
+                        location=forgery_py.address.city(),
+                        about_me=forgery_py.lorem_ipsum.sentence(),
+                        last_visited=forgery_py.date.date(True))
+            db.session.add(user)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rolleback()
+
     def __repr__(self):
         return '<User %s>' % self.name
 
@@ -228,3 +242,26 @@ login_manager.anonymous_user = AnonymousUser
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    authod_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    @staticmethod
+    def generate_fake(count=100):
+        from random import seed, randint
+        import forgery_py
+
+        seed()
+        user_count = User.query.count()
+        for i in range(count):
+            user = User.query.offset(randint(0, user_count - 1)).first()
+            post = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
+                        timestamp=forgery_py.date.date(True),
+                        author=user)
+            db.session.add(post)
+            db.session.commit()
