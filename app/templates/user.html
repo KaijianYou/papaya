@@ -4,42 +4,46 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>{{ user.username }}</h1>
+    <img class="img-rounded profile-thumbnail" src="{{ user.get_image_from_gravatar() }}"/>
 
-    {% if user.real_name or user.location %}
-    <p>
-        {% if user.real_name %}{{ user.real_name }}{% endif %}
-        {% if user.location %}
-            From: <a href="http://maps.google.com/?q={{ user.location }}">
-                {{ user.location }}
-            </a>
-        {% endif %}
-    </p>
-    {% endif %}
+    <div class="profile-header">
+        <h1>{{ user.username }}</h1>
 
-    {% if current_user.is_administrator() %}
-    <p>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
-    {% endif %}
-
-    {% if user.about_me %}<p>About me: {{ user.about_me }}</p>{% endif %}
-
-    <p>
-        Register date {{ moment(user.register_date).format('ddd YYYY/MM/DD, HH:mm:ss') }}
-        <br/>
-        {# 渲染相对时间戳，随着时间的推移自动刷新显示的时间 #}
-        Last visited {{ moment(user.last_visited).fromNow(refresh=True) }}.
-    </p>
-
-    <p>
-        {% if user == current_user %}
-        <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">Edit Profile</a>
+        {% if user.real_name or user.location %}
+        <p>
+            {% if user.real_name %}{{ user.real_name }}{% endif %}
+            {% if user.location %}
+                From: <a href="http://maps.google.com/?q={{ user.location }}">
+                    {{ user.location }}
+                </a>
+            {% endif %}
+        </p>
         {% endif %}
 
         {% if current_user.is_administrator() %}
-        <a class="btn btn-danger" href="{{ url_for('.edit_profile_admin', id=user.id) }}">
-            Edit Profile [Admin]
-        </a>
+        <p>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
         {% endif %}
-    </p>
+
+        {% if user.about_me %}<p>About me: {{ user.about_me }}</p>{% endif %}
+
+        <p>
+            Register date {{ moment(user.register_date).format('ddd YYYY/MM/DD, HH:mm:ss') }}
+            <br/>
+            {# 渲染相对时间戳，随着时间的推移自动刷新显示的时间 #}
+            Last visited {{ moment(user.last_visited).fromNow(refresh=True) }}.
+        </p>
+
+        <p>
+            {% if user == current_user %}
+            <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">Edit Profile</a>
+            {% endif %}
+
+            {% if current_user.is_administrator() %}
+            <a class="btn btn-danger" href="{{ url_for('.edit_profile_admin', id=user.id) }}">
+                Edit Profile [Admin]
+            </a>
+            {% endif %}
+        </p>
+    </div>
 </div>
 {% endblock page_content %}

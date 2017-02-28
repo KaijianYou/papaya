@@ -4,6 +4,9 @@
 
 {% block head %}
 {{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='image/favicon.icon') }}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 {% endblock head %}
 
 {% block navbar %}
@@ -65,5 +68,6 @@
 {% block scripts %}
     {{ super() }}
     {# 引入 moment.js 库 #}
+    {{ moment.lang("zh-CN") }}
     {{ moment.include_moment() }}
 {% endblock scripts %}

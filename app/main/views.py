@@ -32,9 +32,7 @@ def index():
 
 @main.route('/user/<username>')
 def user(username):
-    user = User.query.filter_by(username=username).first()
-    if user is None:
-        abort(404)
+    user = User.query.filter_by(username=username).first_or_404()
     return render_template('user.html', user=user)
 
 
@@ -68,8 +66,8 @@ def edit_profile_admin(id):
         user.confirmed = form.confirmed.data
         user.role = Role.query.get(form.role.data)
         user.real_name = form.real_name.data
-        user.location = form.location
-        user.about_me = form.about_me
+        user.location = form.location.data
+        user.about_me = form.about_me.data
         db.session.add(user)
         db.session.commit()
         flash('The profile has been updated.')

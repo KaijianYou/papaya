@@ -25,9 +25,10 @@ class Config:
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'  # 密钥不应该直接写入代码
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # Flask-SQLALchemy 未来可能会删除
 
     @staticmethod
     def init_app(app):
@@ -36,16 +37,16 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://admin:123456@localhost:5432/flaskfb_dev'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL')
 
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://admin:123456@localhost:5432/flaskfb_test'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL')
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://admin:123456@localhost:5432/flaskfb'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
 
 config = {
