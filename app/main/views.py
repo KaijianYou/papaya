@@ -10,24 +10,31 @@
 """
 
 
-from datetime import datetime
 from flask import render_template
-from flask import abort
 from flask import flash
 from flask import redirect, url_for
 from flask_login import login_required
 from flask_login import current_user
 from . import main
-from ..models import User, Role
-from .forms import EditProfileForm, EditProfileAdminForm
-from app import db
+from ..models import User, Role, Permission, Post
 from ..decorators import admin_required
+from .forms import EditProfileForm, EditProfileAdminForm
+from .forms import PostForm
+from app import db
 
 
 # 如果不指定 methods 参数，则默认将函数注册为 GET 请求的处理程序
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html', current_time=datetime.utcnow())
+    form = PostForm()
+    if current_user.can(Permission.WRITE_ARTICLES) and \
+            form.validate_on_submit():
+        post = Post(body=form.body.data, author=current_user._get_current_object())
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('.index'))
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('index.html', form=form, posts=posts)
 
 
 @main.route('/user/<username>')

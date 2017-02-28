@@ -4,7 +4,7 @@
 
 {% block page_content %}
 <div class="page-header">
-    <img class="img-rounded profile-thumbnail" src="{{ user.get_image_from_gravatar() }}"/>
+    <img class="img-rounded profile-thumbnail" src="{{ user.get_avatar_url() }}"/>
 
     <div class="profile-header">
         <h1>{{ user.username }}</h1>

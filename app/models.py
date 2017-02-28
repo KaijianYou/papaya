@@ -21,6 +21,14 @@ from . import db
 from . import login_manager
 
 
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    authod_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+
 # ------------------------------------------------------------------
 # |      操  作        |      位  值       |         说  明          |
 # | 关注他人           | 0b00000001 (0x01) | 关注其他用户             |
@@ -96,6 +104,7 @@ class User(UserMixin, db.Model):
     last_visited = db.Column(db.DateTime(), default=datetime.utcnow)
     confirmed = db.Column(db.Boolean, default=False)
     avatar_hash = db.Column(db.String(32))
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -192,7 +201,7 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         # db.session.commit()
 
-    def get_image_from_gravatar(self, size=100, default='identicon', rating='g'):
+    def get_avatar_url(self, size=100, default='identicon', rating='g'):
         if request.is_secure:
             url = 'http://secure.gravatar.com/avatar'
         else:
