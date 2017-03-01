@@ -1,5 +1,9 @@
 @charset "utf-8";
 
+a:hover {
+    text-decoration: none;
+}
+
 .profile-thumbnail {
     position: absolute;
 }
@@ -40,6 +44,10 @@ div.post-thumbnail {
 div.post-content {
     margin-left: 48px;
     min-height: 48px;
+}
+
+div.post-footer {
+    text-align: right;
 }
 
 div.pagination {
