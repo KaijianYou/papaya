@@ -32,18 +32,18 @@ from ..emails import send_email
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and \
-           ref_url.netloc == test_url.netloc
+    return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 
 @auth.before_app_request
 def before_request():
-    if current_user.is_authenticated \
-            and not current_user.confirmed \
-            and request.endpoint \
-            and request.endpoint[:5] != 'auth.' \
-            and request.endpoint != 'static':
-        return redirect(url_for('auth.unconfirmed'))
+    if current_user.is_authenticated:
+        current_user.update_last_visited()
+        if not current_user.confirmed \
+                and request.endpoint \
+                and request.endpoint[:5] != 'auth.' \
+                and request.endpoint != 'static':
+            return redirect(url_for('auth.unconfirmed'))
 
 
 @auth.route('/unconfirmed')
@@ -179,7 +179,7 @@ def change_email_request():
     if form.validate_on_submit():
         if current_user.verify_password(form.password.data):
             new_email = form.email.data
-            # 将新设的邮箱账号保存到令牌中
+            # 将新设的邮箱账号保存到令牌中q
             token = current_user.generate_email_change_token(new_email)
             send_email(new_email, 'Confirm your email address',
                        '/auth/email/change_email', user=current_user,

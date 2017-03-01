@@ -10,10 +10,15 @@
 """
 
 
+import hashlib
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
+from flask import request
+from markdown import markdown
+import bleach
 from . import db
 from . import login_manager
 
@@ -85,16 +90,27 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), nullable=False, index=True)
     password_hash = db.Column(db.String(128), nullable=False)
     role_id = db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
-    email = db.Column(db.String(64), unique=True, index=True)
+    real_name = db.Column('real_name', db.String(64))
+    email = db.Column(db.String(64), unique=True, index=True, nullable=False)
+    location = db.Column(db.String(64),)
+    about_me = db.Column(db.Text())
+    register_date = db.Column(db.DateTime(), default=datetime.utcnow)
+    last_visited = db.Column(db.DateTime(), default=datetime.utcnow)
     confirmed = db.Column(db.Boolean, default=False)
+    avatar_hash = db.Column(db.String(32))
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
+
         if self.role is None:
             if self.email == current_app.config['FLASKFB_ADMIN']:
                 self.role = Role.query.filter_by(permissions=0xff).first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
+
+        if self.email is not None and self.avatar_hash is None:
+            self.avatar_hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
 
     @property
     def password(self):
@@ -162,6 +178,7 @@ class User(UserMixin, db.Model):
         if self.query.filter_by(email=new_email).first() is not None:
             return False
         self.email = new_email
+        self.avatar_hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
         db.session.add(self)
         db.session.commit()
         return True
@@ -172,6 +189,42 @@ class User(UserMixin, db.Model):
 
     def is_administrator(self):
         return self.can(Permission.ADMINISTER)
+
+    def update_last_visited(self):
+        self.last_visited = datetime.utcnow()
+        db.session.add(self)
+        # db.session.commit()
+
+    def get_avatar_url(self, size=100, default='identicon', rating='g'):
+        if request.is_secure:
+            url = 'http://secure.gravatar.com/avatar'
+        else:
+            url = 'http://www.gravatar.com/avatar'
+        hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+        return '{url}/{hash}?s={size}&d={default}&r={rating}'\
+            .format(url=url, hash=hash, size=size, default=default, rating=rating)
+
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            user = User(email=forgery_py.internet.email_address(),
+                        username=forgery_py.internet.user_name(True),
+                        password=forgery_py.lorem_ipsum.word(),
+                        confirmed=True,
+                        real_name=forgery_py.name.full_name(),
+                        location=forgery_py.address.city(),
+                        about_me=forgery_py.lorem_ipsum.sentence(),
+                        last_visited=forgery_py.date.date(True))
+            db.session.add(user)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rolleback()
 
     def __repr__(self):
         return '<User %s>' % self.name
@@ -191,3 +244,39 @@ login_manager.anonymous_user = AnonymousUser
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    authod_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    @staticmethod
+    def on_changed_body(target, value, old_value, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1',
+                        'h2', 'h3', 'p']
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'), tags=allowed_tags, strip=True))
+
+    @staticmethod
+    def generate_fake(count=100):
+        from random import seed, randint
+        import forgery_py
+
+        seed()
+        user_count = User.query.count()
+        for i in range(count):
+            user = User.query.offset(randint(0, user_count - 1)).first()
+            post = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
+                        timestamp=forgery_py.date.date(True),
+                        author=user)
+            db.session.add(post)
+            db.session.commit()
+
+# on_changed_body 被注册为 Post.body 字段的 "set" 事件的监听程序，
+# 当 Post 实例的 body 字段更新，on_changed_body 会被自动调用
+db.event.listen(Post.body, 'set', Post.on_changed_body)

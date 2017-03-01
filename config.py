@@ -11,11 +11,9 @@
 
 
 import os
-import psycopg2
 
 
 class Config:
-    DEBUG = True
     MAIL_SUBJECT_PREFIX = 'FlaskFB - '
     MAIL_SENDER = 'FlaskFB <kaijianyou@foxmail.com>'
     FLASKFB_ADMIN = os.environ.get('FLASKFB_ADMIN')
@@ -25,10 +23,12 @@ class Config:
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    FLASKFB_POSTS_PER_PAGE = 10
 
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'  # 密钥不应该直接写入代码
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'no zuo no die why you try'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    # SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # Flask-SQLALchemy 未来可能会删除
 
     @staticmethod
     def init_app(app):
@@ -37,16 +37,16 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://admin:123456@localhost:5432/flaskfb_dev'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL')
 
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://admin:123456@localhost:5432/flaskfb_test'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL')
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://admin:123456@localhost:5432/flaskfb'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
 
 config = {

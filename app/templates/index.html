@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_paginate_macros.html" as macros %}
 
-{% block title %}FlaskFB - Home{% endblock title %}
+{% block title %}FlaskFB{% endblock title %}
 
 {% block page_content %}
 <div class="page-header">
@@ -13,8 +15,20 @@
     </h1>
 </div>
 
-{# 根据客户端电脑中的时区和区域设置渲染日期和时间 #}
-<p>The local date and time is {{ moment(current_time).format('YYYY/MM/DD ddd, HH:mm:ss') }}.</p>
-{# 渲染相对时间戳，而且会随着时间的推移自动刷新显示的时间 #}
-<p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
+<div>
+    {% if current_user.can(Permission.WRITE_ARTICLES) %}
+    {{ wtf.quick_form(form) }}
+    {% endif %}
+</div>
+
+{% include '_posts.html' %}
+
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.index') }}
+</div>
 {% endblock page_content %}
+
+{% block scripts %}}
+    {{ super() }}
+    {{ pagedown.include_pagedown() }}
+{% endblock scripts %}}
