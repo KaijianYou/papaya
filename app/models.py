@@ -17,6 +17,8 @@ from flask_login import UserMixin, AnonymousUserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from flask import request
+from markdown import markdown
+import bleach
 from . import db
 from . import login_manager
 
@@ -248,8 +250,17 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     authod_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    @staticmethod
+    def on_changed_body(target, value, old_value, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1',
+                        'h2', 'h3', 'p']
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'), tags=allowed_tags, strip=True))
 
     @staticmethod
     def generate_fake(count=100):
@@ -265,3 +276,7 @@ class Post(db.Model):
                         author=user)
             db.session.add(post)
             db.session.commit()
+
+# on_changed_body 被注册为 Post.body 字段的 "set" 事件的监听程序，
+# 当 Post 实例的 body 字段更新，on_changed_body 会被自动调用
+db.event.listen(Post.body, 'set', Post.on_changed_body)

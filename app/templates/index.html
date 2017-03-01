@@ -27,3 +27,8 @@
     {{ macros.pagination_widget(pagination, '.index') }}
 </div>
 {% endblock page_content %}
+
+{% block scripts %}}
+    {{ super() }}
+    {{ pagedown.include_pagedown() }}
+{% endblock scripts %}}
