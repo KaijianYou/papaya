@@ -16,15 +16,17 @@
         </tr>
     </thread>
     {% for follow in follows %}
-    <tr>
-        <td>
-            <a href="{{ url_for('.user', username=follow.user.username) }}">
-                <img class="img-rounded" src="{{ follow.user.get_avatar_url(size=32) }}">
-                {{ follow.user.username }}
-            </a>
-        </td>
-        <td>{{ moment(follow.timestamp).format('YYYY/MM/DD, HH:mm:ss') }}</td>
-    </tr>
+        {% if follow.user != user %}
+        <tr>
+            <td>
+                <a href="{{ url_for('.user', username=follow.user.username) }}">
+                    <img class="img-rounded" src="{{ follow.user.get_avatar(size=32) }}">
+                    {{ follow.user.username }}
+                </a>
+            </td>
+            <td>{{ moment(follow.timestamp).format('YYYY/MM/DD, HH:mm:ss') }}</td>
+        </tr>
+    {% endif %}
     {% endfor %}
 </table>
 

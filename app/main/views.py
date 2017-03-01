@@ -14,7 +14,7 @@ from flask import render_template
 from flask import flash
 from flask import abort
 from flask import redirect, url_for
-from flask import request
+from flask import request, make_response
 from flask import current_app
 from flask_login import login_required
 from flask_login import current_user
@@ -38,12 +38,22 @@ def index():
         db.session.commit()
         return redirect(url_for('.index'))
 
+    show_followed_posts = False
+    if current_user.is_authenticated:
+        show_followed_posts = bool(request.cookies.get('show_followed_posts', ''))
+
+    if show_followed_posts:
+        query = current_user.followed_posts()
+    else:
+        query = Post.query
+
     page = request.args.get('page', 1, type=int)
-    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(
+    pagination = query.order_by(Post.timestamp.desc()).paginate(
         page, per_page=current_app.config['POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
     return render_template('index.html', form=form, posts=posts,
+                           show_followed_posts=show_followed_posts,
                            pagination=pagination)
 
 
@@ -190,3 +200,19 @@ def followed_by(username):
     return render_template('followers.html', user=user, title='Followed by',
                            endpoint='.followers', pagination=pagination,
                            follows=follows)
+
+
+@main.route('/all')
+@login_required
+def show_all_posts():
+    resp = make_response(redirect(url_for('.index')))
+    resp.set_cookie('show_followed_posts', '', max_age=30*24*60*60)
+    return resp
+
+
+@main.route('/followed')
+@login_required
+def show_followed_posts():
+    resp = make_response(redirect(url_for('.index')))
+    resp.set_cookie('show_followed_posts', '1', max_age=30*24*60*60)
+    return resp

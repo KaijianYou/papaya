@@ -135,6 +135,14 @@ class User(UserMixin, db.Model):
             except IntegrityError:
                 db.session.rolleback()
 
+    @staticmethod
+    def add_self_follows():
+        for user in User.query.all():
+            if not user.is_following(user):
+                user.follow(user)
+                db.session.add(user)
+                db.session.commit()
+
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
 
@@ -146,6 +154,8 @@ class User(UserMixin, db.Model):
 
         if self.email is not None and self.avatar_hash is None:
             self.avatar_hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+
+        self.follow(self)  # 把自己设为自己的关注者
 
     @property
     def password(self):
@@ -230,7 +240,8 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         # db.session.commit()
 
-    def get_avatar_url(self, size=100, default='identicon', rating='g'):
+    # 从 gravatar 网站获取头像
+    def get_avatar(self, size=100, default='identicon', rating='g'):
         if request.is_secure:
             url = 'http://secure.gravatar.com/avatar'
         else:
@@ -256,6 +267,13 @@ class User(UserMixin, db.Model):
 
     def is_followed_by(self, user):
         return self.followers.filter_by(follower_id=user.id).first() is not None
+
+    # 获取已关注用户的文章
+    def followed_posts(self):
+        return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
+            .filter(Follow.follower_id == self.id)
+        # return Post.query.filter(Follow.follower_id == self.id)\
+        #    .join(Follow, Follow.followed_id == Post.author_id)
 
     def __repr__(self):
         return '<User %s>' % self.name
@@ -283,7 +301,7 @@ class Post(db.Model):
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    authod_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     @staticmethod
     def on_changed_body(target, value, old_value, initiator):

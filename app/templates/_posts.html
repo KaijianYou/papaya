@@ -4,7 +4,7 @@
         <div class="post-thumbnail">
             <a href="{{ url_for('.user', username=post.author.username) }}">
                 <img class="img-rounded profile-thumbnail"
-                     src="{{ post.author.get_avatar_url(size=40) }}">
+                     src="{{ post.author.get_avatar(size=40) }}">
             </a>
         </div>
         <div class="post-content">

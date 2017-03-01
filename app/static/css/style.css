@@ -50,6 +50,10 @@ div.post-footer {
     text-align: right;
 }
 
+div.post-tabs {
+    margin-top: 16px;
+}
+
 div.pagination {
     width: 100%;
     text-align: right;
