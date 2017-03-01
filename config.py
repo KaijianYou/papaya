@@ -16,14 +16,15 @@ import os
 class Config:
     MAIL_SUBJECT_PREFIX = 'FlaskFB - '
     MAIL_SENDER = 'FlaskFB <kaijianyou@foxmail.com>'
-    FLASKFB_ADMIN = os.environ.get('FLASKFB_ADMIN')
+    ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
     MAIL_SERVER = 'smtp.qq.com'
     MAIL_PORT = 465
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-    FLASKFB_POSTS_PER_PAGE = 10
+    POSTS_PER_PAGE = 20
+    FOLLOWERS_PER_PAGE = 10
 
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'no zuo no die why you try'
 
