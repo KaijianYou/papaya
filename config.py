@@ -15,7 +15,7 @@ import os
 
 class Config:
     MAIL_SUBJECT_PREFIX = 'FlaskFB - '
-    MAIL_SENDER = 'FlaskFB <kaijianyou@foxmail.com>'
+    MAIL_SENDER = 'FlaskFB <' + os.environ.get('MAIL_USERNAME') + '>'
     ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
     MAIL_SERVER = 'smtp.qq.com'
     MAIL_PORT = 465
@@ -25,6 +25,7 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     POSTS_PER_PAGE = 20
     FOLLOWERS_PER_PAGE = 10
+    COMMENTS_PER_PAGE = 20
 
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'no zuo no die why you try'
 

@@ -16,7 +16,7 @@
             </div>
             <div class="post-body">
                 {% if post.body_html %}
-                    <!--"| safe" 通知 jinja2 不要转移 HTML 元素-->
+                    <!--"| safe" 通知 jinja2 不要转义 HTML 元素-->
                     {{ post.body_html | safe }}
                 {% else %}
                     {{ post.body }}
@@ -34,6 +34,11 @@
                 {% endif %}
                 <a href="{{ url_for('.post', id=post.id) }}">
                     <span class="label label-default">Permalink</span>
+                </a>
+                <a href="{{ url_for('.post', id=post.id) }}#comments">
+                    <span class="label label-primary">
+                        {{ post.comments.count() }} Comments
+                    </span>
                 </a>
             </div>
         </div>
