@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-"""
-@Description: 
-@Version: 
-@Software: PyCharm
-@Author: youkaijian
-@Date: 2017/02/24
-"""
-
-
 from urllib.parse import urlparse, urljoin
 from flask import render_template
 from flask import redirect

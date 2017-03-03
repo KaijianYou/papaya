@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-"""
-@Description: 
-@Version: 
-@Software: PyCharm
-@Author: youkaijian
-@Date: 2017/02/26
-"""
-
-
 from functools import wraps
 from flask import abort
 from flask_login import current_user

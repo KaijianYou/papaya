@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-"""
-@Description: 
-@Version: 
-@Software: PyCharm
-@Author: youkaijian
-@Date: 2017/02/24
-"""
-
-
 import unittest
 import time
 from app.models import User

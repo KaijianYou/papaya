@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-"""
-@Description: 
-@Version: 
-@Software: PyCharm
-@Author: youkaijian
-@Date: 2017/02/24
-"""
-
-
 import hashlib
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -21,6 +12,13 @@ from markdown import markdown
 import bleach
 from . import db
 from . import login_manager
+
+
+class Follow(db.Model):
+    __tablename__ = 'follows'
+    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 
 # ------------------------------------------------------------------
@@ -99,18 +97,57 @@ class User(UserMixin, db.Model):
     confirmed = db.Column(db.Boolean, default=False)
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    comments = db.relationship('Comment', backref='author', lazy='dynamic')
+    followed = db.relationship('Follow', foreign_keys=[Follow.follower_id],
+                               backref=db.backref('follower', lazy='joined'),
+                               lazy='dynamic', cascade='all, delete-orphan')
+    followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],
+                                backref=db.backref('followed', lazy='joined'),
+                                lazy='dynamic', cascade='all, delete-orphan')
+
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            user = User(email=forgery_py.internet.email_address(),
+                        username=forgery_py.internet.user_name(True),
+                        password=forgery_py.lorem_ipsum.word(),
+                        confirmed=True,
+                        real_name=forgery_py.name.full_name(),
+                        location=forgery_py.address.city(),
+                        about_me=forgery_py.lorem_ipsum.sentence(),
+                        last_visited=forgery_py.date.date(True))
+            db.session.add(user)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rolleback()
+
+    @staticmethod
+    def add_self_follows():
+        for user in User.query.all():
+            if not user.is_following(user):
+                user.follow(user)
+                db.session.add(user)
+                db.session.commit()
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
 
         if self.role is None:
-            if self.email == current_app.config['FLASKFB_ADMIN']:
+            if self.email == current_app.config['ADMIN_EMAIL']:
                 self.role = Role.query.filter_by(permissions=0xff).first()
             if self.role is None:
                 self.role = Role.query.filter_by(default=True).first()
 
         if self.email is not None and self.avatar_hash is None:
             self.avatar_hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+
+        self.follow(self)  # 把自己设为自己的关注者
 
     @property
     def password(self):
@@ -195,7 +232,8 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         # db.session.commit()
 
-    def get_avatar_url(self, size=100, default='identicon', rating='g'):
+    # 从 gravatar 网站获取头像
+    def get_avatar(self, size=100, default='identicon', rating='g'):
         if request.is_secure:
             url = 'http://secure.gravatar.com/avatar'
         else:
@@ -204,27 +242,30 @@ class User(UserMixin, db.Model):
         return '{url}/{hash}?s={size}&d={default}&r={rating}'\
             .format(url=url, hash=hash, size=size, default=default, rating=rating)
 
-    @staticmethod
-    def generate_fake(count=100):
-        from sqlalchemy.exc import IntegrityError
-        from random import seed
-        import forgery_py
+    def follow(self, user):
+        if not self.is_following(user):
+            f = Follow(follower=self, followed=user)
+            db.session.add(f)
+            db.session.commit()
 
-        seed()
-        for i in range(count):
-            user = User(email=forgery_py.internet.email_address(),
-                        username=forgery_py.internet.user_name(True),
-                        password=forgery_py.lorem_ipsum.word(),
-                        confirmed=True,
-                        real_name=forgery_py.name.full_name(),
-                        location=forgery_py.address.city(),
-                        about_me=forgery_py.lorem_ipsum.sentence(),
-                        last_visited=forgery_py.date.date(True))
-            db.session.add(user)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rolleback()
+    def unfollow(self, user):
+        f = self.followd.filter_by(followed_id=user.id).first()
+        if f:
+            db.session.delete(f)
+            db.session.commit()
+
+    def is_following(self, user):
+        return self.followed.filter_by(followed_id=user.id).first() is not None
+
+    def is_followed_by(self, user):
+        return self.followers.filter_by(follower_id=user.id).first() is not None
+
+    # 获取已关注用户的文章
+    def followed_posts(self):
+        return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
+            .filter(Follow.follower_id == self.id)
+        # return Post.query.filter(Follow.follower_id == self.id)\
+        #    .join(Follow, Follow.followed_id == Post.author_id)
 
     def __repr__(self):
         return '<User %s>' % self.name
@@ -252,7 +293,8 @@ class Post(db.Model):
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    authod_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     @staticmethod
     def on_changed_body(target, value, old_value, initiator):
@@ -280,3 +322,24 @@ class Post(db.Model):
 # on_changed_body 被注册为 Post.body 字段的 "set" 事件的监听程序，
 # 当 Post 实例的 body 字段更新，on_changed_body 会被自动调用
 db.event.listen(Post.body, 'set', Post.on_changed_body)
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    disabled = db.Column(db.Boolean)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    @staticmethod
+    def on_changed_body(target, value, old_value, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'code', 'em', 'i', 'strong']
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_format='html'), tags=allowed_tags,
+            strip=True))
+
+
+db.event.listen(Comment.body, 'set', Comment.on_changed_body)
