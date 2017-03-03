@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-"""
-@Description: 
-@Version: 
-@Software: PyCharm
-@Author: youkaijian
-@Date: 2017/02/26
-"""
-
-
 import unittest
 from app.models import Role, User, AnonymousUser, Permission
 from app import db

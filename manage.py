@@ -2,15 +2,6 @@
 # -*- coding: utf-8 -*-
 
 
-"""
-@Description: 
-@Version: 
-@Software: PyCharm
-@Author: youkaijian
-@Date: 2017/02/23
-"""
-
-
 import os
 from flask_script import Manager
 from flask_script import Shell

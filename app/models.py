@@ -1,15 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-"""
-@Description: 
-@Version: 
-@Software: PyCharm
-@Author: youkaijian
-@Date: 2017/02/24
-"""
-
-
 import hashlib
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
