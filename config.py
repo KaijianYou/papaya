@@ -14,12 +14,15 @@ class Config:
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+
     POSTS_PER_PAGE = 10
     FOLLOWERS_PER_PAGE = 10
     COMMENTS_PER_PAGE = 10
 
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'no zuo no die why you try'
 
+    SQLALCHEMY_RECORD_QUERIES = True  # 启用数据库查询性能记录功能
+    DB_QUERY_TIMECOUT = 0.5           # 花费时间超过 0.5s 的查询语句将被记录
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # Flask-SQLALchemy 未来可能会删除
 
@@ -35,7 +38,7 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    WTF_CSRF_ENABLED = False
+    WTF_CSRF_ENABLED = False  # 禁用表单 CSRF 保护
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL')
 
 

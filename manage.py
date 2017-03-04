@@ -34,7 +34,7 @@ manager.add_command('db', MigrateCommand)
 
 @manager.command
 def test(coverage=False):
-    """Run the unit tests."""
+    """运行单元测试"""
     if coverage and not os.environ.get('FLASK_COVERAGE'):
         import sys
         os.environ['FLASK_COVERAGE'] = '1'
@@ -54,6 +54,16 @@ def test(coverage=False):
         COV.html_report(directory=covdir)
         print('HTML version: file://%s/index.html' % covdir)
         COV.erase()
+
+
+# 源码分析器
+@manager.command
+def profile(length=20, profile_dir=None):
+    """启动应用的同时开启源码分析器"""
+    from werkzeug.contrib.profiler import ProfilerMiddleware
+    app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[length],
+                                     profile_dir=profile_dir)
+    app.run()
 
 
 if __name__ == '__main__':
