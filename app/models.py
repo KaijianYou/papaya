@@ -147,7 +147,7 @@ class User(UserMixin, db.Model):
         if self.email is not None and self.avatar_hash is None:
             self.avatar_hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
 
-        self.follow(self)  # 把自己设为自己的关注者
+        self.followed.append(Follow(followed=self))  # 把自己设为自己的关注者
 
     @property
     def password(self):
@@ -239,7 +239,7 @@ class User(UserMixin, db.Model):
         else:
             url = 'http://www.gravatar.com/avatar'
         hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
-        return '{url}/{hash}?s={size}&d={default}&r={rating}'\
+        return '{url}/{hash}?s={size}&d={default}&r={rating}' \
             .format(url=url, hash=hash, size=size, default=default, rating=rating)
 
     def follow(self, user):
@@ -314,8 +314,7 @@ class Post(db.Model):
         for i in range(count):
             user = User.query.offset(randint(0, user_count - 1)).first()
             post = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
-                        timestamp=forgery_py.date.date(True),
-                        author=user)
+                        timestamp=forgery_py.date.date(True), author=user)
             db.session.add(post)
             db.session.commit()
 
@@ -338,8 +337,7 @@ class Comment(db.Model):
     def on_changed_body(target, value, old_value, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'code', 'em', 'i', 'strong']
         target.body_html = bleach.linkify(bleach.clean(
-            markdown(value, output_format='html'), tags=allowed_tags,
-            strip=True))
+            markdown(value, output_format='html'), tags=allowed_tags, strip=True))
 
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
