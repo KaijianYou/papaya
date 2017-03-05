@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-
 <body>
-    user <b>{{ user.name }}</b> has joined.
+    {{ gettext('user %(username)s has joined', username=user.username) }}.
 </body>
 </html>

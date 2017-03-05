@@ -14,7 +14,7 @@
         <p>
             {% if user.real_name %}{{ user.real_name }}{% endif %}
             {% if user.location %}
-                From: <a href="http://maps.google.com/?q={{ user.location }}">
+                {{ gettext('From') }}: <a href="http://maps.google.com/?q={{ user.location }}">
                     {{ user.location }}
                 </a>
             {% endif %}
@@ -22,30 +22,32 @@
         {% endif %}
 
         {% if current_user.is_administrator() %}
-        <p>Email: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+        <p>{{ gettext('Email') }}: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
         {% endif %}
 
-        {% if user.about_me %}<p>About me: {{ user.about_me }}</p>{% endif %}
+        {% if user.about_me %}<p>{{ gettext('About me') }}: {{ user.about_me }}</p>{% endif %}
 
         <p>
-            Register date {{ moment(user.register_date).format('ddd YYYY/MM/DD, HH:mm:ss') }}
+            {{ gettext('Register date') }}: {{ moment(user.register_date).format('YYYY/MM/DD, HH:mm:ss') }}
             <br/>
             {# 渲染相对时间戳，随着时间的推移自动刷新显示的时间 #}
-            Last visited {{ moment(user.last_visited).fromNow(refresh=True) }}.
+            {{ gettext('Last visited') }}: {{ moment(user.last_visited).fromNow(refresh=True) }}.
         </p>
 
-        <p>{{ user.posts.count() }} blog posts.</p>
+        <p>{{ user.posts.count() }} {{ gettext('blog posts') }}.</p>
 
-        <p>{{ user.comments.count() }} comments.</p>
+        <p>{{ user.comments.count() }} {{ gettext('comments') }}.</p>
 
         <p>
             {% if user == current_user %}
-            <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">Edit Profile</a>
+            <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">
+                {{ gettext('Edit Profile') }}
+            </a>
             {% endif %}
 
             {% if current_user.is_administrator() %}
             <a class="btn btn-danger" href="{{ url_for('.edit_profile_admin', id=user.id) }}">
-                Edit Profile [Admin]
+                {{ gettext('Edit Profile [Admin]') }}
             </a>
             {% endif %}
         </p>
@@ -53,22 +55,24 @@
         <p>
             {% if current_user.can(Permission.FOLLOW) and user != current_user %}
                 {% if not current_user.is_following(user) %}
-                <a href="{{ url_for('.follow', username=user.username) }}"
-                   class="btn btn-primary">Follow</a>
+                <a href="{{ url_for('.follow', username=user.username) }}" class="btn btn-primary">
+                    {{ gettext('Follow') }}
+                </a>
                 {% else %}
-                <a href="{{ url_for('.unfollow', username=user.username) }}"
-                   class="btn btn-default">Unfollow</a>
+                <a href="{{ url_for('.unfollow', username=user.username) }}" class="btn btn-default">
+                    {{ gettext('Unfollow') }}
+                </a>
                 {% endif %}
             {% endif %}
             <a href="{{ url_for('.followers', username=user.username) }}">
-                Followers: <span class="badge">{{ user.followers.count() - 1 }}</span>
+                {{ gettext('Followers') }}: <span class="badge">{{ user.followers.count() - 1 }}</span>
             </a>
             <a href="{{ url_for('.followed_by', username=user.username) }}">
-                Following: <span class="badge">{{ user.followed.count() - 1 }}</span>
+                {{ gettext('Following') }}: <span class="badge">{{ user.followed.count() - 1 }}</span>
             </a>
             {% if current_user.is_authenticated and user != current_user and
                 user.is_following(current_user) %}
-            | <span class="label label-default">Follows you</span>
+            | <span class="label label-default">{{ gettext('Follows you') }}</span>
             {% endif %}
         </p>
     </div>

@@ -1,19 +1,19 @@
 {% extends "base.html" %}}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}FlaskFB - Login{% endblock title %}
+{% block title %}FlaskFB - {{ gettext('Login') }}{% endblock title %}
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Login</h1>
+    <h1>{{ gettext('Login') }}</h1>
 </div>
 
 <div calss="col-md-4">
     {{ wtf.quick_form(form) }}
     <p>
-        New user?
+        {{ gettext('New user') }}?
         <a href="{{ url_for('auth.register') }}">
-            Click here to register
+            {{ gettext('Click here to register') }}
         </a>
     </p>
 </div>
