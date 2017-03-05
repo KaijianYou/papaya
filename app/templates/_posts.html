@@ -14,6 +14,11 @@
                     {{ post.author.username }}
                 </a>
             </div>
+            <div class="post-tabs">
+                {% if post.title %}
+                    <h4><i>{{ post.title }}</i></h4>
+                {% endif %}
+            </div>
             <div class="post-body">
                 {% if post.body_html %}
                     <!--"| safe" 通知 jinja2 不要转义 HTML 元素-->

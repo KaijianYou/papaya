@@ -48,8 +48,10 @@ class EditProfileAdminForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    body = PageDownField(lazy_gettext('Publish Post'), validators=[DataRequired()])
-    submit = SubmitField(lazy_gettext('Submit'))
+    title = StringField(lazy_gettext('Title'), validators=[DataRequired(),
+                                                           Length(1, 64)])
+    body = PageDownField(lazy_gettext('Post'), validators=[DataRequired()])
+    submit = SubmitField(lazy_gettext('Publish'))
 
 
 class CommentForm(FlaskForm):

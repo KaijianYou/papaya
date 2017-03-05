@@ -15,7 +15,7 @@
     </h1>
 </div>
 
-<div>
+<div class="edit-post">
     {% if current_user.can(Permission.WRITE_ARTICLES) %}
     {{ wtf.quick_form(form) }}
     {% endif %}

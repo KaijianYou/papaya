@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-05 18:34+0800\n"
+"POT-Creation-Date: 2017-03-05 22:05+0800\n"
 "PO-Revision-Date: 2017-03-05 15:08+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans_CN\n"
@@ -31,7 +31,7 @@ msgstr "密码"
 msgid "Keep me logged in"
 msgstr "自动登录"
 
-#: app/auth/forms.py:17 app/templates/base.html:62
+#: app/auth/forms.py:17 app/templates/base.html:75
 msgid "Log In"
 msgstr "登录"
 
@@ -99,7 +99,7 @@ msgstr "更新邮箱地址"
 
 #: app/auth/views.py:54
 msgid "A new confirmation email has been sent to you by email"
-msgstr "一封新的验证邮件已经发送到您的邮箱"
+msgstr "一封验证邮件已经发送到您的邮箱"
 
 #: app/auth/views.py:69
 msgid "Confirm Your Account"
@@ -143,7 +143,7 @@ msgstr "重设您的密码"
 
 #: app/auth/views.py:143
 msgid "An email with instructions to reset your password has been sent to you"
-msgstr "一封说明如何重设密码的邮件已经发送到您的邮箱"
+msgstr "一封重设密码的邮件已经发送到您的邮箱"
 
 #: app/auth/views.py:176
 msgid "Confirm your email address"
@@ -153,7 +153,7 @@ msgstr "验证您的邮箱地址"
 msgid ""
 "An email with instructions to confirm your new email address has been "
 "sent to you."
-msgstr "一封说明如何验证新邮箱地址的邮件已经发送到您的邮箱"
+msgstr "一封验证新邮箱地址的邮件已经发送到您的邮箱"
 
 #: app/auth/views.py:183
 msgid "Invalid email or password"
@@ -179,8 +179,7 @@ msgstr "所在地"
 msgid "About me"
 msgstr "关于我"
 
-#: app/main/forms.py:17 app/main/forms.py:31 app/main/forms.py:52
-#: app/main/forms.py:57
+#: app/main/forms.py:17 app/main/forms.py:31 app/main/forms.py:59
 msgid "Submit"
 msgstr "提交"
 
@@ -193,14 +192,22 @@ msgid "Role"
 msgstr "角色"
 
 #: app/main/forms.py:51
-msgid "Publish Post"
-msgstr "发表文章"
+msgid "Title"
+msgstr "标题"
 
-#: app/main/views.py:81
+#: app/main/forms.py:53 app/templates/post.html:5
+msgid "Post"
+msgstr "文章"
+
+#: app/main/forms.py:54
+msgid "Publish"
+msgstr "发布"
+
+#: app/main/views.py:80
 msgid "Your profile has been updated"
 msgstr "个人信息已经更新"
 
-#: app/main/views.py:105
+#: app/main/views.py:104
 msgid "The profile has been updated"
 msgstr "个人信息已经更新"
 
@@ -262,31 +269,31 @@ msgstr "链接"
 msgid "Comments"
 msgstr "评论"
 
-#: app/templates/base.html:30
+#: app/templates/base.html:43
 msgid "Home"
 msgstr "首页"
 
-#: app/templates/base.html:33
+#: app/templates/base.html:46
 msgid "Profile"
 msgstr "个人信息"
 
-#: app/templates/base.html:40
+#: app/templates/base.html:53
 msgid "Moderate Comments"
 msgstr "管理评论"
 
-#: app/templates/base.html:46
+#: app/templates/base.html:59
 msgid "Account"
 msgstr "账户设置"
 
-#: app/templates/base.html:50
+#: app/templates/base.html:63
 msgid "Change Password"
 msgstr "修改密码"
 
-#: app/templates/base.html:53
+#: app/templates/base.html:66
 msgid "Change Email"
 msgstr "修改邮箱"
 
-#: app/templates/base.html:56
+#: app/templates/base.html:69
 msgid "Log Out"
 msgstr "退出"
 
@@ -329,10 +336,6 @@ msgstr "关注用户的文章"
 #: app/templates/moderate.html:4 app/templates/moderate.html:8
 msgid "Comment Moderation"
 msgstr "评论管理"
-
-#: app/templates/post.html:5
-msgid "Post"
-msgstr "文章"
 
 #: app/templates/user.html:17
 msgid "From"
@@ -422,7 +425,7 @@ msgstr "在您继续使用本网站之前需要验证您的账号"
 msgid ""
 "Check your inbox, you should have received an email with a confirmation "
 "link"
-msgstr "检查您的收件箱，您应该已经收到一封包含验证链接的文件"
+msgstr "检查您的收件箱，您应该已经收到一封包含验证链接的邮件"
 
 #: app/templates/auth/unconfirmed.html:16
 msgid "Need another confirmation email"

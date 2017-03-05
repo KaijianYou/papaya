@@ -1,14 +1,27 @@
 {% extends "bootstrap/base.html" %}
 
-{% block title %}FlaskFB{% endblock title %}
-
 {% block head %}
 {{ super() }}
+
+<!--<title>{% block title %}{% endblock title %}</title>-->
+
+{% block metas %}
+<meta charset="utf-8">
+<meta name="description" content="求工作啊 ԅ(¯﹃¯ԅ)">
+<meta name="keywords" content="博客, Blog">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+{% endblock metas %}
+
 <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}"
       type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='image/favicon.ico') }}"
       type="image/x-icon">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
 {% endblock head %}
 
 {% block navbar %}
@@ -79,6 +92,9 @@
 
     {% block page_content %}{% endblock page_content %}
 </div>
+
+<div id="particle-ground">
+</div>
 {% endblock content %}
 
 {% block scripts %}
@@ -86,4 +102,14 @@
     {# 引入 moment.js 库 #}
     {{ moment.include_moment() }}
     {{ moment.lang("zh-CN") }}
+    <script src="{{ url_for('static', filename='js/particleground.all.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particle.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.particleground.min.js') }}"></script>
+    <script>
+        new Particleground.particle('#particle-ground');
+//        $('#demo').particleground({
+//            dotColor: '#ff82bf',
+//            lineColor: '#67ff8b'
+//        });
+    </script>
 {% endblock scripts %}

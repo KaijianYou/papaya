@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-05 18:34+0800\n"
+"POT-Creation-Date: 2017-03-05 22:05+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr ""
 msgid "Keep me logged in"
 msgstr ""
 
-#: app/auth/forms.py:17 app/templates/base.html:62
+#: app/auth/forms.py:17 app/templates/base.html:75
 msgid "Log In"
 msgstr ""
 
@@ -178,8 +178,7 @@ msgstr ""
 msgid "About me"
 msgstr ""
 
-#: app/main/forms.py:17 app/main/forms.py:31 app/main/forms.py:52
-#: app/main/forms.py:57
+#: app/main/forms.py:17 app/main/forms.py:31 app/main/forms.py:59
 msgid "Submit"
 msgstr ""
 
@@ -192,14 +191,22 @@ msgid "Role"
 msgstr ""
 
 #: app/main/forms.py:51
-msgid "Publish Post"
+msgid "Title"
 msgstr ""
 
-#: app/main/views.py:81
+#: app/main/forms.py:53 app/templates/post.html:5
+msgid "Post"
+msgstr ""
+
+#: app/main/forms.py:54
+msgid "Publish"
+msgstr ""
+
+#: app/main/views.py:80
 msgid "Your profile has been updated"
 msgstr ""
 
-#: app/main/views.py:105
+#: app/main/views.py:104
 msgid "The profile has been updated"
 msgstr ""
 
@@ -261,31 +268,31 @@ msgstr ""
 msgid "Comments"
 msgstr ""
 
-#: app/templates/base.html:30
+#: app/templates/base.html:43
 msgid "Home"
 msgstr ""
 
-#: app/templates/base.html:33
+#: app/templates/base.html:46
 msgid "Profile"
 msgstr ""
 
-#: app/templates/base.html:40
+#: app/templates/base.html:53
 msgid "Moderate Comments"
 msgstr ""
 
-#: app/templates/base.html:46
+#: app/templates/base.html:59
 msgid "Account"
 msgstr ""
 
-#: app/templates/base.html:50
+#: app/templates/base.html:63
 msgid "Change Password"
 msgstr ""
 
-#: app/templates/base.html:53
+#: app/templates/base.html:66
 msgid "Change Email"
 msgstr ""
 
-#: app/templates/base.html:56
+#: app/templates/base.html:69
 msgid "Log Out"
 msgstr ""
 
@@ -327,10 +334,6 @@ msgstr ""
 
 #: app/templates/moderate.html:4 app/templates/moderate.html:8
 msgid "Comment Moderation"
-msgstr ""
-
-#: app/templates/post.html:5
-msgid "Post"
 msgstr ""
 
 #: app/templates/user.html:17
