@@ -10,13 +10,19 @@ from flask import current_app
 from flask_login import login_required
 from flask_login import current_user
 from flask_sqlalchemy import get_debug_queries
-from app import db
+from flask_babel import gettext as _
+from app import db, babel
 from . import main
 from .forms import EditProfileForm, EditProfileAdminForm
 from .forms import PostForm, CommentForm
 from ..models import User, Role, Permission, Post, Comment
 from ..decorators import admin_required
 from ..decorators import permission_required
+
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(['en', 'zh_Hans_CN'])
 
 
 # 如果不指定 methods 参数，则默认将函数注册为 GET 请求的处理程序
@@ -71,11 +77,11 @@ def edit_profile():
         current_user.about_me = form.about_me.data
         db.session.add(current_user)
         db.session.commit()
-        flash('Your profile has been updated.')
+        flash(_('Your profile has been updated'))
         return redirect(url_for('.user', username=current_user.username))
     form.real_name.data = current_user.real_name
     form.location.data = current_user.location
-    form.about_me = current_user.about_me
+    form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', form=form)
 
 
@@ -95,7 +101,7 @@ def edit_profile_admin(id):
         user.about_me = form.about_me.data
         db.session.add(user)
         db.session.commit()
-        flash('The profile has been updated.')
+        flash(_('The profile has been updated'))
         return redirect(url_for('.user', username=user.username))
     form.email.data = user.email
     form.username.data = user.username
@@ -118,7 +124,7 @@ def edit_post(id):
         post.body = form.body.data
         db.session.add(post)
         db.session.commit()
-        flash('The post has been updated.')
+        flash(_('The post has been updated'))
         return redirect(url_for('.post', id=post.id))
     form.body.data = post.body
     return render_template('edit_post.html', form=form)
@@ -130,13 +136,13 @@ def edit_post(id):
 def follow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('Invalid user.')
+        flash(_('Invalid user'))
         return redirect(url_for('.index'))
     if current_user.is_following(user):
-        flash('You are already following his user.')
+        flash(_('You are already following this user'))
         return redirect(url_for('.user', username=username))
     current_user.follow(user)
-    flash('You are now following %s.' % username)
+    flash(_('You are now following') + '%s' % username)
     return redirect(url_for('.user', username=username))
 
 
@@ -146,13 +152,13 @@ def follow(username):
 def unfollow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('Invalid user.')
+        flash(_('Invalid user'))
         return redirect(url_for('.index'))
     if not current_user.is_following(user):
-        flash('You are not following this uesr.')
+        flash(_('You are not following this user'))
         return redirect(url_for('.user', username=username))
     current_user.unfollow(user)
-    flash('Your are not following %s anymore.' % username)
+    flash(_('Your are not following %(username)s anymore', username=username))
     return redirect(url_for('.user', username=username))
 
 
@@ -160,7 +166,7 @@ def unfollow(username):
 def followers(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('Invalid user.')
+        flash(_('Invalid user'))
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
     pagination = user.followers.paginate(
@@ -176,7 +182,7 @@ def followers(username):
 def followed_by(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('Invalid user.')
+        flash(_('Invalid user'))
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
     pagination = user.followed.paginate(
@@ -213,12 +219,13 @@ def post(id):
                           author=current_user._get_current_object())
         db.session.add(comment)
         db.session.commit()
-        flash('Your comment has been published.')
+        flash(_('Your comment has been published'))
         return redirect(url_for('.post', id=post.id, page=-1))
 
     page = request.args.get('page', 1, type=int)
     if page == -1:
-        page = (post.comments.count() - 1) // current_app.config['COMMENTS_PER_PAGE'] + 1
+        page = (post.comments.count() - 1) // \
+               current_app.config['COMMENTS_PER_PAGE'] + 1
     pagination = post.comments.order_by(Comment.timestamp.asc()).paginate(
         page, per_page=current_app.config['COMMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items
@@ -250,7 +257,7 @@ def moderate_enable(id):
     return redirect(url_for('.moderate', page=page))
 
 
-@main.route('/moderate/disabel/<int:id>')
+@main.route('/moderate/disable/<int:id>')
 @login_required
 @permission_required(Permission.MODERATE_COMMENTS)
 def moderate_disable(id):
@@ -265,7 +272,7 @@ def moderate_disable(id):
 @main.after_app_request
 def after_request(response):
     for query in get_debug_queries():
-        if query.duration >= current_app.config['SLOW_DB_QUERY_TIME']:
+        if query.duration >= current_app.config['DB_QUERY_TIMEOUT']:
             current_app.logger.warning(
                 'Slow query: %s\nParameters: %s\nDuration: %fs\nContext: %s\n' %
                 (query.statement, query.parameters, query.duration, query.context))

@@ -1,0 +1,523 @@
+# Chinese (Simplified, China) translations for PROJECT.
+# Copyright (C) 2017 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-03-05 18:34+0800\n"
+"PO-Revision-Date: 2017-03-05 15:08+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: zh_Hans_CN\n"
+"Language-Team: zh_Hans_CN <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+
+#: app/auth/forms.py:13 app/auth/forms.py:21 app/auth/forms.py:54
+#: app/auth/forms.py:64 app/main/forms.py:21 app/templates/user.html:25
+msgid "Email"
+msgstr "邮箱"
+
+#: app/auth/forms.py:15 app/auth/forms.py:26 app/auth/forms.py:79
+msgid "Password"
+msgstr "密码"
+
+#: app/auth/forms.py:16
+msgid "Keep me logged in"
+msgstr "自动登录"
+
+#: app/auth/forms.py:17 app/templates/base.html:62
+msgid "Log In"
+msgstr "登录"
+
+#: app/auth/forms.py:23 app/main/forms.py:23
+msgid "Username"
+msgstr "用户名"
+
+#: app/auth/forms.py:24 app/main/forms.py:24
+msgid "Username must have only letters, numbers, dots or underscores"
+msgstr "用户名只能包含英文字母、数字、小数点和下划线"
+
+#: app/auth/forms.py:27
+msgid "Confirm password"
+msgstr "确认密码"
+
+#: app/auth/forms.py:28 app/auth/forms.py:48 app/auth/forms.py:68
+msgid "Passwords must match"
+msgstr "两次输入的密码必须相同"
+
+#: app/auth/forms.py:29 app/templates/auth/register.html:4
+#: app/templates/auth/register.html:8
+msgid "Register"
+msgstr "注册"
+
+#: app/auth/forms.py:33 app/auth/forms.py:84 app/main/forms.py:42
+msgid "Email already registered"
+msgstr "该邮箱已经被注册"
+
+#: app/auth/forms.py:37 app/main/forms.py:47
+msgid "Username already in use"
+msgstr "该用户名已使用"
+
+#: app/auth/forms.py:42
+msgid "Old password"
+msgstr "原密码"
+
+#: app/auth/forms.py:44 app/auth/forms.py:66
+msgid "New password"
+msgstr "新密码"
+
+#: app/auth/forms.py:46 app/auth/forms.py:67
+msgid "Confirm new password"
+msgstr "确认新密码"
+
+#: app/auth/forms.py:50
+msgid "Update Password"
+msgstr "修改密码"
+
+#: app/auth/forms.py:56 app/auth/forms.py:69
+#: app/templates/auth/reset_password.html:4
+msgid "Reset Password"
+msgstr "重设密码"
+
+#: app/auth/forms.py:60 app/auth/forms.py:73
+msgid "Unknown email address"
+msgstr "邮件地址无法识别"
+
+#: app/auth/forms.py:77
+msgid "New email"
+msgstr "新邮箱"
+
+#: app/auth/forms.py:80
+msgid "Update Email Address"
+msgstr "更新邮箱地址"
+
+#: app/auth/views.py:54
+msgid "A new confirmation email has been sent to you by email"
+msgstr "一封新的验证邮件已经发送到您的邮箱"
+
+#: app/auth/views.py:69
+msgid "Confirm Your Account"
+msgstr "验证您的账号"
+
+#: app/auth/views.py:71
+msgid "A confirmation email has been sent to you by email"
+msgstr "一封验证邮件已经发送到您的邮箱"
+
+#: app/auth/views.py:82
+msgid "You have confirmed your account. Thanks!"
+msgstr "您已经验证账号，谢谢！"
+
+#: app/auth/views.py:84
+msgid "The confirmation link is invalid or has expired"
+msgstr "此验证链接已经过期或失效"
+
+#: app/auth/views.py:95
+msgid "Logged in successfully"
+msgstr "成功登录"
+
+#: app/auth/views.py:101
+msgid "Invalid username or password"
+msgstr "用户名或密码错误"
+
+#: app/auth/views.py:111
+msgid "You have been logged out"
+msgstr "您已经退出"
+
+#: app/auth/views.py:123 app/auth/views.py:160
+msgid "Your password has been updated"
+msgstr "您的密码已经更新"
+
+#: app/auth/views.py:126
+msgid "Invalid password"
+msgstr "密码错误"
+
+#: app/auth/views.py:140
+msgid "Reset your password"
+msgstr "重设您的密码"
+
+#: app/auth/views.py:143
+msgid "An email with instructions to reset your password has been sent to you"
+msgstr "一封说明如何重设密码的邮件已经发送到您的邮箱"
+
+#: app/auth/views.py:176
+msgid "Confirm your email address"
+msgstr "验证您的邮箱地址"
+
+#: app/auth/views.py:179
+msgid ""
+"An email with instructions to confirm your new email address has been "
+"sent to you."
+msgstr "一封说明如何验证新邮箱地址的邮件已经发送到您的邮箱"
+
+#: app/auth/views.py:183
+msgid "Invalid email or password"
+msgstr "邮箱或密码错误"
+
+#: app/auth/views.py:191
+msgid "Your email address has been updated"
+msgstr "您的邮箱地址已经更新"
+
+#: app/auth/views.py:193
+msgid "Invalid request"
+msgstr "请求错误"
+
+#: app/main/forms.py:14 app/main/forms.py:28
+msgid "Real name"
+msgstr "真实姓名"
+
+#: app/main/forms.py:15 app/main/forms.py:29
+msgid "Location"
+msgstr "所在地"
+
+#: app/main/forms.py:16 app/main/forms.py:30 app/templates/user.html:28
+msgid "About me"
+msgstr "关于我"
+
+#: app/main/forms.py:17 app/main/forms.py:31 app/main/forms.py:52
+#: app/main/forms.py:57
+msgid "Submit"
+msgstr "提交"
+
+#: app/main/forms.py:26
+msgid "Confirmed"
+msgstr "确认"
+
+#: app/main/forms.py:27
+msgid "Role"
+msgstr "角色"
+
+#: app/main/forms.py:51
+msgid "Publish Post"
+msgstr "发表文章"
+
+#: app/main/views.py:81
+msgid "Your profile has been updated"
+msgstr "个人信息已经更新"
+
+#: app/main/views.py:105
+msgid "The profile has been updated"
+msgstr "个人信息已经更新"
+
+#: app/main/views.py:128
+msgid "The post has been updated"
+msgstr "文章已经更新"
+
+#: app/main/views.py:140 app/main/views.py:156 app/main/views.py:170
+#: app/main/views.py:186
+msgid "Invalid user"
+msgstr "无效的用户"
+
+#: app/main/views.py:143
+msgid "You are already following this user"
+msgstr "您已经关注了该用户"
+
+#: app/main/views.py:146
+msgid "You are now following"
+msgstr "已关注"
+
+#: app/main/views.py:159
+msgid "You are not following this user"
+msgstr "您没有关注此用户"
+
+#: app/main/views.py:162
+#, python-format
+msgid "Your are not following %(username)s anymore"
+msgstr "您已经不再关注 %(username)s"
+
+#: app/main/views.py:223
+msgid "Your comment has been published"
+msgstr "您的文章已发布"
+
+#: app/templates/_comments.html:19
+msgid "This comment has been disabled by a moderator"
+msgstr "该评论被管理员屏蔽"
+
+#: app/templates/_comments.html:34
+msgid "Enable"
+msgstr "解禁"
+
+#: app/templates/_comments.html:37
+msgid "Disable"
+msgstr "屏蔽"
+
+#: app/templates/_posts.html:28
+msgid "Edit"
+msgstr "编辑"
+
+#: app/templates/_posts.html:32
+msgid "Edit [Admin]"
+msgstr "编辑 [管理员]"
+
+#: app/templates/_posts.html:36
+msgid "Permalink"
+msgstr "链接"
+
+#: app/templates/_posts.html:40 app/templates/post.html:10
+msgid "Comments"
+msgstr "评论"
+
+#: app/templates/base.html:30
+msgid "Home"
+msgstr "首页"
+
+#: app/templates/base.html:33
+msgid "Profile"
+msgstr "个人信息"
+
+#: app/templates/base.html:40
+msgid "Moderate Comments"
+msgstr "管理评论"
+
+#: app/templates/base.html:46
+msgid "Account"
+msgstr "账户设置"
+
+#: app/templates/base.html:50
+msgid "Change Password"
+msgstr "修改密码"
+
+#: app/templates/base.html:53
+msgid "Change Email"
+msgstr "修改邮箱"
+
+#: app/templates/base.html:56
+msgid "Log Out"
+msgstr "退出"
+
+#: app/templates/edit_post.html:4 app/templates/edit_post.html:8
+msgid "Edit Post"
+msgstr "编辑文章"
+
+#: app/templates/edit_profile.html:4 app/templates/user.html:44
+msgid "Edit Profile"
+msgstr "设置个人信息"
+
+#: app/templates/edit_profile.html:8
+msgid "Edit Your Profile"
+msgstr "设置个人信息"
+
+#: app/templates/followers.html:14
+msgid "User"
+msgstr "用户"
+
+#: app/templates/followers.html:15
+msgid "Since"
+msgstr "时间"
+
+#: app/templates/auth/unconfirmed.html:8 app/templates/index.html:9
+msgid "Hello"
+msgstr "您好"
+
+#: app/templates/index.html:13
+msgid "Stranger"
+msgstr "游客"
+
+#: app/templates/index.html:27
+msgid "All"
+msgstr "所有文章"
+
+#: app/templates/index.html:30 app/templates/user.html:68
+msgid "Followers"
+msgstr "关注用户的文章"
+
+#: app/templates/moderate.html:4 app/templates/moderate.html:8
+msgid "Comment Moderation"
+msgstr "评论管理"
+
+#: app/templates/post.html:5
+msgid "Post"
+msgstr "文章"
+
+#: app/templates/user.html:17
+msgid "From"
+msgstr "来自"
+
+#: app/templates/user.html:31
+msgid "Register date"
+msgstr "注册日期"
+
+#: app/templates/user.html:34
+msgid "Last visited"
+msgstr "上次访问"
+
+#: app/templates/user.html:37
+msgid "blog posts"
+msgstr "篇博客文章"
+
+#: app/templates/user.html:39
+msgid "comments"
+msgstr "条评论"
+
+#: app/templates/user.html:50
+msgid "Edit Profile [Admin]"
+msgstr "编辑个人信息 [管理员]"
+
+#: app/templates/user.html:59
+msgid "Follow"
+msgstr "关注"
+
+#: app/templates/user.html:63
+msgid "Unfollow"
+msgstr "不关注"
+
+#: app/templates/user.html:71
+msgid "Following"
+msgstr "已关注"
+
+#: app/templates/user.html:75
+msgid "Follows you"
+msgstr "此用户已关注您"
+
+#: app/templates/auth/change_email.html:4
+msgid "Change Email Address"
+msgstr "修改邮箱地址"
+
+#: app/templates/auth/change_email.html:8
+msgid "Change Your Email Address"
+msgstr "修改邮箱地址"
+
+#: app/templates/auth/change_password.html:4
+msgid "Change password"
+msgstr "修改密码"
+
+#: app/templates/auth/change_password.html:8
+msgid "Change Your Password"
+msgstr "修改密码"
+
+#: app/templates/auth/login.html:4 app/templates/auth/login.html:8
+msgid "Login"
+msgstr "登录"
+
+#: app/templates/auth/login.html:14
+msgid "New user"
+msgstr "新用户"
+
+#: app/templates/auth/login.html:16
+msgid "Click here to register"
+msgstr "点击此处注册"
+
+#: app/templates/auth/reset_password.html:8
+msgid "Reset Your Password"
+msgstr "重设密码"
+
+#: app/templates/auth/unconfirmed.html:3
+msgid "Confirm your account"
+msgstr "验证您的账号"
+
+#: app/templates/auth/unconfirmed.html:10
+msgid "You have not confirmed your account yet"
+msgstr "您还没有验证账号"
+
+#: app/templates/auth/unconfirmed.html:12
+msgid "Before you can access this site you need to confirm your account"
+msgstr "在您继续使用本网站之前需要验证您的账号"
+
+#: app/templates/auth/unconfirmed.html:13
+msgid ""
+"Check your inbox, you should have received an email with a confirmation "
+"link"
+msgstr "检查您的收件箱，您应该已经收到一封包含验证链接的文件"
+
+#: app/templates/auth/unconfirmed.html:16
+msgid "Need another confirmation email"
+msgstr "再发送一封验证邮件"
+
+#: app/templates/auth/unconfirmed.html:17
+msgid "Click here"
+msgstr "点击此处"
+
+#: app/templates/auth/email/change_email.html:1
+#: app/templates/auth/email/change_email.txt:1
+#: app/templates/auth/email/confirm.html:4
+#: app/templates/auth/email/confirm.txt:1
+#: app/templates/auth/email/reset_password.html:1
+#: app/templates/auth/email/reset_password.txt:1
+msgid "Dear"
+msgstr "亲爱的"
+
+#: app/templates/auth/email/change_email.html:3
+msgid "To confirm your new email address please"
+msgstr "要验证您的新邮箱地址，请"
+
+#: app/templates/auth/email/change_email.html:5
+#: app/templates/auth/email/confirm.html:10
+#: app/templates/auth/email/reset_password.html:5
+msgid "click here"
+msgstr "点击此处"
+
+#: app/templates/auth/email/change_email.html:9
+#: app/templates/auth/email/confirm.html:14
+#: app/templates/auth/email/reset_password.html:9
+msgid ""
+"Alternatively, you can paste the following link in your browser's address"
+" bar"
+msgstr "或者，您可以将下面的链接黏贴到浏览器地址栏"
+
+#: app/templates/auth/email/change_email.html:12
+#: app/templates/auth/email/change_email.txt:6
+#: app/templates/auth/email/confirm.html:17
+#: app/templates/auth/email/confirm.txt:8
+#: app/templates/auth/email/reset_password.html:14
+#: app/templates/auth/email/reset_password.txt:8
+msgid "Sincerely"
+msgstr "此致"
+
+#: app/templates/auth/email/change_email.html:13
+#: app/templates/auth/email/change_email.txt:7
+#: app/templates/auth/email/confirm.html:18
+#: app/templates/auth/email/confirm.txt:9
+#: app/templates/auth/email/reset_password.html:15
+#: app/templates/auth/email/reset_password.txt:9
+msgid "The FlaskFB Team"
+msgstr "FlaskFB 团队敬上"
+
+#: app/templates/auth/email/change_email.html:16
+#: app/templates/auth/email/change_email.txt:9
+#: app/templates/auth/email/confirm.html:21
+#: app/templates/auth/email/confirm.txt:11
+#: app/templates/auth/email/reset_password.html:18
+#: app/templates/auth/email/reset_password.txt:11
+msgid "Note: replies to this email address are not monitored"
+msgstr "注意：回复该邮件地址不受监控"
+
+#: app/templates/auth/email/change_email.txt:3
+msgid "To confirm your new email address please click on the following link"
+msgstr "为了验证您的新邮箱地址，请点击下面的链接"
+
+#: app/templates/auth/email/confirm.html:6
+#: app/templates/auth/email/confirm.txt:3
+msgid "Welcome to"
+msgstr "欢迎来到"
+
+#: app/templates/auth/email/confirm.html:8
+msgid "To confirm your account please"
+msgstr "要验证邮箱，请"
+
+#: app/templates/auth/email/confirm.txt:5
+msgid "To confirm your account please click on the following link"
+msgstr "为了验证您的账号，请点击下面的链接"
+
+#: app/templates/auth/email/reset_password.html:3
+msgid "To reset your password please"
+msgstr "要重设密码，请"
+
+#: app/templates/auth/email/reset_password.html:12
+#: app/templates/auth/email/reset_password.txt:6
+msgid "If you have not requested a password reset simply ignore this message"
+msgstr "如果您没有请求重设密码，那么可以忽略该信息"
+
+#: app/templates/auth/email/reset_password.txt:3
+msgid "To reset your password please click on the following link"
+msgstr "为了重设您的密码，请点击下面的链接"
+
+#: app/templates/mail/new_user.html:5 app/templates/mail/new_user.txt:1
+#, python-format
+msgid "user %(username)s has joined"
+msgstr "用户 %(username)s 新加入"
+

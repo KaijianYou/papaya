@@ -4,7 +4,7 @@
 import os
 
 
-class Config:
+class Config(object):
     MAIL_SUBJECT_PREFIX = 'FlaskFB - '
     MAIL_SENDER = 'FlaskFB <' + os.environ.get('MAIL_USERNAME') + '>'
     ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
@@ -21,8 +21,11 @@ class Config:
 
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'no zuo no die why you try'
 
+    BABEL_DEFAULT_LOCALE = 'zh_Hans_CN'
+    # BABEL_DEFAULT_TIMEZONE =
+
     SQLALCHEMY_RECORD_QUERIES = True  # 启用数据库查询性能记录功能
-    DB_QUERY_TIMECOUT = 0.5           # 花费时间超过 0.5s 的查询语句将被记录
+    DB_QUERY_TIMEOUT = 0.5            # 花费时间超过 0.5s 的查询语句将被记录
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # Flask-SQLALchemy 未来可能会删除
 

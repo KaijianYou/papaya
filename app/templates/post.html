@@ -2,12 +2,12 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% import "_paginate_macros.html" as macros %}
 
-{% block title %}FlaskFB - Post{% endblock title %}
+{% block title %}FlaskFB - {{ gettext('Post') }}{% endblock title %}
 
 {% block page_content %}
 {% include '_posts.html' %}
 
-<h4 id="comments">Comments</h4>
+<h4 id="comments">{{ gettext('Comments') }}</h4>
 {% if current_user.can(Permission.COMMENT) %}
 <div class="comment-form">
     {{ wtf.quick_form(form) }}

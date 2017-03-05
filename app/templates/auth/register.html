@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}}
 
-{% block title %}Flask - Register{% endblock title %}
+{% block title %}Flask - {{ gettext('Register') }}{% endblock title %}
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Register</h1>
+    <h1>{{ gettext('Register') }}</h1>
 </div>
 
 <div calss="col-md-4">
