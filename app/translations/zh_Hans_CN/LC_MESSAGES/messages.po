@@ -122,8 +122,8 @@ msgid "Logged in successfully"
 msgstr "成功登录"
 
 #: app/auth/views.py:101
-msgid "Invalid username or password"
-msgstr "用户名或密码错误"
+msgid "Invalid email or password"
+msgstr "邮箱或密码错误"
 
 #: app/auth/views.py:111
 msgid "You have been logged out"

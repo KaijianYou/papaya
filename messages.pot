@@ -121,7 +121,7 @@ msgid "Logged in successfully"
 msgstr ""
 
 #: app/auth/views.py:101
-msgid "Invalid username or password"
+msgid "Invalid email or password"
 msgstr ""
 
 #: app/auth/views.py:111

@@ -7,5 +7,8 @@ venv/
 # Python cache 
 __pycache__/
 
-# Coverage
+# Coverage reports
 coverage/
+
+# Foreman test
+.env

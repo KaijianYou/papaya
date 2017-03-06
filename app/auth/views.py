@@ -98,7 +98,7 @@ def login():
                 return abort(400)
             # 返回重定向的 URL，避免客户端刷新时又向服务器 Post 一次表单数据
             return redirect(next_url or url_for('main.index'))
-        flash(_('Invalid username or password'))
+        flash(_('Invalid email or password'))
     return render_template('auth/login.html', form=form)
     # user_agent = request.headers.get('User-Agent')
     # return '<p>Your browser is %s</p>' % user_agent
