@@ -8,7 +8,7 @@ from flask_script import Shell
 from flask_migrate import Migrate, MigrateCommand
 from app import create_app
 from app import db
-from app.models import User, Role, Post, Permission
+from app.models import User, Role, Post, Permission, Comment
 
 
 COV = None
@@ -25,11 +25,24 @@ migrate = Migrate(app, db)
 
 def make_shell_context():
     return dict(app=app, db=db, User=User, Role=Role, Permission=Permission,
-                Post=Post)
+                Post=Post, Comment=Comment)
 
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
+
+
+@manager.command
+def deploy():
+    """部署"""
+    from flask_migrate import upgrade
+    from app.models import Role, User
+
+    # 迁移数据库到最新版本
+    upgrade()
+
+    Role.insert_roles()
+    User.add_self_follows()
 
 
 @manager.command

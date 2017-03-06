@@ -10,14 +10,13 @@ class Config(object):
     ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
     MAIL_SERVER = 'smtp.qq.com'
     MAIL_PORT = 465
-    MAIL_USE_TLS = False
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
-    POSTS_PER_PAGE = 10
-    FOLLOWERS_PER_PAGE = 10
-    COMMENTS_PER_PAGE = 10
+    POSTS_PER_PAGE = 20
+    FOLLOWERS_PER_PAGE = 20
+    COMMENTS_PER_PAGE = 30
 
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'no zuo no die why you try'
 
@@ -47,6 +46,29 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+
+    @classmethod
+    def init_app(cls, app):
+        Config.init_app(app)
+
+        import logging
+        from logging.handlers import SMTPHandler
+        credentials = None
+        secure = None
+        if getattr(cls, 'MAIL_USERNAME', None) is not None:
+            credentials = (cls.MAIL_USERNAME, cls.MAIL_PASSWORD)
+            if getattr(cls, 'MAIL_USE_SSL', None):
+                secure = ()
+
+        mail_handler = SMTPHandler(
+            mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
+            fromaddr=cls.MAIL_SENDER,
+            toaddrs=[cls.ADMIN_EMAIL],
+            subject=cls.MAIL_SUBJECT_PREFIX + ' Application Error',
+            credentials=credentials,
+            secure=secure)
+        mail_handler.setLevel(logging.ERROR)
+        app.logger.addHandler(mail_handler)
 
 
 config = {

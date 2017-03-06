@@ -31,7 +31,7 @@ class FlaskClientTestCase(unittest.TestCase):
             'email': 'sugar@gmail.com',
             'username': 'sugar',
             'password': 'tiger',
-            'duplicate_password': 'tiger'
+            'password_confirmation': 'tiger'
         })
         self.assertTrue(response.status_code == 302)
 

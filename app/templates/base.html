@@ -82,7 +82,9 @@
 {% endblock navbar %}
 
 {% block content %}
-<div class="container">
+<div id="particle-ground" style="position: fixed; top: 0; right: 0; bottom: 0; left:0; z-index: -1;">
+</div>
+<div class="container" style="z-index: 1;">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -93,8 +95,6 @@
     {% block page_content %}{% endblock page_content %}
 </div>
 
-<div id="particle-ground">
-</div>
 {% endblock content %}
 
 {% block scripts %}
@@ -107,9 +107,9 @@
     <script src="{{ url_for('static', filename='js/jquery.particleground.min.js') }}"></script>
     <script>
         new Particleground.particle('#particle-ground');
-//        $('#demo').particleground({
-//            dotColor: '#ff82bf',
-//            lineColor: '#67ff8b'
+//        $('#particle-ground').particleground({
+//            dotColor: '#24a1ff',
+//            lineColor: '#fdffab'
 //        });
     </script>
 {% endblock scripts %}

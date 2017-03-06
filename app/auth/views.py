@@ -140,8 +140,8 @@ def reset_password_request():
             send_email(user.email, _('Reset your password'),
                        'auth/email/reset_password', user=user, token=token,
                        next=request.args.get(next))
-            flash(_('An email with instructions to reset your '
-                          'password has been sent to you'))
+            flash(_('An email with instructions to reset your password '
+                    'has been sent to you'))
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
 
@@ -171,7 +171,7 @@ def change_email_request():
     if form.validate_on_submit():
         if current_user.verify_password(form.password.data):
             new_email = form.email.data
-            # 将新设的邮箱账号保存到令牌中q
+            # 将新设的邮箱账号保存到令牌中
             token = current_user.generate_email_change_token(new_email)
             send_email(new_email, _('Confirm your email address'),
                        '/auth/email/change_email', user=current_user,

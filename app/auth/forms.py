@@ -24,7 +24,7 @@ class RegistrationForm(FlaskForm):
         DataRequired(), Length(1, 64), Regexp('^[A-Za-z0-9_.]*$', 0, lazy_gettext(
             'Username must have only letters, numbers, dots or underscores'))])
     password = PasswordField(lazy_gettext('Password'), validators=[DataRequired()])
-    duplicate_password = PasswordField(lazy_gettext('Confirm password'), validators=[
+    password_confirmation = PasswordField(lazy_gettext('Confirm password'), validators=[
         DataRequired(), EqualTo('password', message=lazy_gettext('Passwords must match'))])
     submit = SubmitField(lazy_gettext('Register'))
 
@@ -42,10 +42,10 @@ class ChangePasswordForm(FlaskForm):
         lazy_gettext('Old password'), validators=[DataRequired()])
     new_password = PasswordField(
         lazy_gettext('New password'), validators=[DataRequired()])
-    duplicate_new_password = PasswordField(
-        lazy_gettext('Confirm new password'),
-        validators=[
-            DataRequired(), EqualTo('new_password', message=lazy_gettext('Passwords must match'))
+    new_password_confirmation = \
+        PasswordField(lazy_gettext('Confirm new password'),
+                      validators=[DataRequired(),
+                                  EqualTo('new_password', message=lazy_gettext('Passwords must match'))
         ])
     submit = SubmitField(lazy_gettext('Update Password'))
 
@@ -64,7 +64,7 @@ class ResetPasswordForm(FlaskForm):
     email = StringField(lazy_gettext('Email'),
                         validators=[DataRequired(), Length(1, 64), Email()])
     password = PasswordField(lazy_gettext('New password'), validators=[DataRequired()])
-    duplicate_password = PasswordField(lazy_gettext('Confirm new password'), validators=[
+    password_confirmation = PasswordField(lazy_gettext('Confirm new password'), validators=[
         DataRequired(), EqualTo('password', message=lazy_gettext('Passwords must match'))])
     submit = SubmitField(lazy_gettext('Reset Password'))
 

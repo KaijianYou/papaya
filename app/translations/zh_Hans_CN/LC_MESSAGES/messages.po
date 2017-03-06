@@ -239,7 +239,7 @@ msgstr "您已经不再关注 %(username)s"
 
 #: app/main/views.py:223
 msgid "Your comment has been published"
-msgstr "您的文章已发布"
+msgstr "您的评论已发表"
 
 #: app/templates/_comments.html:19
 msgid "This comment has been disabled by a moderator"
@@ -460,7 +460,7 @@ msgstr "点击此处"
 msgid ""
 "Alternatively, you can paste the following link in your browser's address"
 " bar"
-msgstr "或者，您可以将下面的链接黏贴到浏览器地址栏"
+msgstr "或者，您可以将下面的链接粘贴到浏览器地址栏"
 
 #: app/templates/auth/email/change_email.html:12
 #: app/templates/auth/email/change_email.txt:6
