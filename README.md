@@ -19,7 +19,7 @@ Please visit https://flaskfb.herokuapp.com/<br>
     $ initdb /usr/local/var/postgres -E utf8
 
     # run database
-    $ pg_ctl -D /usr/local/var/postgres -l /usr/lcoal/var/postgres/server.log start
+    $ pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
 
 ### Create user and dababase  创建数据库用户和数据库
     # login postgresql console
@@ -30,7 +30,7 @@ Please visit https://flaskfb.herokuapp.com/<br>
     =# GRANT ALL PRIVILEGES ON DATABASE your_dbname TO your_username;
 
 ### Create isolated python environment  创建虚拟 python 环境
-    $ virtualenv --no-site-page venv
+    $ virtualenv --no-site-packages venv
 
     # activate isolated python environment 激活虚拟环境
     $ source venv/bin/activate
@@ -47,7 +47,7 @@ Please visit https://flaskfb.herokuapp.com/<br>
     >>> Role.insert_roles()
     >>> User.add_self_follows()
 
-### Set necessary environment variables  设置必要的环境变量
+### Set environment variables  设置必要的环境变量
     (venv) $ export MAIL_USERNAME='your_qq_email_address'
     (venv) $ export MAIL_PASSWORD='your_qq_email_password'
     (venv) $ export DEV_DATABASE_URL='database_url'  # ???
@@ -58,7 +58,7 @@ Please visit https://flaskfb.herokuapp.com/<br>
 Otherwise, if you don't have a QQ email address, you can use others. But you should modify the configuration about QQ email in 'config.py' file and ensure they can work.<br/>
 另外，如果您没有 QQ，可以使用其他的邮箱。但是你要更改 “config.py” 文件中有关 QQ 邮箱的设置，然后确保它们能正常使用。
 
-for further information, please see [SQLAlchemy Engine Configuration](http://docs.sqlalchemy.org/en/latest/core/engines.html)<br/>
+For further information, please see [SQLAlchemy Engine Configuration](http://docs.sqlalchemy.org/en/latest/core/engines.html)<br/>
 具体设置请见 [SQLAlchemy Engine Configuration](http://docs.sqlalchemy.org/en/latest/core/engines.html)
 
 ### Run web application  运行 web 应用
@@ -67,4 +67,6 @@ for further information, please see [SQLAlchemy Engine Configuration](http://doc
 now open your browser and visit http://127.0.0.1:5000/<br/>
 现在可以打开浏览器并访问 http://127.0.0.1:5000/
 
-如果发现问题请不吝赐教。不过我想也没人会看。
+如果发现问题请不吝赐教。<br/>
+
+不过我想也没人会看。ㄟ( ▔, ▔ )ㄏ
