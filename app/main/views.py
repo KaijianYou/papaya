@@ -127,6 +127,7 @@ def edit_post(id):
         db.session.commit()
         flash(_('The post has been updated'))
         return redirect(url_for('.post', id=post.id))
+    form.title.data = post.title
     form.body.data = post.body
     return render_template('edit_post.html', form=form)
 
