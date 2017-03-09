@@ -47,7 +47,7 @@ Please visit https://flaskfb.herokuapp.com/<br>
     >>> Role.insert_roles()
     >>> User.add_self_follows()
 
-### Set environment variables  设置必要的环境变量
+### Set environment variables  设置环境变量
     (venv) $ export MAIL_USERNAME='your_qq_email_address'
     (venv) $ export MAIL_PASSWORD='your_qq_email_password'
     (venv) $ export DEV_DATABASE_URL='database_url'  # ???
@@ -67,6 +67,4 @@ For further information, please see [SQLAlchemy Engine Configuration](http://doc
 now open your browser and visit http://127.0.0.1:5000/<br/>
 现在可以打开浏览器并访问 http://127.0.0.1:5000/
 
-如果发现问题请不吝赐教。<br/>
-
-不过我想也没人会看。ㄟ( ▔, ▔ )ㄏ
+如果发现问题请不吝赐教。ㄟ( ▔, ▔ )ㄏ

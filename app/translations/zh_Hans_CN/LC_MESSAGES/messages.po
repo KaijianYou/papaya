@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-05 22:05+0800\n"
+"POT-Creation-Date: 2017-03-07 22:55+0800\n"
 "PO-Revision-Date: 2017-03-05 15:08+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans_CN\n"
@@ -121,7 +121,7 @@ msgstr "此验证链接已经过期或失效"
 msgid "Logged in successfully"
 msgstr "成功登录"
 
-#: app/auth/views.py:101
+#: app/auth/views.py:101 app/auth/views.py:183
 msgid "Invalid email or password"
 msgstr "邮箱或密码错误"
 
@@ -154,10 +154,6 @@ msgid ""
 "An email with instructions to confirm your new email address has been "
 "sent to you."
 msgstr "一封验证新邮箱地址的邮件已经发送到您的邮箱"
-
-#: app/auth/views.py:183
-msgid "Invalid email or password"
-msgstr "邮箱或密码错误"
 
 #: app/auth/views.py:191
 msgid "Your email address has been updated"
@@ -215,29 +211,29 @@ msgstr "个人信息已经更新"
 msgid "The post has been updated"
 msgstr "文章已经更新"
 
-#: app/main/views.py:140 app/main/views.py:156 app/main/views.py:170
-#: app/main/views.py:186
+#: app/main/views.py:141 app/main/views.py:157 app/main/views.py:171
+#: app/main/views.py:187
 msgid "Invalid user"
 msgstr "无效的用户"
 
-#: app/main/views.py:143
+#: app/main/views.py:144
 msgid "You are already following this user"
 msgstr "您已经关注了该用户"
 
-#: app/main/views.py:146
+#: app/main/views.py:147
 msgid "You are now following"
 msgstr "已关注"
 
-#: app/main/views.py:159
+#: app/main/views.py:160
 msgid "You are not following this user"
 msgstr "您没有关注此用户"
 
-#: app/main/views.py:162
+#: app/main/views.py:163
 #, python-format
 msgid "Your are not following %(username)s anymore"
 msgstr "您已经不再关注 %(username)s"
 
-#: app/main/views.py:223
+#: app/main/views.py:224
 msgid "Your comment has been published"
 msgstr "您的评论已发表"
 
@@ -253,19 +249,19 @@ msgstr "解禁"
 msgid "Disable"
 msgstr "屏蔽"
 
-#: app/templates/_posts.html:28
+#: app/templates/_posts.html:33
 msgid "Edit"
 msgstr "编辑"
 
-#: app/templates/_posts.html:32
+#: app/templates/_posts.html:37
 msgid "Edit [Admin]"
 msgstr "编辑 [管理员]"
 
-#: app/templates/_posts.html:36
+#: app/templates/_posts.html:41
 msgid "Permalink"
 msgstr "链接"
 
-#: app/templates/_posts.html:40 app/templates/post.html:10
+#: app/templates/_posts.html:45 app/templates/post.html:10
 msgid "Comments"
 msgstr "评论"
 
@@ -376,6 +372,10 @@ msgstr "已关注"
 #: app/templates/user.html:75
 msgid "Follows you"
 msgstr "此用户已关注您"
+
+#: app/templates/user.html:81
+msgid "Posts by %(username)s"
+msgstr "由 %(username)s 发布"
 
 #: app/templates/auth/change_email.html:4
 msgid "Change Email Address"

@@ -78,7 +78,7 @@
     </div>
 </div>
 
-<h3>Posts by {{ user.username }}</h3>
+<h3>{{ gettext('Posts by %(username)s', username=user.username) }}</h3>
 {% include '_posts.html' %}
 
 <div class="pagination">

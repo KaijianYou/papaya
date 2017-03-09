@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-05 22:05+0800\n"
+"POT-Creation-Date: 2017-03-07 22:55+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -120,7 +120,7 @@ msgstr ""
 msgid "Logged in successfully"
 msgstr ""
 
-#: app/auth/views.py:101
+#: app/auth/views.py:101 app/auth/views.py:183
 msgid "Invalid email or password"
 msgstr ""
 
@@ -152,10 +152,6 @@ msgstr ""
 msgid ""
 "An email with instructions to confirm your new email address has been "
 "sent to you."
-msgstr ""
-
-#: app/auth/views.py:183
-msgid "Invalid email or password"
 msgstr ""
 
 #: app/auth/views.py:191
@@ -214,29 +210,29 @@ msgstr ""
 msgid "The post has been updated"
 msgstr ""
 
-#: app/main/views.py:140 app/main/views.py:156 app/main/views.py:170
-#: app/main/views.py:186
+#: app/main/views.py:141 app/main/views.py:157 app/main/views.py:171
+#: app/main/views.py:187
 msgid "Invalid user"
 msgstr ""
 
-#: app/main/views.py:143
+#: app/main/views.py:144
 msgid "You are already following this user"
 msgstr ""
 
-#: app/main/views.py:146
+#: app/main/views.py:147
 msgid "You are now following"
 msgstr ""
 
-#: app/main/views.py:159
+#: app/main/views.py:160
 msgid "You are not following this user"
 msgstr ""
 
-#: app/main/views.py:162
+#: app/main/views.py:163
 #, python-format
 msgid "Your are not following %(username)s anymore"
 msgstr ""
 
-#: app/main/views.py:223
+#: app/main/views.py:224
 msgid "Your comment has been published"
 msgstr ""
 
@@ -252,19 +248,19 @@ msgstr ""
 msgid "Disable"
 msgstr ""
 
-#: app/templates/_posts.html:28
+#: app/templates/_posts.html:33
 msgid "Edit"
 msgstr ""
 
-#: app/templates/_posts.html:32
+#: app/templates/_posts.html:37
 msgid "Edit [Admin]"
 msgstr ""
 
-#: app/templates/_posts.html:36
+#: app/templates/_posts.html:41
 msgid "Permalink"
 msgstr ""
 
-#: app/templates/_posts.html:40 app/templates/post.html:10
+#: app/templates/_posts.html:45 app/templates/post.html:10
 msgid "Comments"
 msgstr ""
 
@@ -374,6 +370,10 @@ msgstr ""
 
 #: app/templates/user.html:75
 msgid "Follows you"
+msgstr ""
+
+#: app/templates/user.html:81
+msgid "Posts by %(username)s"
 msgstr ""
 
 #: app/templates/auth/change_email.html:4

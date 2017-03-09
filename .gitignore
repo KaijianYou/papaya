@@ -12,3 +12,7 @@ coverage/
 
 # Foreman test
 .env
+
+# Gunicorn configuration file
+gunicorn.conf
+
