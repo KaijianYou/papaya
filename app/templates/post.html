@@ -1,6 +1,6 @@
 {% extends "base.html" %}}
 {% import "bootstrap/wtf.html" as wtf %}
-{% import "_paginate_macros.html" as macros %}
+{% import "_paginate_macro.html" as paginate_macro %}
 
 {% block title %}FlaskFB - {{ gettext('Post') }}{% endblock title %}
 
@@ -18,7 +18,7 @@
 
 {% if pagination %}
 <div class="pagination">
-    {{ macros.pagination_widget(pagination, '.post', fragment='#comments', id=posts[0].id) }}
+    {{ paginate_macro.pagination_widget(pagination, '.post', fragment='#comments', id=posts[0].id) }}
 </div>
 {% endif %}
 {% endblock page_content %}

@@ -3,8 +3,6 @@
 {% block head %}
 {{ super() }}
 
-<!--<title>{% block title %}{% endblock title %}</title>-->
-
 {% block metas %}
 <meta charset="utf-8">
 <meta name="description" content="求工作啊 ԅ(¯﹃¯ԅ)">
@@ -21,7 +19,8 @@
 <link rel="icon" href="{{ url_for('static', filename='image/favicon.ico') }}"
       type="image/x-icon">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/csshake.min.css') }}">
+<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 {% endblock head %}
 
 {% block navbar %}
@@ -35,17 +34,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">FlaskFB</a>
+            <a class="navbar-brand shake-slow" href="{{ url_for('main.index') }}">FlaskFB</a>
         </div>
 
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="{{ url_for('main.index') }}">{{ gettext('Home') }}</a></li>
-                {% if current_user.is_authenticated %}
-                <li>
-                    <a href="{{ url_for('main.user', username=current_user.username) }}">{{ gettext('Profile') }}</a>
-                </li>
-                {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.can(Permission.MODERATE_COMMENTS) %}
@@ -59,6 +53,11 @@
                         {{ gettext('Account') }} <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
+                        {% if current_user.is_authenticated %}
+                        <li>
+                            <a href="{{ url_for('main.user', username=current_user.username) }}">{{ gettext('Profile') }}</a>
+                        </li>
+                        {% endif %}
                         <li>
                             <a href="{{ url_for('auth.change_password') }}">{{ gettext('Change Password') }}</a>
                         </li>
@@ -85,21 +84,52 @@
 <div id="particle-ground" style="position: fixed; top: 0; right: 0; bottom: 0; left:0; z-index: -1;">
 </div>
 <div class="container" style="z-index: 1;">
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
+    {% for message in get_flashed_messages(with_categories=True) %}
+    <div class="alert alert-{{ message[0] }}">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message }}
+        {{ message[1] }}
     </div>
     {% endfor %}
 
-    {% block page_content %}{% endblock page_content %}
+    {% block page_content %}
+    {% endblock page_content %}
 </div>
 
+<footer style="z-index: 1;">
+    <div class="footer" id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+                    <h3>Links</h3>
+                    <ul>
+                        <li><a href="https://github.com/">GitHub</a></li>
+                        <li><a href="http://stackoverflow.com/">Stack Overflow</a></li>
+                        <li><a href="https://www.v2ex.com/">V2EX</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+                    <h3>Social Links</h3>
+                    <ul class="social">
+                        <li><a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="https://twitter.com/"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="https://plus.google.com/"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a href="https://www.youtube.com/"><i class="fa fa-youtube"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="pull-left">Copyright © FlaskFB 2017.</p>
+        </div>
+    </div>
+</footer>
 {% endblock content %}
 
 {% block scripts %}
     {{ super() }}
-    {# 引入 moment.js 库 #}
     {{ moment.include_moment() }}
     {{ moment.lang("zh-CN") }}
     <script src="{{ url_for('static', filename='js/particleground.all.js') }}"></script>
@@ -107,9 +137,9 @@
     <script src="{{ url_for('static', filename='js/jquery.particleground.min.js') }}"></script>
     <script>
         new Particleground.particle('#particle-ground');
-//        $('#particle-ground').particleground({
-//            dotColor: '#24a1ff',
-//            lineColor: '#fdffab'
-//        });
+
+        $(".alert").fadeTo(3000, 500).slideUp(500, function(){
+            $(".alert").slideUp(500);
+        });
     </script>
 {% endblock scripts %}

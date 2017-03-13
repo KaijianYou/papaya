@@ -249,7 +249,7 @@ class User(UserMixin, db.Model):
             db.session.commit()
 
     def unfollow(self, user):
-        f = self.followd.filter_by(followed_id=user.id).first()
+        f = self.followed.filter_by(followed_id=user.id).first()
         if f:
             db.session.delete(f)
             db.session.commit()

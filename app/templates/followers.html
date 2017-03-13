@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% import "_paginate_macros.html" as macros %}
+{% import "_paginate_macro.html" as paginate_macro %}
 
 {% block title %}FlaskFB - {{ title }} {{ user.username }}{% endblock title %}
 
@@ -31,6 +31,6 @@
 </table>
 
 <div class="pagination">
-    {{ macros.pagination_widget(pagination, endpoint, username=user.username) }}
+    {{ paginate_macro.pagination_widget(pagination, endpoint, username=user.username) }}
 </div>
 {% endblock page_content %}

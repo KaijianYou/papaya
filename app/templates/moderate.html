@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% import "_paginate_macros.html" as macros %}
+{% import "_paginate_macro.html" as paginate_macro %}
 
 {% block title %}FlaskFB - {{ gettext('Comment Moderation') }}{% endblock title %}
 
@@ -13,7 +13,7 @@
 
 {% if pagination %}
 <div class="pagination">
-    {{ macros.pagination_widget(pagination, '.moderate') }}
+    {{ paginate_macro.pagination_widget(pagination, '.moderate') }}
 </div>
 {% endif %}
 {% endblock page_content %}

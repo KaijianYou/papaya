@@ -31,7 +31,8 @@ def index():
     form = PostForm()
     if current_user.can(Permission.WRITE_ARTICLES) and \
             form.validate_on_submit():
-        post = Post(title=form.title.data, body=form.body.data, author=current_user._get_current_object())
+        post = Post(title=form.title.data, body=form.body.data,
+                    author=current_user._get_current_object())
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('.index'))
@@ -52,7 +53,7 @@ def index():
     posts = pagination.items
     return render_template('index.html', form=form, posts=posts,
                            show_followed_posts=show_followed_posts,
-                           pagination=pagination)
+                           show_post_body=False, pagination=pagination)
 
 
 @main.route('/user/<username>')
@@ -77,7 +78,7 @@ def edit_profile():
         current_user.about_me = form.about_me.data
         db.session.add(current_user)
         db.session.commit()
-        flash(_('Your profile has been updated'))
+        flash(_('Your profile has been updated'), 'success')
         return redirect(url_for('.user', username=current_user.username))
     form.real_name.data = current_user.real_name
     form.location.data = current_user.location
@@ -101,7 +102,7 @@ def edit_profile_admin(id):
         user.about_me = form.about_me.data
         db.session.add(user)
         db.session.commit()
-        flash(_('The profile has been updated'))
+        flash(_('The profile has been updated'), 'success')
         return redirect(url_for('.user', username=user.username))
     form.email.data = user.email
     form.username.data = user.username
@@ -125,7 +126,7 @@ def edit_post(id):
         post.body = form.body.data
         db.session.add(post)
         db.session.commit()
-        flash(_('The post has been updated'))
+        flash(_('The post has been updated'), 'success')
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
     form.body.data = post.body
@@ -138,29 +139,29 @@ def edit_post(id):
 def follow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash(_('Invalid user'))
+        flash(_('Invalid user'), 'warning')
         return redirect(url_for('.index'))
     if current_user.is_following(user):
-        flash(_('You are already following this user'))
+        flash(_('You are already following this user'), 'info')
         return redirect(url_for('.user', username=username))
     current_user.follow(user)
-    flash(_('You are now following') + '%s' % username)
+    flash(_('You are now following') + '%s' % username, 'info')
     return redirect(url_for('.user', username=username))
 
 
-@main.route('/follow/<username>')
+@main.route('/unfollow/<username>')
 @login_required
 @permission_required(Permission.FOLLOW)
 def unfollow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash(_('Invalid user'))
+        flash(_('Invalid user'), 'warning')
         return redirect(url_for('.index'))
     if not current_user.is_following(user):
-        flash(_('You are not following this user'))
+        flash(_('You are not following this user'), 'info')
         return redirect(url_for('.user', username=username))
     current_user.unfollow(user)
-    flash(_('Your are not following %(username)s anymore', username=username))
+    flash(_('Your are not following %(username)s anymore', username=username), 'info')
     return redirect(url_for('.user', username=username))
 
 
@@ -168,7 +169,7 @@ def unfollow(username):
 def followers(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash(_('Invalid user'))
+        flash(_('Invalid user'), 'warning')
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
     pagination = user.followers.paginate(
@@ -184,7 +185,7 @@ def followers(username):
 def followed_by(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash(_('Invalid user'))
+        flash(_('Invalid user'), 'warning')
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
     pagination = user.followed.paginate(
@@ -221,7 +222,7 @@ def post(id):
                           author=current_user._get_current_object())
         db.session.add(comment)
         db.session.commit()
-        flash(_('Your comment has been published'))
+        flash(_('Your comment has been published'), 'success')
         return redirect(url_for('.post', id=post.id, page=-1))
 
     page = request.args.get('page', 1, type=int)
@@ -232,7 +233,8 @@ def post(id):
         page, per_page=current_app.config['COMMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items
     return render_template('post.html', posts=[post], form=form,
-                           comments=comments, pagination=pagination)
+                           show_post_body=True, comments=comments,
+                           pagination=pagination)
 
 
 @main.route('/moderate')

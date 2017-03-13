@@ -271,7 +271,7 @@ msgstr "首页"
 
 #: app/templates/base.html:46
 msgid "Profile"
-msgstr "个人信息"
+msgstr "个人资料"
 
 #: app/templates/base.html:53
 msgid "Moderate Comments"
@@ -323,11 +323,11 @@ msgstr "游客"
 
 #: app/templates/index.html:27
 msgid "All"
-msgstr "所有文章"
+msgstr "所有"
 
 #: app/templates/index.html:30 app/templates/user.html:68
 msgid "Followers"
-msgstr "关注用户的文章"
+msgstr "关注者"
 
 #: app/templates/moderate.html:4 app/templates/moderate.html:8
 msgid "Comment Moderation"
@@ -363,7 +363,7 @@ msgstr "关注"
 
 #: app/templates/user.html:63
 msgid "Unfollow"
-msgstr "不关注"
+msgstr "取消关注"
 
 #: app/templates/user.html:71
 msgid "Following"
@@ -403,7 +403,7 @@ msgstr "新用户"
 
 #: app/templates/auth/login.html:16
 msgid "Click here to register"
-msgstr "点击此处注册"
+msgstr "点击注册"
 
 #: app/templates/auth/reset_password.html:8
 msgid "Reset Your Password"

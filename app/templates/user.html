@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% import "_paginate_macros.html" as macros %}
+{% import "_paginate_macro.html" as paginate_macro %}
 
 {% block title %}FlaskFB - {{ user.username }}{% endblock title %}
 
 {% block page_content %}
 <div class="page-header">
-    <img class="img-rounded profile-thumbnail" src="{{ user.get_avatar() }}"/>
+    <img class="img-rounded profile-thumbnail shake-chunk" src="{{ user.get_avatar() }}"/>
 
     <div class="profile-header">
         <h1>{{ user.username }}</h1>
@@ -31,12 +31,12 @@
             {{ gettext('Register date') }}: {{ moment(user.register_date).format('YYYY/MM/DD, HH:mm:ss') }}
             <br/>
             {# 渲染相对时间戳，随着时间的推移自动刷新显示的时间 #}
-            {{ gettext('Last visited') }}: {{ moment(user.last_visited).fromNow(refresh=True) }}.
+            {{ gettext('Last visited') }}: {{ moment(user.last_visited).fromNow(refresh=True) }}
         </p>
 
-        <p>{{ user.posts.count() }} {{ gettext('blog posts') }}.</p>
+        <p>{{ user.posts.count() }} {{ gettext('blog posts') }}</p>
 
-        <p>{{ user.comments.count() }} {{ gettext('comments') }}.</p>
+        <p>{{ user.comments.count() }} {{ gettext('comments') }}</p>
 
         <p>
             {% if user == current_user %}
@@ -82,6 +82,6 @@
 {% include '_posts.html' %}
 
 <div class="pagination">
-    {{ macros.pagination_widget(pagination, '.index') }}
+    {{ paginate_macro.pagination_widget(pagination, '.index') }}
 </div>
 {% endblock page_content %}

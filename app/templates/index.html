@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-{% import "_paginate_macros.html" as macros %}
+{% import "_paginate_macro.html" as paginate_macro %}
 
 {% block title %}FlaskFB{% endblock title %}
 
@@ -34,11 +34,11 @@
 </div>
 
 <div class="pagination">
-    {{ macros.pagination_widget(pagination, '.index') }}
+    {{ paginate_macro.pagination_widget(pagination, '.index') }}
 </div>
 {% endblock page_content %}
 
-{% block scripts %}}
+{% block scripts %}
     {{ super() }}
     {{ pagedown.include_pagedown() }}
 {% endblock scripts %}}
