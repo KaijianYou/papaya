@@ -2,6 +2,7 @@
 
 
 from urllib.parse import urlparse, urljoin
+
 from flask import render_template
 from flask import redirect
 from flask import request
@@ -11,6 +12,7 @@ from flask import abort
 from flask_login import login_user, logout_user, login_required
 from flask_login import current_user
 from flask_babel import gettext as _
+
 from . import auth
 from .forms import LoginForm, RegistrationForm
 from .forms import ChangePasswordForm

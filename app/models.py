@@ -3,13 +3,15 @@
 
 import hashlib
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
+
 from flask_login import UserMixin, AnonymousUserMixin
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from flask import request
+from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from markdown import markdown
 import bleach
+
 from . import db
 from . import login_manager
 
@@ -21,14 +23,14 @@ class Follow(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 
-# ------------------------------------------------------------------
-# |      操  作        |      位  值       |         说  明          |
-# | 关注他人           | 0b00000001 (0x01) | 关注其他用户             |
+# -------------------------------------------------------------------------
+# |        操  作        |      位  值       |         说  明             |
+# | 关注他人             | 0b00000001 (0x01) | 关注其他用户               |
 # | 在他人文章中发表评论 | 0b00000010 (0x02) | 在他人撰写的文章中发布评论 |
-# | 写文章             | 0b00000100 (0x04) | 写原创文章               |
-# | 管理他人发表的评论   | 0b00001000 (0x08) | 查处他人发表的不当评论    |
-# | 管理员权限          | 0b10000000 (0x80) | 管理网站                |
-# ------------------------------------------------------------------
+# | 写文章               | 0b00000100 (0x04) | 写原创文章                 |
+# | 管理他人发表的评论   | 0b00001000 (0x08) | 查处他人发表的不当评论     |
+# | 管理员权限           | 0b10000000 (0x80) | 管理网站                   |
+# -------------------------------------------------------------------------
 class Permission:
     FOLLOW = 0x01
     COMMENT = 0x02
@@ -37,14 +39,14 @@ class Permission:
     ADMINISTER = 0x80
 
 
-# -----------------------------------------------------------------------
-# | 用户角色 |       权  限       |          说明                          |
-# | 匿名     | 0b00000000 (0x00) | 未登录的用户。在程序中只有阅读权限         |
-# | 用户     | 0b00000111 (0x07) | 具有发布文章、发表评论和关注其他用户的权限。 |
-# |         |                   | 这是新用户的默认角色                      |
-# | 协管员   | 0b00001111 (0x0f) | 增加审查不当评论的权限                    |
-# | 管理员   | 0b11111111 (0xff) | 具有所有权限，包括修改其他用户所属角色的权限 |
-# -----------------------------------------------------------------------
+# --------------------------------------------------------------------------------
+# | 用户角色 |       权  限       |          说明                                |
+# | 匿名     | 0b00000000 (0x00)  | 未登录的用户。在程序中只有阅读权限           |
+# | 用户     | 0b00000111 (0x07)  | 具有发布文章、发表评论和关注其他用户的权限。 |
+# |          |                    | 这是新用户的默认角色                         |
+# | 协管员   | 0b00001111 (0x0f)  | 增加审查不当评论的权限                       |
+# | 管理员   | 0b11111111 (0xff)  | 具有所有权限，包括修改其他用户所属角色的权限 |
+# --------------------------------------------------------------------------------
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -287,6 +289,24 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+class Category(db.Model):
+    __tablename__ = 'categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32), index=True)
+    posts = db.relationship('Post', backref='category', lazy='dynamic')
+
+    @staticmethod
+    def insert_category(category_name):
+        category = Category.query.filter_by(name=category_name).first()
+        if category is None:
+            category = Category(category_name)
+            db.session.add(category)
+            db.session.commit()
+
+    def __repr__(self):
+        return '<Category %s>' % self.name
+
+
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
@@ -294,6 +314,8 @@ class Post(db.Model):
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    update_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
@@ -319,7 +341,10 @@ class Post(db.Model):
             db.session.add(post)
             db.session.commit()
 
-# on_changed_body 被注册为 Post.body 字段的 "set" 事件的监听程序，
+    def __repr__(self):
+        return '<Post %s>' % self.title
+
+
 # 当 Post 实例的 body 字段更新，on_changed_body 会被自动调用
 db.event.listen(Post.body, 'set', Post.on_changed_body)
 

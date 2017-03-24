@@ -11,7 +11,7 @@ Please visit https://flaskfb.herokuapp.com/<br>
 中文版：《Flask Web开发  基于Python的Web应用开发实战》，作者：Miguel Grinberg，译者：安道，人民邮电出版社 2015，ISBN: 978-7-115-37399-1
 
 ## Start
-### Install and run database 安装数据库
+### Install and run database  安装数据库
     # Mac OS X
     $ brew install postgresql
 

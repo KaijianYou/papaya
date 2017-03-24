@@ -3,9 +3,11 @@
 
 
 import os
+
 from flask_script import Manager
 from flask_script import Shell
 from flask_migrate import Migrate, MigrateCommand
+
 from app import create_app
 from app import db
 from app.models import User, Role, Post, Permission, Comment

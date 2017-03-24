@@ -2,6 +2,7 @@
 
 
 import unittest
+
 from app.models import Role, User, AnonymousUser, Permission
 from app import db
 from app import create_app

@@ -6,6 +6,7 @@ from flask_babel import lazy_gettext
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
+
 from ..models import User
 
 
@@ -90,7 +91,7 @@ class ResetPasswordForm(FlaskForm):
 class ChangeEmailForm(FlaskForm):
     email = StringField(lazy_gettext('New email'),
                         validators=[DataRequired(), Length(1, 64), Email()],
-                        render_kw={'placeholder': lazy_gettext('New Email')})
+                        render_kw={'placeholder': lazy_gettext('New email')})
     password = PasswordField(lazy_gettext('Password'), validators=[DataRequired()],
                              render_kw={'placeholder': lazy_gettext('Password')})
     submit = SubmitField(lazy_gettext('Update Email Address'))

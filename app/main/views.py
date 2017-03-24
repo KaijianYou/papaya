@@ -11,6 +11,7 @@ from flask_login import login_required
 from flask_login import current_user
 from flask_sqlalchemy import get_debug_queries
 from flask_babel import gettext as _
+
 from app import db, babel
 from . import main
 from .forms import EditProfileForm, EditProfileAdminForm
@@ -176,7 +177,7 @@ def followers(username):
         page, per_page=current_app.config['FOLLOWERS_PER_PAGE'], error_out=False)
     follows = [{'user': item.follower, 'timestamp': item.timestamp}
                for item in pagination.items]
-    return render_template('followers.html', user=user, title='Followers of',
+    return render_template('followers.html', user=user, title=_('\'s followers'),
                            endpoint='.followers', pagination=pagination,
                            follows=follows)
 
@@ -192,7 +193,7 @@ def followed_by(username):
         page, per_page=current_app.config['FOLLOWERS_PER_PAGE'], error_out=False)
     follows = [{'user': item.followed, 'timestamp': item.timestamp}
                for item in pagination.items]
-    return render_template('followers.html', user=user, title='Followed by',
+    return render_template('followers.html', user=user, title=_(' has followed'),
                            endpoint='.followers', pagination=pagination,
                            follows=follows)
 

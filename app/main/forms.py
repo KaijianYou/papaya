@@ -7,6 +7,7 @@ from wtforms import StringField, SubmitField, BooleanField, SelectField, TextAre
 from wtforms.validators import DataRequired, Length, Email, Regexp
 from wtforms import ValidationError
 from flask_pagedown.fields import PageDownField
+
 from ..models import User, Role
 
 
@@ -63,6 +64,9 @@ class PostForm(FlaskForm):
     title = StringField(lazy_gettext('Title'),
                         validators=[DataRequired(), Length(1, 64)],
                         render_kw={'placeholder': lazy_gettext('Title')})
+    catagory = StringField(lazy_gettext('Catagory'),
+                           validators=[DataRequired(), Length(1, 64)],
+                           render_kw={'placeholder': lazy_gettext('Catagory')})
     body = PageDownField(lazy_gettext('Post'), validators=[DataRequired()])
     submit = SubmitField(lazy_gettext('Publish'))
 

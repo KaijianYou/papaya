@@ -2,15 +2,15 @@
 
 
 from flask import Flask
+from flask_babel import Babel
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 from flask_mail import Mail
 from flask_moment import Moment
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from flask_pagedown import PageDown
-from flask_babel import Babel
-from config import config
+from flask_sqlalchemy import SQLAlchemy
 
+from app.config import config
 
 bootstrap = Bootstrap()
 moment = Moment()
