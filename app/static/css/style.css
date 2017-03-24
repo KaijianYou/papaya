@@ -1,10 +1,9 @@
 @charset "utf-8";
 
 html, body {
-    /*height: 100vh;*/
+    height: 100%;
     margin: 0;
     padding: 0;
-    height: 100%;
 }
 
 body {
@@ -12,8 +11,17 @@ body {
 }
 
 .container {
-    min-height: 100%;
     position: relative;
+    min-height: 100%;
+}
+
+#particle-ground {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left:0;
+    z-index: -1;
 }
 
 a:link {
@@ -47,9 +55,9 @@ a:active {
 }
 
 ul.posts {
-    list-style-type: none;
-    padding: 0;
     margin: 16px 0 0 0;
+    padding: 0;
+    list-style-type: none;
     border-top: 1px solid #e0e0e0;
 }
 
@@ -75,8 +83,8 @@ div.post-thumbnail {
 }
 
 div.post-content {
-    margin-left: 48px;
     min-height: 48px;
+    margin-left: 48px;
 }
 
 div.post-footer {
@@ -89,15 +97,15 @@ div.post-tabs {
 
 div.pagination {
     width: 100%;
-    text-align: right;
-    padding: 0;
     margin: 0;
+    padding: 0;
+    text-align: right;
 }
 
 div.flask-pagedown-preview {
     margin: 10px 0 10px 0;
-    border: 1px solid #e0e0e0;
     padding: 4px;
+    border: 1px solid #e0e0e0;
 }
 
 div.flask-pagedown-preview h1 {
@@ -129,9 +137,9 @@ div.flask-pagedown-preview h3 {
 }
 
 ul.comments {
-    list-style-type: none;
-    padding: 0;
     margin: 16px 0 0 0;
+    padding: 0;
+    list-style-type: none;
 }
 
 ul.comments li.comment {
@@ -161,8 +169,8 @@ div.comment-thumbnail {
 }
 
 div.comment-content {
-    margin-left: 48px;
     min-height: 48px;
+    margin-left: 48px;
 }
 
 div.comment-form {
@@ -170,20 +178,19 @@ div.comment-form {
 }
 
 div.edit-post {
-    padding: 0 0 10px 0;
     margin: 10px 0 20px 0;
+    padding: 0 0 10px 0;
     border-bottom: 1px solid #e0e0e0;
 }
 
 
 .footer {
+    width: 100%;
     left: 0;
     bottom: 0;
-    width: 100%;
-    /*height: 100px;*/
+    padding-bottom: 0;
     clear: both;
 	background: #EDEFF1;
-	padding-bottom: 0;
 	border-bottom: 1px solid #CCCCCC;
 	border-top: 1px solid #DDDDDD;
 }
@@ -201,21 +208,21 @@ div.edit-post {
 	color: #54697E;
 	font-size: 18px;
 	font-weight: 600;
-	line-height: 27px;
+	line-height: 24px;
 	text-transform: uppercase;
 }
 
 .footer ul {
+    margin-left: 0;
+	padding-left: 0;
 	font-size: 13px;
 	list-style-type: none;
-	margin-left: 0;
-	padding-left: 0;
 	color: #7F8C8D;
 }
 
 .footer ul li a {
+    display: block;
 	padding: 0 0 5px 0;
-	display: block;
 }
 
 .footer a {
@@ -223,32 +230,29 @@ div.edit-post {
 }
 
 .supportLi h4 {
+    margin-bottom: 0 !important;
+	padding-bottom: 0;
 	font-size: 16px;
 	font-weight: lighter;
 	line-height: normal;
-	margin-bottom: 0 !important;
-	padding-bottom: 0;
 }
 
 .social li {
+    float: left;
+    height: 40px;
+    width: 40px;
+    margin: 8px 2px 0 2px;
+    padding: 0;
 	background: none repeat scroll 0 0 #B5B5B5;
 	border: 2px solid #B5B5B5;
+    line-height: 40px;
+	text-align: center;
 	-webkit-border-radius: 50%;
 	-moz-border-radius: 50%;
-	-o-border-radius: 50%;
-	-ms-border-radius: 50%;
 	border-radius: 50%;
-	float: left;
-	height: 40px;
-	line-height: 40px;
-	margin: 4px 8px 4px 0;
-	padding: 0;
-	text-align: center;
-	width: 40px;
 	transition: all 0.5s ease 0s;
 	-moz-transition: all 0.5s ease 0s;
 	-webkit-transition: all 0.5s ease 0s;
-	-ms-transition: all 0.5s ease 0s;
 	-o-transition: all 0.5s ease 0s;
 }
 
@@ -265,19 +269,19 @@ div.edit-post {
 }
 
 .social li:hover {
+    background: #2c3e50;
 	border: 2px solid #2c3e50;
-	background: #2c3e50;
 }
 
 .social li a i {
+    margin: 0 0 0 5px;
 	font-size: 16px;
-	margin: 0 0 0 5px;
 	color: #EDEFF1 !important;
 }
 
 .footer-bottom {
-    margin-top: 0;
     height: 50px;
+    margin-top: 0;
     background: #222222;
     color: #f5f5f5;
     text-align: center !important;

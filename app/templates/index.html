@@ -15,28 +15,74 @@
     </h1>
 </div>
 
-<div class="edit-post">
-    {% if current_user.can(Permission.WRITE_ARTICLES) %}
-    {{ wtf.quick_form(form) }}
-    {% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+            <div class="edit-post">
+                {% if current_user.can(Permission.WRITE_ARTICLES) %}
+                {{ wtf.quick_form(form) }}
+                {% endif %}
+            </div>
+
+            <div class="post-tabs">
+                <ul class="nav nav-tabs">
+                    <li {% if not show_followed_posts %} class="active" {% endif %}>
+                        <a href="{{ url_for('.show_all_posts') }}">{{ gettext('All') }}</a>
+                    </li>
+                    <li {% if show_followed_posts %} class="active" {% endif %}>
+                        <a href="{{ url_for('.show_followed_posts') }}">{{ gettext('Followers') }}</a>
+                    </li>
+                    <!-- TODO 热门话题 -->
+                    <!--<li>-->
+                        <!--<a href="#">{{ gettext('hot') }}</a>-->
+                    <!--</li>-->
+                </ul>
+
+                {% include '_posts.html' %}
+
+                <div class="pagination">
+                    {{ paginate_macro.pagination_widget(pagination, '.index') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
+
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    介绍
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    文章分类
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    文章标签（词云）
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    日历
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    功能（登录、RSS）
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    站点统计（今日访问数、总访问数、文章数）
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="post-tabs">
-    <ul class="nav nav-tabs">
-        <li {% if not show_followed_posts %} class="active" {% endif %}>
-            <a href="{{ url_for('.show_all_posts') }}">{{ gettext('All') }}</a>
-        </li>
-        <li {% if show_followed_posts %} class="active" {% endif %}>
-            <a href="{{ url_for('.show_followed_posts') }}">{{ gettext('Followers') }}</a>
-        </li>
-    </ul>
-
-    {% include '_posts.html' %}
-</div>
-
-<div class="pagination">
-    {{ paginate_macro.pagination_widget(pagination, '.index') }}
-</div>
 {% endblock page_content %}
 
 {% block scripts %}

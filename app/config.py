@@ -14,9 +14,9 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
-    POSTS_PER_PAGE = 20
+    POSTS_PER_PAGE = 10
     FOLLOWERS_PER_PAGE = 20
-    COMMENTS_PER_PAGE = 30
+    COMMENTS_PER_PAGE = 20
 
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'no zuo no die why you try'
 
