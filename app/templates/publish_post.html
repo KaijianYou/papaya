@@ -8,9 +8,9 @@
     <h1>{{ gettext('Publish Post') }}</h1>
 </div>
 <div class="edit-post">
-    <!--{% if current_user.can(Permission.WRITE_ARTICLES) %}-->
+    {% if current_user.can(Permission.WRITE_ARTICLES) %}
     {{ wtf.quick_form(form) }}
-    <!--{% endif %}-->
+    {% endif %}
 </div>
 {% endblock page_content %}
 

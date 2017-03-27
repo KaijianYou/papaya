@@ -297,3 +297,13 @@ div.edit-post {
     text-align: center !important;
     line-height: 40px;
 }
+
+#my-avatar {
+    max-width: 100%;
+    border-radius: 100%;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+}
+
+.side {
+    margin-left: 15px;
+}

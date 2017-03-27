@@ -40,7 +40,7 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="{{ url_for('main.index') }}">{{ gettext('Home') }}</a></li>
                 <li><a href="{{ url_for('main.publish_post') }}">{{ gettext('Publish Post') }}</a></li>
-                <li><a href="#">{{ gettext('About') }}</a></li>
+                <li><a href="{{ url_for('main.about') }}">{{ gettext('About') }}</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.can(Permission.MODERATE_COMMENTS) %}
@@ -155,17 +155,17 @@
 {% endblock content %}
 
 {% block scripts %}
-    {{ super() }}
-    {{ moment.include_moment() }}
-    {{ moment.lang("zh-CN") }}
-    <script src="{{ url_for('static', filename='js/particleground.all.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/particle.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/jquery.particleground.min.js') }}"></script>
-    <script>
-        new Particleground.particle('#particle-ground');
+{{ super() }}
+{{ moment.include_moment() }}
+{{ moment.lang("zh-CN") }}
+<script src="{{ url_for('static', filename='js/particleground.all.js') }}"></script>
+<script src="{{ url_for('static', filename='js/particle.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.particleground.min.js') }}"></script>
+<script>
+    new Particleground.particle('#particle-ground');
 
-        $(".alert").fadeTo(3000, 500).slideUp(500, function(){
-            $(".alert").slideUp(500);
-        });
-    </script>
+    $(".alert").fadeTo(3000, 500).slideUp(500, function(){
+        $(".alert").slideUp(500);
+    });
+</script>
 {% endblock scripts %}

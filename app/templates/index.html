@@ -17,7 +17,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
             <div class="post-tabs">
                 <ul class="nav nav-tabs">
                     <li {% if not show_followed_posts %} class="active" {% endif %}>
@@ -40,51 +40,53 @@
             </div>
         </div>
 
-        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
-
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+        <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 side">
                     <h4>Noahsss</h4>
-                    <img src="{{ url_for('static', filename='image/avatar.jpg') }}" style="max-width: 100%; border-radius: 5px; box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);"/>
+                    <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}" />
                     <hr/>
                 </div>
             </div>
             <div class="row">
-                <hr/>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 side">
                     <h4>分类</h4>
+                    <hr/>
                 </div>
             </div>
             <div class="row">
-                <hr/>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 side">
                     <h4>标签</h4>
+                    <hr/>
                 </div>
             </div>
+            <!--TODO-->
+            <!--<div class="row">-->
+                <!--<div class="col-lg-12 col-md-12 col-sm-12 side">-->
+                    <!--<h4>日历</h4>-->
+                    <!--<hr/>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="row">
-                <hr/>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <h4>日历</h4>
-                </div>
-            </div>
-            <div class="row">
-                <hr/>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 side">
                     <h4>功能</h4>
-                    <p>登录</p>
-                    <p>RSS</p>
+                    <p><a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a></p>
+                    <!-- TODO -->
+                    <!--<p>RSS</p>-->
+                    <hr/>
                 </div>
             </div>
-            <div class="row">
-                <hr/>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <h4>统计</h4>
-                    <p>今日访问数 ()</p>
-                    <p>总访问数 ()</p>
-                    <p>文章数 ()</p>
-                </div>
-            </div>
+            <!-- TODO -->
+            <!--<div class="row">-->
+                <!--<hr/>-->
+                <!--<div class="col-lg-12 col-md-12 col-sm-12 side">-->
+                    <!--<h4>统计</h4>-->
+                    <!--<p>今日访问数 ()</p>-->
+                    <!--<p>总访问数 ()</p>-->
+                    <!--<p>文章数 ()</p>-->
+                    <!--<hr/>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
     </div>
 </div>
@@ -92,6 +94,6 @@
 {% endblock page_content %}
 
 {% block scripts %}
-    {{ super() }}
-    {{ pagedown.include_pagedown() }}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
 {% endblock scripts %}}

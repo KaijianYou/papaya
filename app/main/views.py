@@ -284,6 +284,11 @@ def moderate_disable(id):
     return redirect(url_for('.moderate', page=page))
 
 
+@main.route('/about')
+def about():
+    return render_template('about.html')
+
+
 @main.after_app_request
 def after_request(response):
     for query in get_debug_queries():
