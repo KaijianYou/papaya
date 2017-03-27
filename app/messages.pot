@@ -270,7 +270,7 @@ msgid "Edit [Admin]"
 msgstr ""
 
 #: templates/_posts.html:45
-msgid "Permalink"
+msgid "Read more"
 msgstr ""
 
 #: templates/_posts.html:49 templates/post.html:10

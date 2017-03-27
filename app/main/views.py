@@ -29,15 +29,6 @@ def get_locale():
 # 如果不指定 methods 参数，则默认将函数注册为 GET 请求的处理程序
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    form = PostForm()
-    if current_user.can(Permission.WRITE_ARTICLES) and \
-            form.validate_on_submit():
-        post = Post(title=form.title.data, body=form.body.data,
-                    author=current_user._get_current_object())
-        db.session.add(post)
-        db.session.commit()
-        return redirect(url_for('.index'))
-
     show_followed_posts = False
     if current_user.is_authenticated:
         show_followed_posts = bool(request.cookies.get('show_followed_posts', ''))
@@ -52,7 +43,7 @@ def index():
         page, per_page=current_app.config['POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
-    return render_template('index.html', form=form, posts=posts,
+    return render_template('index.html', posts=posts,
                            show_followed_posts=show_followed_posts,
                            show_post_body=False, pagination=pagination)
 
@@ -113,6 +104,20 @@ def edit_profile_admin(id):
     form.location.data = user.location
     form.about_me.data = user.about_me
     return render_template('edit_profile.html', form=form, user=user)
+
+
+@main.route('/publish-post', methods=['GET', 'POST'])
+@login_required
+def publish_post():
+    form = PostForm()
+    if current_user.can(Permission.WRITE_ARTICLES) and \
+            form.validate_on_submit():
+        post = Post(title=form.title.data, body=form.body.data,
+                    author=current_user._get_current_object())
+        db.session.add(post)
+        db.session.commit()
+        return redirect(url_for('.index'))
+    return render_template('publish_post.html', form=form, user=user)
 
 
 @main.route('/edit-post/<int:id>', methods=['GET', 'POST'])
@@ -199,7 +204,6 @@ def followed_by(username):
 
 
 @main.route('/all')
-@login_required
 def show_all_posts():
     resp = make_response(redirect(url_for('.index')))
     resp.set_cookie('show_followed_posts', '', max_age=30*24*60*60)
@@ -212,6 +216,12 @@ def show_followed_posts():
     resp = make_response(redirect(url_for('.index')))
     resp.set_cookie('show_followed_posts', '1', max_age=30*24*60*60)
     return resp
+
+
+# TODO
+@main.route('/hot')
+def show_hot_posts():
+    pass
 
 
 @main.route('/post/<int:id>', methods=['GET', 'POST'])

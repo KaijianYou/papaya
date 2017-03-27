@@ -179,7 +179,7 @@ def change_email_request():
                        '/auth/email/change_email', user=current_user,
                        token=token, next=request.args.get(next))
             flash(_('An email with instructions to confirm your '
-                          'new email address has been sent to you.'), 'info')
+                    'new email address has been sent to you.'), 'info')
             return redirect(url_for('main.index'))
         else:
             flash(_('Invalid email or password'), 'warning')

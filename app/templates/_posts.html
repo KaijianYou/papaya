@@ -42,13 +42,13 @@
                 </a>
                 {% endif %}
                 <a href="{{ url_for('.post', id=post.id) }}">
-                    <span class="label label-default">{{ gettext('Permalink') }}</span>
+                    <span class="label label-default">{{ gettext('Read more') }}</span>
                 </a>
-                <a href="{{ url_for('.post', id=post.id) }}#comments">
-                    <span class="label label-primary">
-                        {{ post.comments.count() }} {{ gettext('Comments') }}
-                    </span>
-                </a>
+                <!--<a href="{{ url_for('.post', id=post.id) }}#comments">-->
+                    <!--<span class="label label-primary">-->
+                        <!--{{ post.comments.count() }} {{ gettext('Comments') }}-->
+                    <!--</span>-->
+                <!--</a>-->
             </div>
         </div>
     </li>

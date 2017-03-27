@@ -10,10 +10,6 @@ body {
     padding-bottom: 90px;
 }
 
-.container {
-    position: relative;
-    min-height: 100%;
-}
 
 #particle-ground {
     position: fixed;
@@ -23,6 +19,16 @@ body {
     left:0;
     z-index: -1;
 }
+
+.container {
+    position: relative;
+    min-height: 100%;
+}
+
+.label {
+	font-size: 14px;
+}
+
 
 a:link {
     color: black;
@@ -41,9 +47,6 @@ a:active {
     color: #039be5;
 }
 
-.label {
-	font-size: 14px;
-}
 
 .profile-thumbnail {
     position: absolute;
@@ -53,6 +56,7 @@ a:active {
     min-height: 260px;
     margin-left: 280px;
 }
+
 
 ul.posts {
     margin: 16px 0 0 0;
@@ -95,16 +99,30 @@ div.post-tabs {
     margin-top: 16px;
 }
 
+.post-body h1 {
+    font-size: 140%;
+}
+
+.post-body h2 {
+    font-size: 130%;
+}
+
+.post-body h3 {
+    font-size: 120%;
+}
+
+
 div.pagination {
     width: 100%;
     margin: 0;
     padding: 0;
-    text-align: right;
+    text-align: center;
 }
+
 
 div.flask-pagedown-preview {
     margin: 10px 0 10px 0;
-    padding: 4px;
+    padding: 0 4px 0 4px;
     border: 1px solid #e0e0e0;
 }
 
@@ -120,21 +138,11 @@ div.flask-pagedown-preview h3 {
     font-size: 120%;
 }
 
-.post-body h1 {
-    font-size: 140%;
-}
-
-.post-body h2 {
-    font-size: 130%;
-}
-
-.post-body h3 {
-    font-size: 120%;
-}
 
 .table.followers tr {
     border-bottom: 1px solid #e0e0e0;
 }
+
 
 ul.comments {
     margin: 16px 0 0 0;
@@ -177,6 +185,7 @@ div.comment-form {
     margin: 16px 0 16px 32px;
 }
 
+
 div.edit-post {
     margin: 10px 0 20px 0;
     padding: 0 0 10px 0;
@@ -188,6 +197,7 @@ div.edit-post {
     width: 100%;
     left: 0;
     bottom: 0;
+    margin-top: 20px;
     padding-bottom: 0;
     clear: both;
 	background: #EDEFF1;

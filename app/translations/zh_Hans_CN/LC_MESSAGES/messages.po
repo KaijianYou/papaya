@@ -271,8 +271,8 @@ msgid "Edit [Admin]"
 msgstr "编辑 [管理员]"
 
 #: templates/_posts.html:45
-msgid "Permalink"
-msgstr "链接"
+msgid "Read more"
+msgstr "阅读全文"
 
 #: templates/_posts.html:49 templates/post.html:10
 msgid "Comments"
@@ -348,7 +348,7 @@ msgstr "游客"
 
 #: templates/index.html:30
 msgid "All"
-msgstr "所有"
+msgstr "全部"
 
 #: templates/index.html:33 templates/user.html:68
 msgid "Followers"
