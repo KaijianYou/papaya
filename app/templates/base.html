@@ -6,7 +6,7 @@
 {% block metas %}
     <meta charset="utf-8">
     <meta name="description" content="求工作啊 ԅ(¯﹃¯ԅ)">
-    <meta name="keywords" content="博客, Blog">
+    <meta name="keywords" content="Blog, 博客, Python, Flask, Bootstrap">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -23,7 +23,8 @@
 {% endblock head %}
 
 {% block navbar %}
-<div class="navbar navbar-inverse" role="navigation">
+<!-- 导航栏 -->
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -38,14 +39,39 @@
 
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="{{ url_for('main.index') }}">{{ gettext('Home') }}</a></li>
-                <li><a href="{{ url_for('main.publish_post') }}">{{ gettext('Publish Post') }}</a></li>
-                <li><a href="{{ url_for('main.about') }}">{{ gettext('About') }}</a></li>
+                <li>
+                    <a href="{{ url_for('main.index') }}">
+                        <span class="glyphicon glyphicon-home"></span>
+                        {{ gettext('Home') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('main.publish_post') }}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        {{ gettext('Publish Post') }}
+                    </a>
+                </li>
+                {% if current_user.is_authenticated %}
+                <li>
+                    <a href="{{ url_for('main.user', username=current_user.username) }}">
+                        <span class="glyphicon glyphicon-user"></span>
+                        {{ gettext('Profile') }}
+                    </a>
+                </li>
+                {% endif %}
+                <li>
+                    <a href="{{ url_for('main.about') }}">
+                        <span class="glyphicon glyphicon-asterisk"></span>
+                        {{ gettext('About') }}
+                    </a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.can(Permission.MODERATE_COMMENTS) %}
                 <li>
-                    <a href="{{ url_for('main.moderate') }}">{{ gettext('Moderate Comments') }}</a>
+                    <a href="{{ url_for('main.moderate') }}">
+                        {{ gettext('Moderate Comments') }}
+                    </a>
                 </li>
                 {% endif %}
                 {% if current_user.is_authenticated %}
@@ -54,25 +80,28 @@
                         {{ gettext('Account') }} <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        {% if current_user.is_authenticated %}
                         <li>
-                            <a href="{{ url_for('main.user', username=current_user.username) }}">{{ gettext('Profile') }}</a>
-                        </li>
-                        {% endif %}
-                        <li>
-                            <a href="{{ url_for('auth.change_password') }}">{{ gettext('Change Password') }}</a>
+                            <a href="{{ url_for('auth.change_password') }}">
+                                {{ gettext('Change Password') }}
+                            </a>
                         </li>
                         <li>
-                            <a href="{{ url_for('auth.change_email_request') }}">{{ gettext('Change Email') }}</a>
+                            <a href="{{ url_for('auth.change_email_request') }}">
+                                {{ gettext('Change Email') }}
+                            </a>
                         </li>
                         <li>
-                            <a href="{{ url_for('auth.logout') }}">{{ gettext('Log Out') }}</a>
+                            <a href="{{ url_for('auth.logout') }}">
+                                {{ gettext('Log Out') }}
+                            </a>
                         </li>
                     </ul>
                 </li>
                 {% else %}
                 <li>
-                    <a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a>
+                    <a href="{{ url_for('auth.login') }}">
+                        {{ gettext('Log In') }}
+                    </a>
                 </li>
                 {% endif %}
             </ul>
@@ -82,18 +111,21 @@
 {% endblock navbar %}
 
 {% block content %}
-<div id="particle-ground"></div>
+<!--<div id="particle-ground"></div>-->
 
-<div class="container">
-{% for message in get_flashed_messages(with_categories=True) %}
-<div class="alert alert-{{ message[0] }}">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    {{ message[1] }}
-</div>
-{% endfor %}
+<div id="main">
+    <div class="container">
+        <!-- 警告信息显示框 -->
+        {% for message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ message[0] }}">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message[1] }}
+        </div>
+        {% endfor %}
 
-{% block page_content %}
-{% endblock page_content %}
+        {% block page_content %}
+        {% endblock page_content %}
+    </div>
 </div>
 
 <footer>
@@ -126,11 +158,6 @@
                             </a>
                         </li>
                         <li>
-                            <a href="http://weibo.com/" target="_blank">
-                                <i class="fa fa-reddit"></i>
-                            </a>
-                        </li>
-                        <li>
                             <a href="https://stackoverflow.com/" target="_blank">
                                 <i class="fa fa-stack-overflow"></i>
                             </a>
@@ -144,10 +171,8 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="footer-bottom">
-        <div class="container">
+        <div class="footer-bottom">
             <p>Copyright © FlaskFB 2017. 完善中</p>
         </div>
     </div>

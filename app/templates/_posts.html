@@ -1,14 +1,16 @@
+<!-- 文章列表 -->
 <ul class="posts">
     {% for post in posts %}
-    <li class="post">
+    <li class="post post-widget">
         <div class="post-thumbnail">
             <a href="{{ url_for('.user', username=post.author.username) }}">
                 <img class="img-rounded profile-thumbnail"
                      src="{{ post.author.get_avatar(size=40) }}">
             </a>
         </div>
+
         <div class="post-content">
-            <div class="post-date">{{ moment(post.timestamp).fromNow() }}</div>
+            <div class="post-date"><span class="glyphicon glyphicon-calendar"></span>{{ moment(post.timestamp).format('YYYY-MM-DD') }}</div>
             <div class="post-author">
                 <a href="{{ url_for('.user', username=post.author.username) }}">
                     {{ post.author.username }}
@@ -16,7 +18,7 @@
             </div>
             <div class="post-tabs">
                 {% if post.title %}
-                <h3><a href="{{ url_for('.post', id=post.id) }}">{{ post.title }}</a></h3>
+                <h4><a  href="{{ url_for('.post', id=post.id) }}">{{ post.title }}</a></h4>
                 {% endif %}
             </div>
 
@@ -33,16 +35,16 @@
 
             <div class="post-footer">
                 {% if current_user == post.author %}
-                <a href="{{ url_for('.edit_post', id=post.id) }}">
-                    <span class="label label-primary">{{ gettext('Edit') }}</span>
+                <a href="{{ url_for('.edit_post', id=post.id) }}" class="btn btn-primary btn-custom">
+                    {{ gettext('Edit') }}
                 </a>
                 {% elif current_user.is_administrator() %}
-                <a href="{{ url_for('.edit_post', id=post.id) }}">
-                    <span class="label label-danger">{{ gettext('Edit [Admin]') }}</span>
+                <a href="{{ url_for('.edit_post', id=post.id) }}" class="btn btn-danger btn-custom">
+                    {{ gettext('Edit [Admin]') }}
                 </a>
                 {% endif %}
-                <a href="{{ url_for('.post', id=post.id) }}">
-                    <span class="label label-default">{{ gettext('Read more') }}</span>
+                <a href="{{ url_for('.post', id=post.id) }}" class="btn btn-info btn-custom">
+                    {{ gettext('Read more') }}
                 </a>
                 <!--<a href="{{ url_for('.post', id=post.id) }}#comments">-->
                     <!--<span class="label label-primary">-->

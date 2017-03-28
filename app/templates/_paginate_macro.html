@@ -1,5 +1,6 @@
 {% macro pagination_widget(pagination, endpoint) %}
 
+<!-- 分页 -->
 <ul class="pagination">
     <li {% if not pagination.has_prev %} class="disabled" {% endif %}>
         <a href="{% if pagination.has_prev %}

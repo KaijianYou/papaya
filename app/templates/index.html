@@ -6,13 +6,13 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>{{ gettext('Hello') }},
+    <h2>{{ gettext('Hello') }},
     {% if current_user.is_authenticated %}
         {{ current_user.username }}
     {% else %}
         {{ gettext('Stranger') }}
     {% endif %}
-    </h1>
+    </h2>
 </div>
 
 <div class="container">
@@ -23,7 +23,7 @@
                     <li {% if not show_followed_posts %} class="active" {% endif %}>
                         <a href="{{ url_for('.show_all_posts') }}">{{ gettext('All') }}</a>
                     </li>
-                    <!-- TODO 热门话题 -->
+                    <!-- TODO 热门文章 -->
                     <li>
                         <a href="#">{{ gettext('hot') }}</a>
                     </li>
@@ -40,53 +40,52 @@
             </div>
         </div>
 
+        <!-- 侧边栏 -->
         <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 side">
-                    <h4>Noahsss</h4>
-                    <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}" />
-                    <hr/>
+                <div class="col-lg-12 col-md-12 col-sm-12 side-widget">
+                    <div class="signature">
+                        <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}" alt="noahsss" title="noahsss"/>
+                        <hr/>
+                        <p>大家，上午好，下午好，晚上好</p>
+                    </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 side">
-                    <h4>分类</h4>
-                    <hr/>
+                <div class="col-lg-12 col-md-12 col-sm-12 side-widget">
+                    <div class="widget-heading">分类</div>
+                    <div class="widget-body">
+
+                    </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 side">
-                    <h4>标签</h4>
-                    <hr/>
+                <div class="col-lg-12 col-md-12 col-sm-12 side-widget">
+                    <div class="widget-heading">标签</div>
+                    <div class="widget-body">
+
+                    </div>
                 </div>
             </div>
-            <!--TODO-->
-            <!--<div class="row">-->
-                <!--<div class="col-lg-12 col-md-12 col-sm-12 side">-->
-                    <!--<h4>日历</h4>-->
-                    <!--<hr/>-->
-                <!--</div>-->
-            <!--</div>-->
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 side">
-                    <h4>功能</h4>
-                    <p><a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a></p>
-                    <!-- TODO -->
-                    <!--<p>RSS</p>-->
-                    <hr/>
+                <div class="col-lg-12 col-md-12 col-sm-12 side-widget">
+                    <div class="widget-heading">功能</div>
+                    <div class="widget-body">
+                        <p><a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a></p>
+                        <p><a href="#">RSS（未完成）</a></p>
+                    </div>
                 </div>
             </div>
-            <!-- TODO -->
-            <!--<div class="row">-->
-                <!--<hr/>-->
-                <!--<div class="col-lg-12 col-md-12 col-sm-12 side">-->
-                    <!--<h4>统计</h4>-->
-                    <!--<p>今日访问数 ()</p>-->
-                    <!--<p>总访问数 ()</p>-->
-                    <!--<p>文章数 ()</p>-->
-                    <!--<hr/>-->
-                <!--</div>-->
-            <!--</div>-->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 side-widget">
+                    <div class="widget-heading">统计（未完成）</div>
+                    <div class="widget-body">
+                        <p>今日访问数 ()</p>
+                        <p>总访问数 ()</p>
+                        <p>文章总计 ()</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

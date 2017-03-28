@@ -1,13 +1,13 @@
 @charset "utf-8";
 
+/** {*/
+    /*font-family: "Avenir Next", Helvetica, Arial, "Lantinghei SC", "Microsoft YaHei", sans-serif;*/
+/*}*/
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-}
-
-body {
-    padding-bottom: 90px;
 }
 
 
@@ -18,33 +18,27 @@ body {
     bottom: 0;
     left:0;
     z-index: -1;
+    background-color: #fafafa;
 }
 
-.container {
+#main {
+    top: 50px;
     position: relative;
     min-height: 100%;
 }
 
-.label {
-	font-size: 14px;
-}
-
-
-a:link {
-    color: black;
-}
-
-a:visited {
+/*link*/
+a {
     color: black;
 }
 
 a:hover {
-    color: #039be5;
+    color: red;
     text-decoration: none;
 }
 
 a:active {
-    color: #039be5;
+    color: red;
 }
 
 
@@ -57,17 +51,21 @@ a:active {
     margin-left: 280px;
 }
 
-
+/*post*/
 ul.posts {
     margin: 16px 0 0 0;
     padding: 0;
     list-style-type: none;
-    border-top: 1px solid #e0e0e0;
 }
 
 ul.posts li.post {
     padding: 8px;
-    border-bottom: 1px solid #e0e0e0
+}
+
+.post-widget {
+    margin: 20px 0 20px 0;
+    border-radius: 4px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.2);
 }
 
 ul.posts li.post:hover {
@@ -97,6 +95,7 @@ div.post-footer {
 
 div.post-tabs {
     margin-top: 16px;
+    padding-right: 25px;
 }
 
 .post-body h1 {
@@ -111,7 +110,13 @@ div.post-tabs {
     font-size: 120%;
 }
 
+div.edit-post {
+    margin: 10px 0 20px 0;
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
 
+/*pagination*/
 div.pagination {
     width: 100%;
     margin: 0;
@@ -119,7 +124,7 @@ div.pagination {
     text-align: center;
 }
 
-
+/*markdown*/
 div.flask-pagedown-preview {
     margin: 10px 0 10px 0;
     padding: 0 4px 0 4px;
@@ -143,7 +148,7 @@ div.flask-pagedown-preview h3 {
     border-bottom: 1px solid #e0e0e0;
 }
 
-
+/*comment*/
 ul.comments {
     margin: 16px 0 0 0;
     padding: 0;
@@ -185,19 +190,13 @@ div.comment-form {
     margin: 16px 0 16px 32px;
 }
 
-
-div.edit-post {
-    margin: 10px 0 20px 0;
-    padding: 0 0 10px 0;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-
+/*footer*/
 .footer {
+    position: relative;
     width: 100%;
     left: 0;
     bottom: 0;
-    margin-top: 20px;
+    margin-top: 50px;
     padding-bottom: 0;
     clear: both;
 	background: #EDEFF1;
@@ -298,12 +297,75 @@ div.edit-post {
     line-height: 40px;
 }
 
+/*side widget*/
 #my-avatar {
+    margin-top: 20px;
     max-width: 100%;
     border-radius: 100%;
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
-.side {
-    margin-left: 15px;
+.side-widget {
+    margin-top: 20px;
+    border-radius: 4px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.2);
+}
+
+.side-widget .widget-heading {
+    min-height: 36px;
+    margin: 0 -15px 0 -15px;
+    padding-left: 15px;
+    border-radius: 4px 4px 0 0;
+    background-color: rgba(0,0,0,0.3);
+    line-height: 36px;
+    font-size: 16px;
+    color: white;
+    text-shadow: black 2px 2px 2px;
+}
+
+.side-widget .widget-body {
+    padding-top: 10px;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+.side-widget .signature {
+    padding: 20px;
+    text-align: center;
+    color: #9c9c9c;
+}
+
+/*button*/
+.btn-custom {
+    padding: 4px 6px;
+    color: white;
+}
+
+.btn-custom:hover {
+    color: black;
+}
+
+/*label*/
+.label-post-tag-1 {
+    background-color: #428bca;
+}
+
+.label-post-tag-2 {
+    background-color: #5cb85c;
+}
+
+.label-post-tag-3 {
+    background-color: #f0ad4e;
+}
+
+.label-post-tag-4 {
+    background-color: #5bc0de;
+}
+
+.label-post-tag-5 {
+    background-color: #d9534f;
+}
+
+.label-post-tag-6 {
+    background-color: #999999;
 }

@@ -28,14 +28,18 @@
                 {% endif %}
             </div>
             {% if moderate %}
+            <div style="text-align: right;">
                 <br>
                 {% if comment.disabled %}
-                    <a class="btn btn-default btn-xs" href="{{url_for('.moderate_enable',
-                        id=comment.id, page=page) }}">{{ gettext('Enable') }}</a>
+                    <a class="btn btn-default btn-custom" href="{{url_for('.moderate_enable', id=comment.id, page=page) }}">
+                        {{ gettext('Enable') }}
+                    </a>
                 {% else %}
-                    <a class="btn btn-danger btn-xs" href="{{url_for('.moderate_disable',
-                        id=comment.id, page=page) }}">{{ gettext('Disable') }}</a>
+                    <a class="btn btn-danger btn-custom" href="{{url_for('.moderate_disable', id=comment.id, page=page) }}">
+                        {{ gettext('Disable') }}
+                    </a>
                 {% endif %}
+            </div>
             {% endif %}
         </div>
     </li>
