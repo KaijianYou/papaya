@@ -313,8 +313,9 @@ class Post(db.Model):
     title = db.Column(db.String(64), index=True)
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    create_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     update_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    tags = db.Column(db.String(200))
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
@@ -341,9 +342,12 @@ class Post(db.Model):
             db.session.add(post)
             db.session.commit()
 
+    def get_tags(self):
+        tags_list = [tag for tag in self.tags.split(',') if tag]
+        return tags_list
+
     def __repr__(self):
         return '<Post %s>' % self.title
-
 
 # 当 Post 实例的 body 字段更新，on_changed_body 会被自动调用
 db.event.listen(Post.body, 'set', Post.on_changed_body)
@@ -352,18 +356,8 @@ db.event.listen(Post.body, 'set', Post.on_changed_body)
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.Text)
-    body_html = db.Column(db.Text)
+    body = db.Column(db.String(200))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     disabled = db.Column(db.Boolean)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-
-    @staticmethod
-    def on_changed_body(target, value, old_value, initiator):
-        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'code', 'em', 'i', 'strong']
-        target.body_html = bleach.linkify(bleach.clean(
-            markdown(value, output_format='html'), tags=allowed_tags, strip=True))
-
-
-db.event.listen(Comment.body, 'set', Comment.on_changed_body)

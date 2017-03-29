@@ -42,48 +42,46 @@
 
         <!-- 侧边栏 -->
         <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 side-widget">
-                    <div class="signature">
-                        <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}" alt="noahsss" title="noahsss"/>
-                        <hr/>
-                        <p>大家，上午好，下午好，晚上好</p>
-                    </div>
+            <div class="side-widget">
+                <div class="signature">
+                    <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}" alt="noahsss" title="noahsss"/>
+                    <hr/>
+                    <p>大家，上午好，下午好，晚上好</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 side-widget">
-                    <div class="widget-heading">分类</div>
-                    <div class="widget-body">
 
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 side-widget">
-                    <div class="widget-heading">标签</div>
-                    <div class="widget-body">
+            <div class="side-widget">
+                <div class="widget-heading">{{ gettext('Categories') }}</div>
+                <div class="widget-body">
 
-                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 side-widget">
-                    <div class="widget-heading">功能</div>
-                    <div class="widget-body">
-                        <p><a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a></p>
-                        <p><a href="#">RSS（未完成）</a></p>
-                    </div>
+
+            <div class="side-widget">
+                <div class="widget-heading">{{ gettext('Tags') }}</div>
+                <div class="widget-body">
+
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 side-widget">
-                    <div class="widget-heading">统计（未完成）</div>
-                    <div class="widget-body">
-                        <p>今日访问数 ()</p>
-                        <p>总访问数 ()</p>
-                        <p>文章总计 ()</p>
-                    </div>
+
+            <div class="side-widget">
+                <div class="widget-heading">功能</div>
+                <div class="widget-body">
+                    <ul>
+                        <li><a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a></li>
+                        <li><a href="#">RSS（未完成）</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="side-widget">
+                <div class="widget-heading">统计（未完成）</div>
+                <div class="widget-body">
+                    <ul>
+                        <li>今日访问数()</li>
+                        <li>总访问数()</li>
+                        <li>文章总计()</li>
+                    </ul>
                 </div>
             </div>
         </div>

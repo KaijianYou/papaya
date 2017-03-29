@@ -10,7 +10,10 @@
         </div>
 
         <div class="post-content">
-            <div class="post-date"><span class="glyphicon glyphicon-calendar"></span>{{ moment(post.timestamp).format('YYYY-MM-DD') }}</div>
+            <div class="post-date">
+                <span class="glyphicon glyphicon-calendar"></span>
+                {{ moment(post.create_timestamp).format('YYYY-MM-DD') }}
+            </div>
             <div class="post-author">
                 <a href="{{ url_for('.user', username=post.author.username) }}">
                     {{ post.author.username }}

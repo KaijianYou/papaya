@@ -5,6 +5,7 @@ import os
 
 
 class Config(object):
+    # 邮件设置
     MAIL_SUBJECT_PREFIX = 'FlaskFB - '
     MAIL_SENDER = 'FlaskFB <' + os.environ.get('MAIL_USERNAME') + '>'
     ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
@@ -14,6 +15,7 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
+    # 分页设置
     POSTS_PER_PAGE = 10
     FOLLOWERS_PER_PAGE = 20
     COMMENTS_PER_PAGE = 20

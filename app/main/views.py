@@ -16,7 +16,7 @@ from app import db, babel
 from . import main
 from .forms import EditProfileForm, EditProfileAdminForm
 from .forms import PostForm, CommentForm
-from ..models import User, Role, Permission, Post, Comment
+from ..models import User, Role, Permission, Post, Comment, Category
 from ..decorators import admin_required
 from ..decorators import permission_required
 
@@ -39,7 +39,7 @@ def index():
         query = Post.query
 
     page = request.args.get('page', 1, type=int)
-    pagination = query.order_by(Post.timestamp.desc()).paginate(
+    pagination = query.order_by(Post.create_timestamp.desc()).paginate(
         page, per_page=current_app.config['POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
@@ -112,7 +112,15 @@ def publish_post():
     form = PostForm()
     if current_user.can(Permission.WRITE_ARTICLES) and \
             form.validate_on_submit():
-        post = Post(title=form.title.data, body=form.body.data,
+        Category.insert_category(form.category.data)
+        title = form.title.data
+        category = form.category.data
+        tags = form.tags.data
+        body=form.body.data
+        post = Post(title=title,
+                    category=category,
+                    tags=tags,
+                    body=body,
                     author=current_user._get_current_object())
         db.session.add(post)
         db.session.commit()
@@ -128,7 +136,10 @@ def edit_post(id):
 
     form = PostForm()
     if form.validate_on_submit():
+        Category.insert_category(form.category.data)
         post.title = form.title.data
+        post.category = form.category.data
+        post.tags = form.tags.data
         post.body = form.body.data
         db.session.add(post)
         db.session.commit()

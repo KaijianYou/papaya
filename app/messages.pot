@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-24 17:08+0800\n"
+"POT-Creation-Date: 2017-03-29 14:56+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,533 +17,561 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
-#: auth/forms.py:14 auth/forms.py:16 auth/forms.py:24 auth/forms.py:26
-#: auth/forms.py:68 auth/forms.py:70 auth/forms.py:79 main/forms.py:25
-#: main/forms.py:27 templates/user.html:25
+#: app/auth/forms.py:14 app/auth/forms.py:16 app/auth/forms.py:25
+#: app/auth/forms.py:27 app/auth/forms.py:70 app/auth/forms.py:72
+#: app/auth/forms.py:81 app/main/forms.py:27 app/main/forms.py:29
+#: app/templates/user.html:25
 msgid "Email"
 msgstr ""
 
-#: auth/forms.py:17 auth/forms.py:18 auth/forms.py:34 auth/forms.py:35
-#: auth/forms.py:95 auth/forms.py:96
+#: app/auth/forms.py:17 app/auth/forms.py:19 app/auth/forms.py:35
+#: app/auth/forms.py:37 app/auth/forms.py:98 app/auth/forms.py:100
 msgid "Password"
 msgstr ""
 
-#: auth/forms.py:19
+#: app/auth/forms.py:20
 msgid "Keep me logged in"
 msgstr ""
 
-#: auth/forms.py:20 templates/base.html:75
+#: app/auth/forms.py:21 app/templates/base.html:103 app/templates/index.html:71
 msgid "Log In"
 msgstr ""
 
-#: auth/forms.py:28 auth/forms.py:33 main/forms.py:29 main/forms.py:34
+#: app/auth/forms.py:28 app/auth/forms.py:34 app/main/forms.py:30
+#: app/main/forms.py:36
 msgid "Username"
 msgstr ""
 
-#: auth/forms.py:30 main/forms.py:31
+#: app/auth/forms.py:31 app/main/forms.py:33
 msgid "Username must have only letters, numbers, dots or underscores"
 msgstr ""
 
-#: auth/forms.py:37 auth/forms.py:40
+#: app/auth/forms.py:39 app/auth/forms.py:42
 msgid "Confirm password"
 msgstr ""
 
-#: auth/forms.py:39 auth/forms.py:62 auth/forms.py:83
+#: app/auth/forms.py:41 app/auth/forms.py:64 app/auth/forms.py:86
 msgid "Passwords must match"
 msgstr ""
 
-#: auth/forms.py:41 templates/auth/register.html:4
-#: templates/auth/register.html:8
+#: app/auth/forms.py:43 app/templates/auth/register.html:4
+#: app/templates/auth/register.html:8
 msgid "Register"
 msgstr ""
 
-#: auth/forms.py:45 auth/forms.py:101 main/forms.py:55
+#: app/auth/forms.py:47 app/auth/forms.py:105 app/main/forms.py:57
 msgid "Email already registered"
 msgstr ""
 
-#: auth/forms.py:49 main/forms.py:60
+#: app/auth/forms.py:51 app/main/forms.py:62
 msgid "Username already in use"
 msgstr ""
 
-#: auth/forms.py:54 auth/forms.py:55
+#: app/auth/forms.py:55 app/auth/forms.py:57
 msgid "Old password"
 msgstr ""
 
-#: auth/forms.py:57 auth/forms.py:58 auth/forms.py:81
+#: app/auth/forms.py:58 app/auth/forms.py:60 app/auth/forms.py:83
 msgid "New password"
 msgstr ""
 
-#: auth/forms.py:60 auth/forms.py:63 auth/forms.py:82
+#: app/auth/forms.py:62 app/auth/forms.py:65 app/auth/forms.py:85
 msgid "Confirm new password"
 msgstr ""
 
-#: auth/forms.py:64
+#: app/auth/forms.py:66
 msgid "Update Password"
 msgstr ""
 
-#: auth/forms.py:71 auth/forms.py:84 templates/auth/reset_password.html:4
+#: app/auth/forms.py:73 app/auth/forms.py:87
+#: app/templates/auth/reset_password.html:4
 msgid "Reset Password"
 msgstr ""
 
-#: auth/forms.py:75 auth/forms.py:88
+#: app/auth/forms.py:77 app/auth/forms.py:91
 msgid "Unknown email address"
 msgstr ""
 
-#: auth/forms.py:92 auth/forms.py:94
+#: app/auth/forms.py:95 app/auth/forms.py:97
 msgid "New email"
 msgstr ""
 
-#: auth/forms.py:97
+#: app/auth/forms.py:101
 msgid "Update Email Address"
 msgstr ""
 
-#: auth/views.py:56
+#: app/auth/views.py:56
 msgid "A new confirmation email has been sent to you by email"
 msgstr ""
 
-#: auth/views.py:71
+#: app/auth/views.py:71
 msgid "Confirm Your Account"
 msgstr ""
 
-#: auth/views.py:73
+#: app/auth/views.py:73
 msgid "A confirmation email has been sent to you by email"
 msgstr ""
 
-#: auth/views.py:84
+#: app/auth/views.py:84
 msgid "You have confirmed your account. Thanks!"
 msgstr ""
 
-#: auth/views.py:86
+#: app/auth/views.py:86
 msgid "The confirmation link is invalid or has expired"
 msgstr ""
 
-#: auth/views.py:97
+#: app/auth/views.py:97
 msgid "Logged in successfully"
 msgstr ""
 
-#: auth/views.py:103 auth/views.py:185
+#: app/auth/views.py:103 app/auth/views.py:185
 msgid "Invalid email or password"
 msgstr ""
 
-#: auth/views.py:113
+#: app/auth/views.py:113
 msgid "You have been logged out"
 msgstr ""
 
-#: auth/views.py:125 auth/views.py:162
+#: app/auth/views.py:125 app/auth/views.py:162
 msgid "Your password has been updated"
 msgstr ""
 
-#: auth/views.py:128
+#: app/auth/views.py:128
 msgid "Invalid password"
 msgstr ""
 
-#: auth/views.py:142
+#: app/auth/views.py:142
 msgid "Reset your password"
 msgstr ""
 
-#: auth/views.py:145
+#: app/auth/views.py:145
 msgid "An email with instructions to reset your password has been sent to you"
 msgstr ""
 
-#: auth/views.py:178
+#: app/auth/views.py:178
 msgid "Confirm your email address"
 msgstr ""
 
-#: auth/views.py:181
+#: app/auth/views.py:181
 msgid ""
 "An email with instructions to confirm your new email address has been "
 "sent to you."
 msgstr ""
 
-#: auth/views.py:193
+#: app/auth/views.py:193
 msgid "Your email address has been updated"
 msgstr ""
 
-#: auth/views.py:195
+#: app/auth/views.py:195
 msgid "Invalid request"
 msgstr ""
 
-#: main/forms.py:15 main/forms.py:16 main/forms.py:38 main/forms.py:39
+#: app/main/forms.py:15 app/main/forms.py:17 app/main/forms.py:40
+#: app/main/forms.py:41
 msgid "Real name"
 msgstr ""
 
-#: main/forms.py:17 main/forms.py:18 main/forms.py:40 main/forms.py:41
+#: app/main/forms.py:18 app/main/forms.py:20 app/main/forms.py:42
+#: app/main/forms.py:43
 msgid "Location"
 msgstr ""
 
-#: main/forms.py:19 main/forms.py:20 main/forms.py:42 main/forms.py:43
-#: templates/user.html:28
+#: app/main/forms.py:21 app/main/forms.py:22 app/main/forms.py:44
+#: app/main/forms.py:45 app/templates/user.html:28
 msgid "About me"
 msgstr ""
 
-#: main/forms.py:21 main/forms.py:44 main/forms.py:76
+#: app/main/forms.py:23 app/main/forms.py:46 app/main/forms.py:84
 msgid "Submit"
 msgstr ""
 
-#: main/forms.py:35
+#: app/main/forms.py:37
 msgid "Confirmed"
 msgstr ""
 
-#: main/forms.py:36 main/forms.py:37
+#: app/main/forms.py:38 app/main/forms.py:39
 msgid "Role"
 msgstr ""
 
-#: main/forms.py:64 main/forms.py:66
+#: app/main/forms.py:66 app/main/forms.py:68
 msgid "Title"
 msgstr ""
 
-#: main/forms.py:67 main/forms.py:69
-msgid "Catagory"
+#: app/main/forms.py:69 app/main/forms.py:71
+msgid "Category"
 msgstr ""
 
-#: main/forms.py:70 templates/post.html:5
+#: app/main/forms.py:72 app/main/forms.py:74
+msgid "Tag"
+msgstr ""
+
+#: app/main/forms.py:75 app/templates/post.html:5
 msgid "Post"
 msgstr ""
 
-#: main/forms.py:71
+#: app/main/forms.py:76
 msgid "Publish"
 msgstr ""
 
-#: main/views.py:82
+#: app/main/forms.py:83
+msgid "Limited to 200 characters"
+msgstr ""
+
+#: app/main/views.py:73
 msgid "Your profile has been updated"
 msgstr ""
 
-#: main/views.py:106
+#: app/main/views.py:97
 msgid "The profile has been updated"
 msgstr ""
 
-#: main/views.py:130
+#: app/main/views.py:146
 msgid "The post has been updated"
 msgstr ""
 
-#: main/views.py:143 main/views.py:159 main/views.py:173 main/views.py:189
+#: app/main/views.py:159 app/main/views.py:175 app/main/views.py:189
+#: app/main/views.py:205
 msgid "Invalid user"
 msgstr ""
 
-#: main/views.py:146
+#: app/main/views.py:162
 msgid "You are already following this user"
 msgstr ""
 
-#: main/views.py:149
+#: app/main/views.py:165
 msgid "You are now following"
 msgstr ""
 
-#: main/views.py:162
+#: app/main/views.py:178
 msgid "You are not following this user"
 msgstr ""
 
-#: main/views.py:165
+#: app/main/views.py:181
 #, python-format
 msgid "Your are not following %(username)s anymore"
 msgstr ""
 
-#: main/views.py:180
+#: app/main/views.py:196
 msgid "'s followers"
 msgstr ""
 
-#: main/views.py:196
+#: app/main/views.py:212
 msgid " has followed"
 msgstr ""
 
-#: main/views.py:226
+#: app/main/views.py:247
 msgid "Your comment has been published"
 msgstr ""
 
-#: templates/_comments.html:19
+#: app/templates/_comments.html:22
 msgid "This comment has been disabled by a moderator"
 msgstr ""
 
-#: templates/_comments.html:34
+#: app/templates/_comments.html:38
 msgid "Enable"
 msgstr ""
 
-#: templates/_comments.html:37
+#: app/templates/_comments.html:42
 msgid "Disable"
 msgstr ""
 
-#: templates/_posts.html:37
+#: app/templates/_posts.html:42
 msgid "Edit"
 msgstr ""
 
-#: templates/_posts.html:41
+#: app/templates/_posts.html:46
 msgid "Edit [Admin]"
 msgstr ""
 
-#: templates/_posts.html:45
+#: app/templates/_posts.html:50
 msgid "Read more"
 msgstr ""
 
-#: templates/_posts.html:49 templates/post.html:10
+#: app/templates/_posts.html:54 app/templates/post.html:10
 msgid "Comments"
 msgstr ""
 
-#: templates/base.html:41
-msgid "Home"
-msgstr ""
-
-#: templates/base.html:42
-msgid "Publish Post"
-msgstr ""
-
-#: templates/base.html:43
+#: app/templates/about.html:14 app/templates/base.html:65
 msgid "About"
 msgstr ""
 
-#: templates/base.html:48
-msgid "Moderate Comments"
+#: app/templates/base.html:45
+msgid "Home"
 msgstr ""
 
-#: templates/base.html:54
-msgid "Account"
+#: app/templates/base.html:51 app/templates/publish_post.html:4
+#: app/templates/publish_post.html:8
+msgid "Publish Post"
 msgstr ""
 
-#: templates/base.html:59
+#: app/templates/base.html:58
 msgid "Profile"
 msgstr ""
 
-#: templates/base.html:63
+#: app/templates/base.html:73
+msgid "Moderate Comments"
+msgstr ""
+
+#: app/templates/base.html:80
+msgid "Account"
+msgstr ""
+
+#: app/templates/base.html:85
 msgid "Change Password"
 msgstr ""
 
-#: templates/base.html:66
+#: app/templates/base.html:90
 msgid "Change Email"
 msgstr ""
 
-#: templates/base.html:69
+#: app/templates/base.html:95
 msgid "Log Out"
 msgstr ""
 
-#: templates/edit_post.html:4 templates/edit_post.html:8
+#: app/templates/edit_post.html:4 app/templates/edit_post.html:8
 msgid "Edit Post"
 msgstr ""
 
-#: templates/edit_profile.html:4 templates/user.html:44
+#: app/templates/edit_profile.html:4 app/templates/user.html:44
 msgid "Edit Profile"
 msgstr ""
 
-#: templates/edit_profile.html:8
+#: app/templates/edit_profile.html:8
 msgid "Edit Your Profile"
 msgstr ""
 
-#: templates/followers.html:4
+#: app/templates/followers.html:4
 msgid "Relationship"
 msgstr ""
 
-#: templates/followers.html:14
+#: app/templates/followers.html:14
 msgid "User"
 msgstr ""
 
-#: templates/followers.html:15
+#: app/templates/followers.html:15
 msgid "Since"
 msgstr ""
 
-#: templates/auth/unconfirmed.html:8 templates/index.html:9
+#: app/templates/auth/unconfirmed.html:8 app/templates/index.html:9
 msgid "Hello"
 msgstr ""
 
-#: templates/index.html:13
+#: app/templates/index.html:13
 msgid "Stranger"
 msgstr ""
 
-#: templates/index.html:30
+#: app/templates/index.html:24
 msgid "All"
 msgstr ""
 
-#: templates/index.html:33 templates/user.html:68
-msgid "Followers"
-msgstr ""
-
-#: templates/index.html:37
+#: app/templates/index.html:28
 msgid "hot"
 msgstr ""
 
-#: templates/moderate.html:4 templates/moderate.html:8
-msgid "Comment Moderation"
-msgstr ""
-
-#: templates/user.html:17
-msgid "From"
-msgstr ""
-
-#: templates/user.html:31
-msgid "Register date"
-msgstr ""
-
-#: templates/user.html:34
-msgid "Last visited"
-msgstr ""
-
-#: templates/user.html:37
-msgid "blog posts"
-msgstr ""
-
-#: templates/user.html:39
-msgid "comments"
-msgstr ""
-
-#: templates/user.html:50
-msgid "Edit Profile [Admin]"
-msgstr ""
-
-#: templates/user.html:59
+#: app/templates/index.html:31 app/templates/user.html:59
 msgid "Follow"
 msgstr ""
 
-#: templates/user.html:63
+#: app/templates/index.html:54
+msgid "Categories"
+msgstr ""
+
+#: app/templates/index.html:61
+msgid "Tags"
+msgstr ""
+
+#: app/templates/moderate.html:4 app/templates/moderate.html:8
+msgid "Comment Moderation"
+msgstr ""
+
+#: app/templates/user.html:17
+msgid "From"
+msgstr ""
+
+#: app/templates/user.html:31
+msgid "Register date"
+msgstr ""
+
+#: app/templates/user.html:34
+msgid "Last visited"
+msgstr ""
+
+#: app/templates/user.html:37
+msgid "blog posts"
+msgstr ""
+
+#: app/templates/user.html:39
+msgid "comments"
+msgstr ""
+
+#: app/templates/user.html:50
+msgid "Edit Profile [Admin]"
+msgstr ""
+
+#: app/templates/user.html:63
 msgid "Unfollow"
 msgstr ""
 
-#: templates/user.html:71
+#: app/templates/user.html:68
+msgid "Followers"
+msgstr ""
+
+#: app/templates/user.html:71
 msgid "Following"
 msgstr ""
 
-#: templates/user.html:75
+#: app/templates/user.html:75
 msgid "Follows you"
 msgstr ""
 
-#: templates/user.html:81
+#: app/templates/user.html:81
 #, python-format
 msgid "Posts by %(username)s"
 msgstr ""
 
-#: templates/auth/change_email.html:4
+#: app/templates/auth/change_email.html:4
 msgid "Change Email Address"
 msgstr ""
 
-#: templates/auth/change_email.html:8
+#: app/templates/auth/change_email.html:8
 msgid "Change Your Email Address"
 msgstr ""
 
-#: templates/auth/change_password.html:4
+#: app/templates/auth/change_password.html:4
 msgid "Change password"
 msgstr ""
 
-#: templates/auth/change_password.html:8
+#: app/templates/auth/change_password.html:8
 msgid "Change Your Password"
 msgstr ""
 
-#: templates/auth/login.html:4 templates/auth/login.html:8
+#: app/templates/auth/login.html:4 app/templates/auth/login.html:8
 msgid "Login"
 msgstr ""
 
-#: templates/auth/login.html:14
+#: app/templates/auth/login.html:14
 msgid "New user"
 msgstr ""
 
-#: templates/auth/login.html:16
+#: app/templates/auth/login.html:16
 msgid "Click here to register"
 msgstr ""
 
-#: templates/auth/reset_password.html:8
+#: app/templates/auth/reset_password.html:8
 msgid "Reset Your Password"
 msgstr ""
 
-#: templates/auth/unconfirmed.html:3
+#: app/templates/auth/unconfirmed.html:3
 msgid "Confirm your account"
 msgstr ""
 
-#: templates/auth/unconfirmed.html:10
+#: app/templates/auth/unconfirmed.html:10
 msgid "You have not confirmed your account yet"
 msgstr ""
 
-#: templates/auth/unconfirmed.html:12
+#: app/templates/auth/unconfirmed.html:12
 msgid "Before you can access this site you need to confirm your account"
 msgstr ""
 
-#: templates/auth/unconfirmed.html:13
+#: app/templates/auth/unconfirmed.html:13
 msgid ""
 "Check your inbox, you should have received an email with a confirmation "
 "link"
 msgstr ""
 
-#: templates/auth/unconfirmed.html:16
+#: app/templates/auth/unconfirmed.html:16
 msgid "Need another confirmation email"
 msgstr ""
 
-#: templates/auth/unconfirmed.html:17
+#: app/templates/auth/unconfirmed.html:17
 msgid "Click here"
 msgstr ""
 
-#: templates/auth/email/change_email.html:1
-#: templates/auth/email/change_email.txt:1 templates/auth/email/confirm.html:4
-#: templates/auth/email/confirm.txt:1
-#: templates/auth/email/reset_password.html:1
-#: templates/auth/email/reset_password.txt:1
+#: app/templates/auth/email/change_email.html:1
+#: app/templates/auth/email/change_email.txt:1
+#: app/templates/auth/email/confirm.html:4
+#: app/templates/auth/email/confirm.txt:1
+#: app/templates/auth/email/reset_password.html:1
+#: app/templates/auth/email/reset_password.txt:1
 msgid "Dear"
 msgstr ""
 
-#: templates/auth/email/change_email.html:3
+#: app/templates/auth/email/change_email.html:3
 msgid "To confirm your new email address please"
 msgstr ""
 
-#: templates/auth/email/change_email.html:5
-#: templates/auth/email/confirm.html:10
-#: templates/auth/email/reset_password.html:5
+#: app/templates/auth/email/change_email.html:5
+#: app/templates/auth/email/confirm.html:10
+#: app/templates/auth/email/reset_password.html:5
 msgid "click here"
 msgstr ""
 
-#: templates/auth/email/change_email.html:9
-#: templates/auth/email/confirm.html:14
-#: templates/auth/email/reset_password.html:9
+#: app/templates/auth/email/change_email.html:9
+#: app/templates/auth/email/confirm.html:14
+#: app/templates/auth/email/reset_password.html:9
 msgid ""
 "Alternatively, you can paste the following link in your browser's address"
 " bar"
 msgstr ""
 
-#: templates/auth/email/change_email.html:12
-#: templates/auth/email/change_email.txt:6 templates/auth/email/confirm.html:17
-#: templates/auth/email/confirm.txt:8
-#: templates/auth/email/reset_password.html:14
-#: templates/auth/email/reset_password.txt:8
+#: app/templates/auth/email/change_email.html:12
+#: app/templates/auth/email/change_email.txt:6
+#: app/templates/auth/email/confirm.html:17
+#: app/templates/auth/email/confirm.txt:8
+#: app/templates/auth/email/reset_password.html:14
+#: app/templates/auth/email/reset_password.txt:8
 msgid "Sincerely"
 msgstr ""
 
-#: templates/auth/email/change_email.html:13
-#: templates/auth/email/change_email.txt:7 templates/auth/email/confirm.html:18
-#: templates/auth/email/confirm.txt:9
-#: templates/auth/email/reset_password.html:15
-#: templates/auth/email/reset_password.txt:9
+#: app/templates/auth/email/change_email.html:13
+#: app/templates/auth/email/change_email.txt:7
+#: app/templates/auth/email/confirm.html:18
+#: app/templates/auth/email/confirm.txt:9
+#: app/templates/auth/email/reset_password.html:15
+#: app/templates/auth/email/reset_password.txt:9
 msgid "The FlaskFB Team"
 msgstr ""
 
-#: templates/auth/email/change_email.html:16
-#: templates/auth/email/change_email.txt:9 templates/auth/email/confirm.html:21
-#: templates/auth/email/confirm.txt:11
-#: templates/auth/email/reset_password.html:18
-#: templates/auth/email/reset_password.txt:11
+#: app/templates/auth/email/change_email.html:16
+#: app/templates/auth/email/change_email.txt:9
+#: app/templates/auth/email/confirm.html:21
+#: app/templates/auth/email/confirm.txt:11
+#: app/templates/auth/email/reset_password.html:18
+#: app/templates/auth/email/reset_password.txt:11
 msgid "Note: replies to this email address are not monitored"
 msgstr ""
 
-#: templates/auth/email/change_email.txt:3
+#: app/templates/auth/email/change_email.txt:3
 msgid "To confirm your new email address please click on the following link"
 msgstr ""
 
-#: templates/auth/email/confirm.html:6 templates/auth/email/confirm.txt:3
+#: app/templates/auth/email/confirm.html:6
+#: app/templates/auth/email/confirm.txt:3
 msgid "Welcome to"
 msgstr ""
 
-#: templates/auth/email/confirm.html:8
+#: app/templates/auth/email/confirm.html:8
 msgid "To confirm your account please"
 msgstr ""
 
-#: templates/auth/email/confirm.txt:5
+#: app/templates/auth/email/confirm.txt:5
 msgid "To confirm your account please click on the following link"
 msgstr ""
 
-#: templates/auth/email/reset_password.html:3
+#: app/templates/auth/email/reset_password.html:3
 msgid "To reset your password please"
 msgstr ""
 
-#: templates/auth/email/reset_password.html:12
-#: templates/auth/email/reset_password.txt:6
+#: app/templates/auth/email/reset_password.html:12
+#: app/templates/auth/email/reset_password.txt:6
 msgid "If you have not requested a password reset simply ignore this message"
 msgstr ""
 
-#: templates/auth/email/reset_password.txt:3
+#: app/templates/auth/email/reset_password.txt:3
 msgid "To reset your password please click on the following link"
 msgstr ""
 
-#: templates/mail/new_user.html:5 templates/mail/new_user.txt:1
+#: app/templates/mail/new_user.html:5 app/templates/mail/new_user.txt:1
 #, python-format
 msgid "user %(username)s has joined"
 msgstr ""
