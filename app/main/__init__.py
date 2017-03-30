@@ -14,4 +14,9 @@ def inject_permissions():
     return dict(Permission=Permission)
 
 
+@main.context_processor
+def inject_enumerate():
+    return dict(enumerate=enumerate)
+
+
 from . import views, errors

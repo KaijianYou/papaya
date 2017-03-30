@@ -8,7 +8,7 @@ from wtforms.validators import DataRequired, Length, Email, Regexp
 from wtforms import ValidationError
 from flask_pagedown.fields import PageDownField
 
-from ..models import User, Role
+from ..models import User, Role, Category
 
 
 class EditProfileForm(FlaskForm):
@@ -66,14 +66,20 @@ class PostForm(FlaskForm):
     title = StringField(lazy_('Title'),
                         validators=[DataRequired(), Length(1, 64)],
                         render_kw={'placeholder': lazy_('Title')})
-    category = StringField(lazy_('Category'),
-                           validators=[DataRequired(), Length(1, 64)],
+    category = SelectField(lazy_('Category'), coerce=int,
                            render_kw={'placeholder': lazy_('Category')})
     tags = StringField(lazy_('Tag'),
                        validators=[DataRequired(), Length(1, 200)],
-                       render_kw={'placeholder': lazy_('Tag')})
+                       render_kw={'placeholder': lazy_('More than one tag should'
+                                                       ' separate them by comma')})
     body = PageDownField(lazy_('Post'), validators=[DataRequired()])
     submit = SubmitField(lazy_('Publish'))
+
+    def __init__(self, *args, **kwargs):
+        super(PostForm, self).__init__(*args, **kwargs)
+        self.category.choices = \
+            [(category.id, category.name)
+             for category in Category.query.order_by(Category.name).all()]
 
 
 class CommentForm(FlaskForm):

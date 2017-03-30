@@ -10,6 +10,7 @@ from flask import current_app
 from flask_login import login_required
 from flask_login import current_user
 from flask_sqlalchemy import get_debug_queries
+from sqlalchemy.orm import joinedload
 from flask_babel import gettext as _
 
 from app import db, babel
@@ -43,7 +44,12 @@ def index():
         page, per_page=current_app.config['POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
+    categories = Category.query.all()
+    categories_list = []
+    for category in categories:
+        categories_list.append((category.name, category.posts.count()))
     return render_template('index.html', posts=posts,
+                           categories_list=categories_list,
                            show_followed_posts=show_followed_posts,
                            show_post_body=False, pagination=pagination)
 
@@ -52,7 +58,7 @@ def index():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    pagination = user.posts.order_by(Post.timestamp.desc()).paginate(
+    pagination = user.posts.order_by(Post.create_timestamp.desc()).paginate(
         page, per_page=current_app.config['POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
@@ -112,11 +118,10 @@ def publish_post():
     form = PostForm()
     if current_user.can(Permission.WRITE_ARTICLES) and \
             form.validate_on_submit():
-        Category.insert_category(form.category.data)
         title = form.title.data
         category = form.category.data
         tags = form.tags.data
-        body=form.body.data
+        body = form.body.data
         post = Post(title=title,
                     category=category,
                     tags=tags,
@@ -131,14 +136,14 @@ def publish_post():
 @main.route('/edit-post/<int:id>', methods=['GET', 'POST'])
 def edit_post(id):
     post = Post.query.get_or_404(id)
-    if current_user != post.author and not current_user.can(Permission.ADMINISTER):
+    if current_user != post.author and \
+            not current_user.can(Permission.ADMINISTER):
         abort(403)
 
     form = PostForm()
     if form.validate_on_submit():
-        Category.insert_category(form.category.data)
         post.title = form.title.data
-        post.category = form.category.data
+        post.category = Category.query.get(form.category.data)
         post.tags = form.tags.data
         post.body = form.body.data
         db.session.add(post)
@@ -146,6 +151,8 @@ def edit_post(id):
         flash(_('The post has been updated'), 'success')
         return redirect(url_for('.post', id=post.id))
     form.title.data = post.title
+    form.category.data = post.category_id
+    form.tags.data = post.tags
     form.body.data = post.body
     return render_template('edit_post.html', form=form)
 

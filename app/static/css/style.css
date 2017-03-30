@@ -18,7 +18,7 @@ html, body {
     bottom: 0;
     left:0;
     z-index: -1;
-    background-color: #fafafa;
+    background-color: #f5f5f5;
 }
 
 #main {
@@ -65,37 +65,63 @@ ul.posts li.post {
 .post-widget {
     margin: 20px 0 20px 0;
     border-radius: 4px;
-    box-shadow: 0 1px 8px rgba(0,0,0,0.2);
+    box-shadow: 2px 1px 8px rgba(0,0,0,0.2);
 }
 
 ul.posts li.post:hover {
     background-color: #f0f0f0;
 }
 
-div.post-date {
+.post-info {
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+
+.post-info span {
+    margin: 0 0 10px 4px;
+    color: rgba(0,0,0,0.5);
+    font-size: 12px;
+}
+
+.post-title {
+    margin-left: 4px;
+}
+
+.post-tags {
     float: right;
 }
 
-div.post-author {
+.post-author a {
+    color: #4CB6CB;
+    font-weight: normal;
+}
+
+.post-author a:hover {
+    color: red;
     font-weight: bold;
 }
 
-div.post-thumbnail {
+.post-thumbnail {
     position: absolute;
 }
 
-div.post-content {
+.post-content {
     min-height: 48px;
     margin-left: 48px;
 }
 
-div.post-footer {
+.post-footer {
+    padding: 4px 2px 4px 2px;
     text-align: right;
 }
 
-div.post-tabs {
+.post-tabs {
     margin-top: 16px;
     padding-right: 25px;
+}
+
+.post-body {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .post-body h1 {
@@ -135,6 +161,10 @@ div.flask-pagedown-preview {
     margin: 10px 0 10px 0;
     padding: 0 4px 0 4px;
     border: 1px solid #e0e0e0;
+}
+
+#flask-pagedown-body {
+    min-height: 400px;
 }
 
 div.flask-pagedown-preview h1 {
@@ -208,7 +238,7 @@ div.comment-form {
     width: 100%;
     left: 0;
     bottom: 0;
-    margin-top: 50px;
+    margin-top: 100px;
     padding-bottom: 0;
     clear: both;
 	background: #EDEFF1;
@@ -367,26 +397,26 @@ div.comment-form {
 }
 
 /*label*/
-.label-post-tag-1 {
+.label-post-tag-0 {
     background-color: #428bca;
 }
 
-.label-post-tag-2 {
+.label-post-tag-1 {
     background-color: #5cb85c;
 }
 
-.label-post-tag-3 {
+.label-post-tag-2 {
     background-color: #f0ad4e;
 }
 
-.label-post-tag-4 {
+.label-post-tag-3 {
     background-color: #5bc0de;
+}
+
+.label-post-tag-4 {
+    background-color: #999999;
 }
 
 .label-post-tag-5 {
     background-color: #d9534f;
-}
-
-.label-post-tag-6 {
-    background-color: #999999;
 }

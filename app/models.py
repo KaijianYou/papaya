@@ -292,16 +292,20 @@ def load_user(user_id):
 class Category(db.Model):
     __tablename__ = 'categories'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), index=True)
+    name = db.Column(db.String(32), nullable=False, unique=True)
     posts = db.relationship('Post', backref='category', lazy='dynamic')
 
     @staticmethod
-    def insert_category(category_name):
-        category = Category.query.filter_by(name=category_name).first()
-        if category is None:
-            category = Category(category_name)
-            db.session.add(category)
-            db.session.commit()
+    def insert_categories():
+        categories_list = [
+            '计算机与编程', '思考与感言', '读书写作', '外语学习', '生活',
+            '好玩有趣', '工作', '学习资料', '建议反馈', '新闻资讯']
+        for category_name in categories_list:
+            category = Category.query.filter_by(name=category_name).first()
+            if category is None:
+                category = Category(name=category_name)
+                db.session.add(category)
+        db.session.commit()
 
     def __repr__(self):
         return '<Category %s>' % self.name
@@ -311,12 +315,12 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), index=True)
-    body = db.Column(db.Text)
-    body_html = db.Column(db.Text)
+    body = db.Column(db.Text, nullable=False)
+    body_html = db.Column(db.Text, nullable=False)
     create_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    update_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    tags = db.Column(db.String(200))
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    update_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    tags = db.Column(db.String(200), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
@@ -329,6 +333,19 @@ class Post(db.Model):
             markdown(value, output_format='html'), tags=allowed_tags, strip=True))
 
     @staticmethod
+    def add():
+        from random import randint, seed
+
+        n = Category.query.count()
+        seed()
+        posts = Post.query.all()
+        for post in posts:
+            category = Category.query.offset(randint(0, n - 1)).first()
+            post.category_id = category.id
+            db.session.add(post)
+        db.session.commit()
+
+    @staticmethod
     def generate_fake(count=100):
         from random import seed, randint
         import forgery_py
@@ -338,7 +355,7 @@ class Post(db.Model):
         for i in range(count):
             user = User.query.offset(randint(0, user_count - 1)).first()
             post = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
-                        timestamp=forgery_py.date.date(True), author=user)
+                        create_timestamp=forgery_py.date.date(True), author=user)
             db.session.add(post)
             db.session.commit()
 

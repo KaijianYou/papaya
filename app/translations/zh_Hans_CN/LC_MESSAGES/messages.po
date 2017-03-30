@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-29 14:56+0800\n"
+"POT-Creation-Date: 2017-03-29 15:13+0800\n"
 "PO-Revision-Date: 2017-03-05 15:08+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans_CN\n"
@@ -182,7 +182,7 @@ msgstr "所在地"
 msgid "About me"
 msgstr "关于我"
 
-#: app/main/forms.py:23 app/main/forms.py:46 app/main/forms.py:84
+#: app/main/forms.py:23 app/main/forms.py:46 app/main/forms.py:85
 msgid "Submit"
 msgstr "提交"
 
@@ -202,19 +202,23 @@ msgstr "标题"
 msgid "Category"
 msgstr "分类"
 
-#: app/main/forms.py:72 app/main/forms.py:74
+#: app/main/forms.py:72
 msgid "Tag"
 msgstr "标签"
 
-#: app/main/forms.py:75 app/templates/post.html:5
+#: app/main/forms.py:74
+msgid "More than one tag should separate them by comma"
+msgstr "标签多于一个则用 \",\" 分隔"
+
+#: app/main/forms.py:76 app/templates/post.html:5
 msgid "Post"
 msgstr "文章"
 
-#: app/main/forms.py:76
+#: app/main/forms.py:77
 msgid "Publish"
 msgstr "发布"
 
-#: app/main/forms.py:83
+#: app/main/forms.py:84
 msgid "Limited to 200 characters"
 msgstr "限 200 字"
 
@@ -428,7 +432,7 @@ msgstr "此用户已关注您"
 #: app/templates/user.html:81
 #, python-format
 msgid "Posts by %(username)s"
-msgstr "由 %(username)s 发布"
+msgstr "%(username)s 发布的文章"
 
 #: app/templates/auth/change_email.html:4
 msgid "Change Email Address"

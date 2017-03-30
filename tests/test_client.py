@@ -7,7 +7,7 @@ import re
 from flask import url_for
 
 from app import create_app, db
-from app.models import User, Role
+from app.models import User, Role, Category
 
 
 class FlaskClientTestCase(unittest.TestCase):
@@ -17,6 +17,7 @@ class FlaskClientTestCase(unittest.TestCase):
         self.app_context.push()
         db.create_all()
         Role.insert_roles()
+        Category.insert_categories()
         self.client = self.app.test_client(use_cookies=True)
 
     def tearDown(self):

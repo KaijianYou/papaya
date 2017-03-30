@@ -10,7 +10,7 @@ from flask_migrate import Migrate, MigrateCommand
 
 from app import create_app
 from app import db
-from app.models import User, Role, Post, Permission, Comment
+from app.models import User, Role, Post, Permission, Comment, Category
 
 
 COV = None
@@ -27,7 +27,7 @@ migrate = Migrate(app, db)
 
 def make_shell_context():
     return dict(app=app, db=db, User=User, Role=Role, Permission=Permission,
-                Post=Post, Comment=Comment)
+                Post=Post, Comment=Comment, Category=Category)
 
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
@@ -45,6 +45,7 @@ def deploy():
 
     Role.insert_roles()
     User.add_self_follows()
+    Category.insert_categories()
 
 
 @manager.command

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-29 14:56+0800\n"
+"POT-Creation-Date: 2017-03-29 15:13+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -181,7 +181,7 @@ msgstr ""
 msgid "About me"
 msgstr ""
 
-#: app/main/forms.py:23 app/main/forms.py:46 app/main/forms.py:84
+#: app/main/forms.py:23 app/main/forms.py:46 app/main/forms.py:85
 msgid "Submit"
 msgstr ""
 
@@ -201,19 +201,23 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: app/main/forms.py:72 app/main/forms.py:74
+#: app/main/forms.py:72
 msgid "Tag"
 msgstr ""
 
-#: app/main/forms.py:75 app/templates/post.html:5
+#: app/main/forms.py:74
+msgid "More than one tag should separate them by comma"
+msgstr ""
+
+#: app/main/forms.py:76 app/templates/post.html:5
 msgid "Post"
 msgstr ""
 
-#: app/main/forms.py:76
+#: app/main/forms.py:77
 msgid "Publish"
 msgstr ""
 
-#: app/main/forms.py:83
+#: app/main/forms.py:84
 msgid "Limited to 200 characters"
 msgstr ""
 

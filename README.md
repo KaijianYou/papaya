@@ -45,6 +45,7 @@ Please visit https://flaskfb.herokuapp.com/<br>
     (venv) $ python manage.py db upgrade
     (venv) $ python manage.py shell
     >>> Role.insert_roles()
+    >>> Category.insert_categories()
     >>> User.add_self_follows()
 
 ### Set environment variables  设置环境变量
