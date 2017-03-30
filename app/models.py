@@ -307,6 +307,13 @@ class Category(db.Model):
                 db.session.add(category)
         db.session.commit()
 
+    @staticmethod
+    def get_categories():
+        categories = Category.query.all()
+        categories_list = [(category.name, category.posts.count())
+                           for category in categories]
+        return categories_list
+
     def __repr__(self):
         return '<Category %s>' % self.name
 
@@ -331,19 +338,6 @@ class Post(db.Model):
                         'h2', 'h3', 'p', 'hr']
         target.body_html = bleach.linkify(bleach.clean(
             markdown(value, output_format='html'), tags=allowed_tags, strip=True))
-
-    @staticmethod
-    def add():
-        from random import randint, seed
-
-        n = Category.query.count()
-        seed()
-        posts = Post.query.all()
-        for post in posts:
-            category = Category.query.offset(randint(0, n - 1)).first()
-            post.category_id = category.id
-            db.session.add(post)
-        db.session.commit()
 
     @staticmethod
     def generate_fake(count=100):

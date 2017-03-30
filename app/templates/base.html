@@ -46,6 +46,18 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ url_for('main.show_all_posts') }}">
+                        <span class="glyphicon glyphicon-globe"></span>
+                        {{ gettext('All Post') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('main.show_followed_posts') }}">
+                        <span class="glyphicon glyphicon-star"></span>
+                        {{ gettext('Followed Post') }}
+                    </a>
+                </li>
+                <li>
                     <a href="{{ url_for('main.publish_post') }}">
                         <span class="glyphicon glyphicon-pencil"></span>
                         {{ gettext('Publish Post') }}

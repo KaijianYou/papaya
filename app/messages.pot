@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-29 15:13+0800\n"
+"POT-Creation-Date: 2017-03-30 13:56+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Keep me logged in"
 msgstr ""
 
-#: app/auth/forms.py:21 app/templates/base.html:103 app/templates/index.html:71
+#: app/auth/forms.py:21 app/templates/base.html:115 app/templates/index.html:73
 msgid "Log In"
 msgstr ""
 
@@ -181,7 +181,7 @@ msgstr ""
 msgid "About me"
 msgstr ""
 
-#: app/main/forms.py:23 app/main/forms.py:46 app/main/forms.py:85
+#: app/main/forms.py:23 app/main/forms.py:46 app/main/forms.py:90
 msgid "Submit"
 msgstr ""
 
@@ -197,73 +197,73 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: app/main/forms.py:69 app/main/forms.py:71
+#: app/main/forms.py:69 app/main/forms.py:70
 msgid "Category"
 msgstr ""
 
-#: app/main/forms.py:72
+#: app/main/forms.py:71
 msgid "Tag"
 msgstr ""
 
-#: app/main/forms.py:74
+#: app/main/forms.py:73
 msgid "More than one tag should separate them by comma"
 msgstr ""
 
-#: app/main/forms.py:76 app/templates/post.html:5
+#: app/main/forms.py:75 app/templates/post.html:5
 msgid "Post"
 msgstr ""
 
-#: app/main/forms.py:77
+#: app/main/forms.py:76
 msgid "Publish"
 msgstr ""
 
-#: app/main/forms.py:84
+#: app/main/forms.py:89
 msgid "Limited to 200 characters"
 msgstr ""
 
-#: app/main/views.py:73
+#: app/main/views.py:126
 msgid "Your profile has been updated"
 msgstr ""
 
-#: app/main/views.py:97
+#: app/main/views.py:150
 msgid "The profile has been updated"
 msgstr ""
 
-#: app/main/views.py:146
+#: app/main/views.py:198
 msgid "The post has been updated"
 msgstr ""
 
-#: app/main/views.py:159 app/main/views.py:175 app/main/views.py:189
-#: app/main/views.py:205
+#: app/main/views.py:213 app/main/views.py:229 app/main/views.py:243
+#: app/main/views.py:259
 msgid "Invalid user"
 msgstr ""
 
-#: app/main/views.py:162
+#: app/main/views.py:216
 msgid "You are already following this user"
 msgstr ""
 
-#: app/main/views.py:165
+#: app/main/views.py:219
 msgid "You are now following"
 msgstr ""
 
-#: app/main/views.py:178
+#: app/main/views.py:232
 msgid "You are not following this user"
 msgstr ""
 
-#: app/main/views.py:181
+#: app/main/views.py:235
 #, python-format
 msgid "Your are not following %(username)s anymore"
 msgstr ""
 
-#: app/main/views.py:196
+#: app/main/views.py:250
 msgid "'s followers"
 msgstr ""
 
-#: app/main/views.py:212
+#: app/main/views.py:266
 msgid " has followed"
 msgstr ""
 
-#: app/main/views.py:247
+#: app/main/views.py:280
 msgid "Your comment has been published"
 msgstr ""
 
@@ -279,23 +279,19 @@ msgstr ""
 msgid "Disable"
 msgstr ""
 
-#: app/templates/_posts.html:42
+#: app/templates/_posts.html:57
 msgid "Edit"
 msgstr ""
 
-#: app/templates/_posts.html:46
+#: app/templates/_posts.html:61
 msgid "Edit [Admin]"
 msgstr ""
 
-#: app/templates/_posts.html:50
+#: app/templates/_posts.html:65
 msgid "Read more"
 msgstr ""
 
-#: app/templates/_posts.html:54 app/templates/post.html:10
-msgid "Comments"
-msgstr ""
-
-#: app/templates/about.html:14 app/templates/base.html:65
+#: app/templates/about.html:14 app/templates/base.html:77
 msgid "About"
 msgstr ""
 
@@ -303,32 +299,40 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: app/templates/base.html:51 app/templates/publish_post.html:4
+#: app/templates/base.html:51
+msgid "All Post"
+msgstr ""
+
+#: app/templates/base.html:57
+msgid "Followed Post"
+msgstr ""
+
+#: app/templates/base.html:63 app/templates/publish_post.html:4
 #: app/templates/publish_post.html:8
 msgid "Publish Post"
 msgstr ""
 
-#: app/templates/base.html:58
+#: app/templates/base.html:70
 msgid "Profile"
 msgstr ""
 
-#: app/templates/base.html:73
+#: app/templates/base.html:85
 msgid "Moderate Comments"
 msgstr ""
 
-#: app/templates/base.html:80
+#: app/templates/base.html:92
 msgid "Account"
 msgstr ""
 
-#: app/templates/base.html:85
+#: app/templates/base.html:97
 msgid "Change Password"
 msgstr ""
 
-#: app/templates/base.html:90
+#: app/templates/base.html:102
 msgid "Change Email"
 msgstr ""
 
-#: app/templates/base.html:95
+#: app/templates/base.html:107
 msgid "Log Out"
 msgstr ""
 
@@ -364,28 +368,24 @@ msgstr ""
 msgid "Stranger"
 msgstr ""
 
-#: app/templates/index.html:24
-msgid "All"
-msgstr ""
-
-#: app/templates/index.html:28
+#: app/templates/index.html:25
 msgid "hot"
 msgstr ""
 
-#: app/templates/index.html:31 app/templates/user.html:59
-msgid "Follow"
-msgstr ""
-
-#: app/templates/index.html:54
+#: app/templates/index.html:48
 msgid "Categories"
 msgstr ""
 
-#: app/templates/index.html:61
+#: app/templates/index.html:63
 msgid "Tags"
 msgstr ""
 
 #: app/templates/moderate.html:4 app/templates/moderate.html:8
 msgid "Comment Moderation"
+msgstr ""
+
+#: app/templates/post.html:10
+msgid "Comments"
 msgstr ""
 
 #: app/templates/user.html:17
@@ -410,6 +410,10 @@ msgstr ""
 
 #: app/templates/user.html:50
 msgid "Edit Profile [Admin]"
+msgstr ""
+
+#: app/templates/user.html:59
+msgid "Follow"
 msgstr ""
 
 #: app/templates/user.html:63

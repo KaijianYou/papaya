@@ -10,7 +10,8 @@ from flask import current_app
 from flask_login import login_required
 from flask_login import current_user
 from flask_sqlalchemy import get_debug_queries
-from sqlalchemy.orm import joinedload
+from sqlalchemy import desc
+from sqlalchemy.sql import func
 from flask_babel import gettext as _
 
 from app import db, babel
@@ -30,28 +31,59 @@ def get_locale():
 # 如果不指定 methods 参数，则默认将函数注册为 GET 请求的处理程序
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    show_followed_posts = False
-    if current_user.is_authenticated:
-        show_followed_posts = bool(request.cookies.get('show_followed_posts', ''))
-
-    if show_followed_posts:
-        query = current_user.followed_posts()
-    else:
-        query = Post.query
-
     page = request.args.get('page', 1, type=int)
-    pagination = query.order_by(Post.create_timestamp.desc()).paginate(
-        page, per_page=current_app.config['POSTS_PER_PAGE'],
-        error_out=False)
+    pagination = Post.query.outerjoin(Comment)\
+        .group_by(Post.id).order_by(desc(func.count(Comment.id))).paginate(
+        page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
-    categories = Category.query.all()
-    categories_list = []
-    for category in categories:
-        categories_list.append((category.name, category.posts.count()))
     return render_template('index.html', posts=posts,
-                           categories_list=categories_list,
+                           categories_list=Category.get_categories(),
                            show_followed_posts=show_followed_posts,
                            show_post_body=False, pagination=pagination)
+
+
+@main.route('/all', methods=['GET', 'POST'])
+def show_all_posts():
+    page = request.args.get('page', 1, type=int)
+    pagination = Post.query.order_by(Post.create_timestamp.desc()).paginate(
+        page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    posts = pagination.items
+    return render_template('index.html', posts=posts,
+                           categories_list=Category.get_categories(),
+                           show_post_body=False, pagination=pagination)
+
+
+@main.route('/followed')
+@login_required
+def show_followed_posts():
+    if current_user.is_authenticated:
+        query = current_user.followed_posts()
+        page = request.args.get('page', 1, type=int)
+        pagination = query.order_by(Post.create_timestamp.desc()).paginate(
+            page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+        posts = pagination.items
+        return render_template('index.html', posts=posts,
+                               categories_list=Category.get_categories(),
+                               show_post_body=False, pagination=pagination)
+
+
+# @main.route('/category/<string:category_name>', methods=['GET', 'POST'])
+# def category(category_name):
+#     category = Category.query.filter(category_name)
+#     posts = category.posts.all()
+#
+#     page = request.args.get('page', 1, type=int)
+#     pagination = posts.order_by(Post.create_timestamp.desc()).paginate(
+#         page, per_page=current_app.config['POST_PER_PAGE'], error_out=False)
+#     posts = pagination.items
+#     categories = Category.query.all()
+#     categories_list = []
+#     for category in categories:
+#         categories_list.append((category.name, category.posts.count()))
+#     return render_template('index.html', posts=posts,
+#                            categories_list=categories_list,
+#                            show_followed_posts=show_followed_posts,
+#                            show_post_body=False, pagination=pagination)
 
 
 @main.route('/user/<username>')
@@ -219,27 +251,6 @@ def followed_by(username):
     return render_template('followers.html', user=user, title=_(' has followed'),
                            endpoint='.followers', pagination=pagination,
                            follows=follows)
-
-
-@main.route('/all')
-def show_all_posts():
-    resp = make_response(redirect(url_for('.index')))
-    resp.set_cookie('show_followed_posts', '', max_age=30*24*60*60)
-    return resp
-
-
-@main.route('/followed')
-@login_required
-def show_followed_posts():
-    resp = make_response(redirect(url_for('.index')))
-    resp.set_cookie('show_followed_posts', '1', max_age=30*24*60*60)
-    return resp
-
-
-# TODO
-@main.route('/hot')
-def show_hot_posts():
-    pass
 
 
 @main.route('/post/<int:id>', methods=['GET', 'POST'])

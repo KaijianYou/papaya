@@ -29,6 +29,7 @@ class Config(object):
     DB_QUERY_TIMEOUT = 0.5            # 花费时间超过 0.5s 的查询语句将被记录
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # Flask-SQLALchemy 未来可能会删除
+    # SQLALCHEMY_ECHO = True  # 在 stderr 输出生成的 SQL 语句
 
     SSL_DISABLE = True
 

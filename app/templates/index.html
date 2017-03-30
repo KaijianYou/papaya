@@ -20,15 +20,9 @@
         <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
             <div class="post-tabs">
                 <ul class="nav nav-tabs">
-                    <li {% if not show_followed_posts %} class="active" {% endif %}>
-                        <a href="{{ url_for('.show_all_posts') }}">{{ gettext('All') }}</a>
-                    </li>
                     <!-- TODO 热门文章 -->
                     <li>
-                        <a href="#">{{ gettext('hot') }}</a>
-                    </li>
-                    <li {% if show_followed_posts %} class="active" {% endif %}>
-                        <a href="{{ url_for('.show_followed_posts') }}">{{ gettext('Follow') }}</a>
+                        <a href="#">{{ name }}</a>
                     </li>
                 </ul>
 
