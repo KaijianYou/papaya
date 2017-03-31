@@ -41,7 +41,7 @@
                     {% if post.tags %}
                         {% for i, tag in enumerate(post.get_tags()) %}
                             <a href="{{ url_for('main.tag', tag_name=tag) }}">
-                                <span class="btn-xs label-post-tag-{{ i % 6 }}">{{ tag }}</span>
+                                <span class="btn-xs btn-custom btn-post-tag-{{ i % 6 }}">{{ tag }}</span>
                             </a>
                         {% endfor %}
                     {% endif %}

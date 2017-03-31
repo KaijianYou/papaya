@@ -5,7 +5,7 @@ from flask import render_template
 from flask import flash
 from flask import abort
 from flask import redirect, url_for
-from flask import request, make_response
+from flask import request
 from flask import current_app
 from flask_login import login_required
 from flask_login import current_user
@@ -36,10 +36,13 @@ def index():
         .group_by(Post.id).order_by(desc(func.count(Comment.id))).paginate(
         page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
-    return render_template('index.html', posts=posts,
+    return render_template('index.html',
+                           posts=posts,
+                           endpoint='main.index',
                            categories_list=Category.get_categories(),
                            show_followed_posts=show_followed_posts,
-                           show_post_body=False, pagination=pagination)
+                           show_post_body=False,
+                           pagination=pagination)
 
 
 @main.route('/all', methods=['GET', 'POST'])
@@ -48,9 +51,12 @@ def show_all_posts():
     pagination = Post.query.order_by(Post.create_timestamp.desc()).paginate(
         page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
-    return render_template('index.html', posts=posts,
+    return render_template('index.html',
+                           posts=posts,
+                           endpoint='main.show_all_posts',
                            categories_list=Category.get_categories(),
-                           show_post_body=False, pagination=pagination)
+                           show_post_body=False,
+                           pagination=pagination)
 
 
 @main.route('/followed')
@@ -62,9 +68,12 @@ def show_followed_posts():
         pagination = query.order_by(Post.create_timestamp.desc()).paginate(
             page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
         posts = pagination.items
-        return render_template('index.html', posts=posts,
+        return render_template('index.html',
+                               endpoint='main.show_followed_posts',
+                               posts=posts,
                                categories_list=Category.get_categories(),
-                               show_post_body=False, pagination=pagination)
+                               show_post_body=False,
+                               pagination=pagination)
     return redirect(url_for('.index'))
 
 
@@ -77,9 +86,13 @@ def category(category_name):
     pagination = posts.order_by(Post.create_timestamp.desc()).paginate(
         page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
-    return render_template('index.html', posts=posts,
+    return render_template('index.html',
+                           posts=posts,
+                           endpoint='main.category',
+                           category_name=category_name,
                            categories_list=Category.get_categories(),
-                           show_post_body=False, pagination=pagination)
+                           show_post_body=False,
+                           pagination=pagination)
 
 
 @main.route('/tag/<string:tag_name>', methods=['GET', 'POST'])
@@ -89,9 +102,13 @@ def tag(tag_name):
     pagination = posts.order_by(Post.create_timestamp.desc()).paginate(
         page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
-    return render_template('index.html', posts=posts,
+    return render_template('index.html',
+                           posts=posts,
+                           endpoint='main.tag',
+                           tag_name=tag_name,
                            categories_list=Category.get_categories(),
-                           show_post_body=False, pagination=pagination)
+                           show_post_body=False,
+                           pagination=pagination)
 
 
 @main.route('/user/<username>')

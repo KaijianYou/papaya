@@ -139,6 +139,10 @@ ul.posts li.post:hover {
     padding-right: 25px;
 }
 
+.post-tags a span {
+    color: white;
+}
+
 .post-body {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -162,7 +166,7 @@ ul.posts li.post:hover {
     font-size: 120%;
 }
 
-div.edit-post {
+.edit-post {
     margin: 10px 0 20px 0;
     padding: 0 0 10px 0;
     border-bottom: 1px solid #e0e0e0;
@@ -177,7 +181,7 @@ div.pagination {
 }
 
 /*markdown*/
-div.flask-pagedown-preview {
+.flask-pagedown-preview {
     margin: 10px 0 10px 0;
     padding: 0 4px 0 4px;
     border: 1px solid #e0e0e0;
@@ -187,15 +191,15 @@ div.flask-pagedown-preview {
     min-height: 400px;
 }
 
-div.flask-pagedown-preview h1 {
+.flask-pagedown-preview h1 {
     font-size: 140%;
 }
 
-div.flask-pagedown-preview h2 {
+.flask-pagedown-preview h2 {
     font-size: 130%;
 }
 
-div.flask-pagedown-preview h3 {
+.flask-pagedown-preview h3 {
     font-size: 120%;
 }
 
@@ -231,24 +235,24 @@ ul.comments li.comment:hover {
     background-color: #f0f0f0;
 }
 
-div.comment-date {
+.comment-date {
     float: right;
 }
 
-div.comment-author {
+.comment-author {
     font-weight: bold;
 }
 
-div.comment-thumbnail {
+.comment-thumbnail {
     position: absolute;
 }
 
-div.comment-content {
+.comment-content {
     min-height: 48px;
     margin-left: 48px;
 }
 
-div.comment-form {
+.comment-form {
     margin: 16px 0 16px 32px;
 }
 
@@ -400,7 +404,7 @@ div.comment-form {
 
 /*button*/
 .btn-custom {
-    padding: 4px 6px;
+    padding: 2px 4px;
     color: white;
 }
 
@@ -408,31 +412,26 @@ div.comment-form {
     color: black;
 }
 
-.post-tags a span {
-    color: white;
-}
-
-/*label*/
-.label-post-tag-0 {
+.btn-post-tag-0 {
     background-color: #428bca;
 }
 
-.label-post-tag-1 {
+.btn-post-tag-1 {
     background-color: #5cb85c;
 }
 
-.label-post-tag-2 {
+.btn-post-tag-2 {
     background-color: #f0ad4e;
 }
 
-.label-post-tag-3 {
+.btn-post-tag-3 {
     background-color: #5bc0de;
 }
 
-.label-post-tag-4 {
+.btn-post-tag-4 {
     background-color: #999999;
 }
 
-.label-post-tag-5 {
+.btn-post-tag-5 {
     background-color: #d9534f;
 }

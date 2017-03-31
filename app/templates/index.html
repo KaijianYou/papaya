@@ -22,7 +22,8 @@
                 {% include '_posts.html' %}
 
                 <div class="pagination">
-                    {{ paginate_macro.pagination_widget(pagination, '.index') }}
+                    {{ paginate_macro.pagination_widget(pagination, endpoint,
+                        category_name=category_name, tag_name=tag_name) }}
                 </div>
             </div>
         </div>
@@ -31,8 +32,10 @@
         <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
             <div class="side-widget">
                 <div class="signature">
-                    <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}" alt="noahsss" title="noahsss"/>
-                    <hr/>
+                    <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}"
+                         alt="noahsss" title="noahsss"/>
+                </div>
+                <div class="widget-body" style="text-align: center;">
                     <p>大家，上午好，下午好，晚上好</p>
                 </div>
             </div>
@@ -44,7 +47,9 @@
                     <ul>
                         {% for category in categories_list %}
                         <li>
-                            <a href="{{ url_for('main.category', category_name=category[0]) }}">{{ category[0] }} ({{ category[1] }})</a>
+                            <a href="{{ url_for('main.category', category_name=category[0]) }}">
+                                {{ category[0] }} ({{ category[1] }})
+                            </a>
                         </li>
                         {% endfor %}
                     </ul>
