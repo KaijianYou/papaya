@@ -40,13 +40,13 @@
 
         <p>
             {% if user == current_user %}
-            <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">
+            <a class="btn btn-default" href="{{ url_for('main.edit_profile') }}">
                 {{ gettext('Edit Profile') }}
             </a>
             {% endif %}
 
             {% if current_user.is_administrator() %}
-            <a class="btn btn-danger" href="{{ url_for('.edit_profile_admin', id=user.id) }}">
+            <a class="btn btn-danger" href="{{ url_for('main.edit_profile_admin', id=user.id) }}">
                 {{ gettext('Edit Profile [Admin]') }}
             </a>
             {% endif %}
@@ -55,19 +55,19 @@
         <p>
             {% if current_user.can(Permission.FOLLOW) and user != current_user %}
                 {% if not current_user.is_following(user) %}
-                <a href="{{ url_for('.follow', username=user.username) }}" class="btn btn-primary">
+                <a href="{{ url_for('main.follow', username=user.username) }}" class="btn btn-primary">
                     {{ gettext('Follow') }}
                 </a>
                 {% else %}
-                <a href="{{ url_for('.unfollow', username=user.username) }}" class="btn btn-default">
+                <a href="{{ url_for('main.unfollow', username=user.username) }}" class="btn btn-default">
                     {{ gettext('Unfollow') }}
                 </a>
                 {% endif %}
             {% endif %}
-            <a href="{{ url_for('.followers', username=user.username) }}">
+            <a href="{{ url_for('main.followers', username=user.username) }}">
                 {{ gettext('Followers') }}: <span class="badge">{{ user.followers.count() - 1 }}</span>
             </a>
-            <a href="{{ url_for('.followed_by', username=user.username) }}">
+            <a href="{{ url_for('main.followed_by', username=user.username) }}">
                 {{ gettext('Following') }}: <span class="badge">{{ user.followed.count() - 1 }}</span>
             </a>
             {% if current_user.is_authenticated and user != current_user and

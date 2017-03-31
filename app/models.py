@@ -357,6 +357,9 @@ class Post(db.Model):
         tags_list = [tag for tag in self.tags.split(',') if tag]
         return tags_list
 
+    def get_category_name(self):
+        return Category.query.get(self.category_id).name
+
     def __repr__(self):
         return '<Post %s>' % self.title
 

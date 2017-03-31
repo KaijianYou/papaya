@@ -2,7 +2,7 @@
     {% for comment in comments %}
     <li class="comment comment-widget">
         <div class="comment-thumbnail">
-            <a href="{{ url_for('.user', username=comment.author.username) }}">
+            <a href="{{ url_for('main.user', username=comment.author.username) }}">
                 <img class="img-rounded profile-thumbnail"
                      src="{{ comment.author.get_avatar(size=40) }}">
             </a>
@@ -13,7 +13,7 @@
                 {{ moment(comment.timestamp).format('YYYY-MM-DD') }}
             </div>
             <div class="comment-author">
-                <a href="{{ url_for('.user', username=comment.author.username) }}">
+                <a href="{{ url_for('main.user', username=comment.author.username) }}">
                     {{ comment.author.username }}
                 </a>
             </div>
@@ -34,11 +34,11 @@
             <div style="text-align: right;">
                 <br>
                 {% if comment.disabled %}
-                    <a class="btn btn-default btn-custom" href="{{url_for('.moderate_enable', id=comment.id, page=page) }}">
+                    <a class="btn btn-default btn-custom" href="{{url_for('main.moderate_enable', id=comment.id, page=page) }}">
                         {{ gettext('Enable') }}
                     </a>
                 {% else %}
-                    <a class="btn btn-danger btn-custom" href="{{url_for('.moderate_disable', id=comment.id, page=page) }}">
+                    <a class="btn btn-danger btn-custom" href="{{url_for('main.moderate_disable', id=comment.id, page=page) }}">
                         {{ gettext('Disable') }}
                     </a>
                 {% endif %}

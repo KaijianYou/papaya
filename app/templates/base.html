@@ -15,11 +15,15 @@
     <meta http-equiv="expires" content="0">
 {% endblock metas %}
 
+{% block styles %}
 <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='image/favicon.ico') }}" type="image/x-icon">
+<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap-theme.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/csshake.min.css') }}">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+{% endblock styles %}
 {% endblock head %}
 
 {% block navbar %}
@@ -192,12 +196,14 @@
 {% endblock content %}
 
 {% block scripts %}
-{{ super() }}
-{{ moment.include_moment() }}
-{{ moment.lang("zh-CN") }}
+<script src="{{ url_for('static', filename='js/jquery-3.2.0.min.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/moment-with-locales.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/particleground.all.js') }}"></script>
 <script src="{{ url_for('static', filename='js/particle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jquery.particleground.min.js') }}"></script>
+{{ moment.include_moment() }}
+{{ moment.lang("zh-CN") }}
 <script>
     new Particleground.particle('#particle-ground');
 

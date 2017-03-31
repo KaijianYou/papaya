@@ -65,25 +65,33 @@ def show_followed_posts():
         return render_template('index.html', posts=posts,
                                categories_list=Category.get_categories(),
                                show_post_body=False, pagination=pagination)
+    return redirect(url_for('.index'))
 
 
-# @main.route('/category/<string:category_name>', methods=['GET', 'POST'])
-# def category(category_name):
-#     category = Category.query.filter(category_name)
-#     posts = category.posts.all()
-#
-#     page = request.args.get('page', 1, type=int)
-#     pagination = posts.order_by(Post.create_timestamp.desc()).paginate(
-#         page, per_page=current_app.config['POST_PER_PAGE'], error_out=False)
-#     posts = pagination.items
-#     categories = Category.query.all()
-#     categories_list = []
-#     for category in categories:
-#         categories_list.append((category.name, category.posts.count()))
-#     return render_template('index.html', posts=posts,
-#                            categories_list=categories_list,
-#                            show_followed_posts=show_followed_posts,
-#                            show_post_body=False, pagination=pagination)
+@main.route('/category/<string:category_name>', methods=['GET', 'POST'])
+def category(category_name):
+    category_id = Category.query.filter_by(name=category_name).first().id
+    posts = Post.query.join(Category, Post.category_id == Category.id)\
+        .filter(Category.id == category_id)
+    page = request.args.get('page', 1, type=int)
+    pagination = posts.order_by(Post.create_timestamp.desc()).paginate(
+        page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    posts = pagination.items
+    return render_template('index.html', posts=posts,
+                           categories_list=Category.get_categories(),
+                           show_post_body=False, pagination=pagination)
+
+
+@main.route('/tag/<string:tag_name>', methods=['GET', 'POST'])
+def tag(tag_name):
+    posts = Post.query.filter(Post.tags.like('%' + tag_name + '%'))
+    page = request.args.get('page', 1, type=int)
+    pagination = posts.order_by(Post.create_timestamp.desc()).paginate(
+        page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    posts = pagination.items
+    return render_template('index.html', posts=posts,
+                           categories_list=Category.get_categories(),
+                           show_post_body=False, pagination=pagination)
 
 
 @main.route('/user/<username>')
@@ -151,9 +159,10 @@ def publish_post():
     if current_user.can(Permission.WRITE_ARTICLES) and \
             form.validate_on_submit():
         title = form.title.data
-        category = form.category.data
+        category = Category.query.get(form.category.data)
         tags = form.tags.data
         body = form.body.data
+        print(type(current_user._get_current_object()))
         post = Post(title=title,
                     category=category,
                     tags=tags,
