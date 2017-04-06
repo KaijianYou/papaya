@@ -17,7 +17,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <div class="post-tabs">
                 {% include '_posts.html' %}
 
@@ -29,7 +29,7 @@
         </div>
 
         <!-- 侧边栏 -->
-        <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
+        <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
             <div class="side-widget">
                 <div class="signature">
                     <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}"
@@ -60,7 +60,7 @@
             <div class="side-widget">
                 <div class="widget-heading">{{ gettext('Tags') }}</div>
                 <div class="widget-body">
-
+                    <div class="tag-cloud"></div>
                 </div>
             </div>
 

@@ -177,11 +177,6 @@
                             </a>
                         </li>
                         <li>
-                            <a href="https://stackoverflow.com/" target="_blank">
-                                <i class="fa fa-stack-overflow"></i>
-                            </a>
-                        </li>
-                        <li>
                             <a href="https://github.com/KaijianYou" target="_blank">
                                 <i class="fa fa-github"></i>
                             </a>
@@ -192,7 +187,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>Copyright © FlaskFB 2017. 完善中</p>
+            <p>Copyright © FlaskFB 2017. 基于 Flask 和 Bootstrap 3. 完善中</p>
         </div>
     </div>
 </footer>
@@ -205,13 +200,133 @@
 <script src="{{ url_for('static', filename='js/particleground.all.js') }}"></script>
 <script src="{{ url_for('static', filename='js/particle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jquery.particleground.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/d3.layout.cloud.js') }}"></script>
 {{ moment.include_moment() }}
 {{ moment.lang("zh-CN") }}
 <script>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
+
+    // particle.js
     new Particleground.particle('#particle-ground');
 
-    $(".alert").fadeTo(3000, 500).slideUp(500, function(){
+    // flash message box
+    $(".alert").fadeTo(3000, 500).slideUp(500, function() {
         $(".alert").slideUp(500);
     });
+
+    $(function() {
+//        $.getJSON($SCRIPT_ROOT + '/_get_tags_string', {
+//
+//        }, function(data) {
+//            words[0] = data;
+//            console.log('---');
+//            console.log(words[0]);
+//        });
+//        return false;
+    });
+
+    var words = [];
+    $.ajax({
+        type: "GET",
+        url: $SCRIPT_ROOT + "/_get_tags_string",
+        async: false,
+        dataType: "text",
+        success: function(data, textStatus) {
+            words[0] = data;
+            console.log(words[0]);
+        }
+    });
+
+    // d3.js word cloud
+    function wordCloud(selector) {
+        var fill = d3.scale.category10();
+
+        // Construct the word cloud's SVG element
+        var svg = d3.select(selector).append("svg")
+                .attr("width", 200)
+                .attr("height", 200)
+                .append("g")
+                .attr("transform", "translate(100,100)");
+
+
+        // Draw the word cloud
+        function draw(words) {
+            var cloud = svg.selectAll("g text").data(words, function(d) {
+                return d.text;
+            });
+
+            // Entering words
+            cloud.enter()
+                .append("text")
+                .style("font-family", "Impact")
+                .style("fill", function(d, i) { return fill(i); })
+                .attr("text-anchor", "middle")
+                .attr('font-size', 1)
+                .text(function(d) { return d.text; });
+
+            // Entering and existing words
+            cloud.transition()
+                .duration(500)
+                .style("font-size", function(d) { return d.size + "px"; })
+                .attr("transform", function(d) {
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                })
+                .style("fill-opacity", 1);
+
+            // Exiting words
+            cloud.exit()
+                .transition()
+                .duration(200)
+                .style('fill-opacity', 1e-6)
+                .attr('font-size', 1)
+                .remove();
+        }
+
+        // Use the module pattern to encapsulate the visualisation code. We'll
+        // expose only the parts that need to be public.
+        return {
+            // Recompute the word cloud for a new set of words. This method will
+            // asycnhronously call draw when the layout has been computed.
+            // The outside world will need to call this function, so make it part
+            // of the wordCloud return value.
+            update: function(words) {
+                d3.layout.cloud().size([200, 200])
+                    .words(words)
+                    .padding(0)
+                    .rotate(function() { return ~~(Math.random() * 2) * 90; })
+                    .font("Impact")
+                    .fontSize(function(d) { return d.size / 1.5; })
+                    .on("end", draw)
+                    .start();
+            }
+        }
+    }
+
+    // Prepare one of the sample sentences by removing punctuation,
+    // creating an array of words and computing a random size attribute.
+    function getWords(i) {
+        return words[i]
+                .replace(/[!\.,:;\?]/g, '')
+                .split(' ')
+                .map(function(d) {
+                    return { text: d, size: 15 + Math.random() * 20 };
+                });
+    }
+
+    // Create a new instance of the word cloud visualisation.
+    var myWordCloud = wordCloud('div.tag-cloud');
+
+    // This method tells the word cloud to redraw with a new set of words.
+    // In reality the new words would probably come from a server request,
+    // user input or some other source.
+    function showNewWords(vis, i) {
+        i = i || 0;
+        vis.update(getWords(i++ % words.length));
+        setTimeout(function() { showNewWords(vis, i + 1); }, 3000);
+    }
+
+    // Start cycling through the demo data
+    showNewWords(myWordCloud);
 </script>
 {% endblock scripts %}

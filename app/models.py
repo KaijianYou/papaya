@@ -298,8 +298,8 @@ class Category(db.Model):
     @staticmethod
     def insert_categories():
         categories_list = [
-            '计算机与编程', '思考与感言', '读书写作', '外语学习', '生活',
-            '好玩有趣', '工作', '学习资料', '建议反馈', '新闻资讯']
+            '计算机与编程', '思考与感言', '读书与写作', '外语学习', '生活',
+            '好玩有趣', '工作', '学习资料', '建议与反馈', '新闻资讯']
         for category_name in categories_list:
             category = Category.query.filter_by(name=category_name).first()
             if category is None:
@@ -356,6 +356,15 @@ class Post(db.Model):
     def get_tags(self):
         tags_list = [tag for tag in self.tags.split(',') if tag]
         return tags_list
+
+    @staticmethod
+    def get_tags_string():
+        posts = Post.query.all()
+        tags_set = set()
+        for post in posts:
+            tags_set.update(set(post.get_tags()))
+        tags_string = ' '.join(tags_set)
+        return tags_string
 
     def get_category_name(self):
         return Category.query.get(self.category_id).name

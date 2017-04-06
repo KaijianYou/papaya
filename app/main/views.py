@@ -3,6 +3,7 @@
 
 from flask import render_template
 from flask import flash
+from flask import jsonify
 from flask import abort
 from flask import redirect, url_for
 from flask import request
@@ -342,6 +343,11 @@ def moderate_disable(id):
 @main.route('/about')
 def about():
     return render_template('about.html')
+
+
+@main.route('/_get_tags_string')
+def get_tags_string():
+    return Post.get_tags_string()
 
 
 @main.after_app_request
