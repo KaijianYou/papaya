@@ -8,8 +8,9 @@
     <h1>{{ gettext('Login') }}</h1>
 </div>
 
-<div calss="col-md-4">
+<div class="col-md-4">
     {{ wtf.quick_form(form) }}
+    <br/>
     <p>
         {{ gettext('New user') }}?
         <a href="{{ url_for('auth.register') }}">

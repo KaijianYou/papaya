@@ -6,11 +6,11 @@
         <a href="
             {% if pagination.has_prev %}
                 {% if category_name %}
-                    {{ url_for(endpoint, category_name=category_name, page=pagination.page-1) }}
+                    {{ url_for(endpoint, category_name=category_name, page=pagination.page-1, **kwargs) }}
                 {% elif tag_name %}
-                    {{ url_for(endpoint, tag_name=tag_name, page=pagination.page-1) }}
+                    {{ url_for(endpoint, tag_name=tag_name, page=pagination.page-1, **kwargs) }}
                 {% else %}
-                    {{ url_for(endpoint, page=pagination.page-1) }}
+                    {{ url_for(endpoint, page=pagination.page-1, **kwargs) }}
                 {% endif %}
             {% else %}
                 #
@@ -25,22 +25,22 @@
             <li class="active">
                 <a href="
                     {% if category_name %}
-                        {{ url_for(endpoint, category_name=category_name, page=page) }}
+                        {{ url_for(endpoint, category_name=category_name, page=page, **kwargs) }}
                     {% elif tag_name %}
-                        {{ url_for(endpoint, tag_name=tag_name, page=page) }}
+                        {{ url_for(endpoint, tag_name=tag_name, page=page, **kwargs) }}
                     {% else %}
-                        {{ url_for(endpoint, page=page) }}
+                        {{ url_for(endpoint, page=page, **kwargs) }}
                     {% endif %}">{{ page }}</a>
             </li>
             {% else %}
             <li>
                 <a href="
                     {% if category_name %}
-                        {{ url_for(endpoint, category_name=category_name, page=page) }}
+                        {{ url_for(endpoint, category_name=category_name, page=page, **kwargs) }}
                     {% elif tag_name %}
-                        {{ url_for(endpoint, tag_name=tag_name, page=page) }}
+                        {{ url_for(endpoint, tag_name=tag_name, page=page, **kwargs) }}
                     {% else %}
-                        {{ url_for(endpoint, page=page) }}
+                        {{ url_for(endpoint, page=page, **kwargs) }}
                     {% endif %}">{{ page }}</a>
             </li>
             {% endif %}
@@ -53,11 +53,11 @@
         <a href="
             {% if pagination.has_next %}
                 {% if category_name %}
-                    {{ url_for(endpoint, category_name=category_name, page=pagination.page+1) }}
+                    {{ url_for(endpoint, category_name=category_name, page=pagination.page+1, **kwargs) }}
                 {% elif tag_name %}
-                    {{ url_for(endpoint, tag_name=tag_name, page=pagination.page+1) }}
+                    {{ url_for(endpoint, tag_name=tag_name, page=pagination.page+1, **kwargs) }}
                 {% else %}
-                    {{ url_for(endpoint, page=pagination.page+1) }}
+                    {{ url_for(endpoint, page=pagination.page+1, **kwargs) }}
                 {% endif %}
             {% else %}
                 #
