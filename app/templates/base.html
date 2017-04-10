@@ -196,13 +196,12 @@
 {% block scripts %}
 <script src="{{ url_for('static', filename='jquery/jquery-3.2.0.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/moment-with-locales.min.js') }}"></script>
 <script src="{{ url_for('static', filename='particle/particleground.all.js') }}"></script>
 <script src="{{ url_for('static', filename='particle/particle.js') }}"></script>
 <script src="{{ url_for('static', filename='particle/jquery.particleground.min.js') }}"></script>
 <script src="{{ url_for('static', filename='d3/d3.v3.min.js') }}"></script>
 <script src="{{ url_for('static', filename='d3/d3.layout.cloud.js') }}"></script>
-{{ moment.include_moment() }}
+{{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
 {{ moment.lang("zh-CN") }}
 
 <script>

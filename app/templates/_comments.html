@@ -31,7 +31,7 @@
                 {% endif %}
             </div>
             {% if moderate %}
-            <div style="text-align: right;">
+            <div class="comment-footer">
                 <br>
                 {% if comment.disabled %}
                     <a class="btn btn-default btn-custom" href="{{url_for('main.moderate_enable', id=comment.id, page=page) }}">

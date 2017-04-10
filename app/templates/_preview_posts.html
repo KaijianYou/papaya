@@ -24,7 +24,7 @@
 
             <div class="post-title">
                 {% if post.title %}
-                <h4>{{ post.title }}</h4>
+                <h4><a href="{{ url_for('main.post', id=post.id) }}">{{ post.title }}</a></h4>
                 {% endif %}
             </div>
 
@@ -49,7 +49,7 @@
             </div>
 
             {% if show_post_body %}
-            <div class="post-body">
+            <div class="preview-post-body">
                 {% if post.body_html %}
                     <!--"| safe" 通知 jinja2 不要转义 HTML 元素-->
                     {{ post.body_html | safe }}
@@ -69,6 +69,9 @@
                     {{ gettext('Edit [Admin]') }}
                 </a>
                 {% endif %}
+                <a href="{{ url_for('main.post', id=post.id) }}" class="btn btn-info btn-custom">
+                    {{ gettext('Read more') }}
+                </a>
             </div>
         </div>
     </li>

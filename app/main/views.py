@@ -42,7 +42,7 @@ def index():
                            endpoint='main.index',
                            categories_list=Category.get_categories(),
                            show_followed_posts=show_followed_posts,
-                           show_post_body=False,
+                           show_post_body=True,
                            pagination=pagination)
 
 
