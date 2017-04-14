@@ -42,7 +42,6 @@ def index():
                            endpoint='main.index',
                            categories_list=Category.get_categories(),
                            show_followed_posts=show_followed_posts,
-                           show_post_body=True,
                            pagination=pagination)
 
 
@@ -56,7 +55,6 @@ def show_all_posts():
                            posts=posts,
                            endpoint='main.show_all_posts',
                            categories_list=Category.get_categories(),
-                           show_post_body=False,
                            pagination=pagination)
 
 
@@ -73,7 +71,6 @@ def show_followed_posts():
                                endpoint='main.show_followed_posts',
                                posts=posts,
                                categories_list=Category.get_categories(),
-                               show_post_body=False,
                                pagination=pagination)
     return redirect(url_for('.index'))
 
@@ -92,7 +89,6 @@ def category(category_name):
                            endpoint='main.category',
                            category_name=category_name,
                            categories_list=Category.get_categories(),
-                           show_post_body=False,
                            pagination=pagination)
 
 
@@ -108,7 +104,6 @@ def tag(tag_name):
                            endpoint='main.tag',
                            tag_name=tag_name,
                            categories_list=Category.get_categories(),
-                           show_post_body=False,
                            pagination=pagination)
 
 
@@ -120,7 +115,9 @@ def user(username):
         page, per_page=current_app.config['POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
-    return render_template('user.html', user=user, posts=posts,
+    return render_template('user.html',
+                           user=user,
+                           posts=posts,
                            pagination=pagination)
 
 
@@ -259,8 +256,11 @@ def followers(username):
         page, per_page=current_app.config['FOLLOWERS_PER_PAGE'], error_out=False)
     follows = [{'user': item.follower, 'timestamp': item.timestamp}
                for item in pagination.items]
-    return render_template('followers.html', user=user, title=_('\'s followers'),
-                           endpoint='.followers', pagination=pagination,
+    return render_template('followers.html',
+                           user=user,
+                           title=_('\'s followers'),
+                           endpoint='.followers',
+                           pagination=pagination,
                            follows=follows)
 
 
@@ -275,8 +275,11 @@ def followed_by(username):
         page, per_page=current_app.config['FOLLOWERS_PER_PAGE'], error_out=False)
     follows = [{'user': item.followed, 'timestamp': item.timestamp}
                for item in pagination.items]
-    return render_template('followers.html', user=user, title=_(' has followed'),
-                           endpoint='.followers', pagination=pagination,
+    return render_template('followers.html',
+                           user=user,
+                           title=_(' has followed'),
+                           endpoint='.followers',
+                           pagination=pagination,
                            follows=follows)
 
 
@@ -299,8 +302,10 @@ def post(id):
     pagination = post.comments.order_by(Comment.timestamp.asc()).paginate(
         page, per_page=current_app.config['COMMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items
-    return render_template('post.html', posts=[post], form=form,
-                           show_post_body=True, comments=comments,
+    return render_template('post.html',
+                           posts=[post],
+                           form=form,
+                           comments=comments,
                            pagination=pagination)
 
 
@@ -312,8 +317,10 @@ def moderate():
     pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(
         page, per_page=current_app.config['COMMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items
-    return render_template('moderate.html', comments=comments,
-                           pagination=pagination, page=page)
+    return render_template('moderate.html',
+                           comments=comments,
+                           pagination=pagination,
+                           page=page)
 
 
 @main.route('/moderate/enable/<int:id>')

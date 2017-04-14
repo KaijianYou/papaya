@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/csshake.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='anijs/anicollection.css') }}">
 {% endblock styles %}
 {% endblock head %}
 
@@ -154,7 +155,7 @@
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
 
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <h3>随便写些东西占个位置</h3>
+                    <h3 data-anijs="if: click, do: rotateIn animated, to: .container, after: $removeAnim">不知道写些什么</h3>
                 </div>
 
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
@@ -186,6 +187,8 @@
             </div>
         </div>
 
+        <a href="#" class="back-to-top">{{ gettext('Back to top') }}</a>
+
         <div class="footer-bottom">
             <p>Copyright © FlaskFB 2017. 基于 Flask 和 Bootstrap 3. 完善中</p>
         </div>
@@ -201,6 +204,7 @@
 <script src="{{ url_for('static', filename='particle/jquery.particleground.min.js') }}"></script>
 <script src="{{ url_for('static', filename='d3/d3.v3.min.js') }}"></script>
 <script src="{{ url_for('static', filename='d3/d3.layout.cloud.js') }}"></script>
+<script src="{{ url_for('static', filename='anijs/anijs-min.js') }}"></script>
 {{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
 {{ moment.lang("zh-CN") }}
 
@@ -211,6 +215,23 @@
     // flash message box
     $(".alert").fadeTo(3000, 500).slideUp(500, function() {
         $(".alert").slideUp(500);
+    });
+
+    $(document).ready(function() {
+        // 滚动窗口来判断按钮显示或隐藏
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 150) {
+                $('.back-to-top').fadeIn(100);
+            } else {
+                $('.back-to-top').fadeOut(100);
+            }
+        });
+
+        // jQuery 实现动画滚动
+        $('.back-to-top').click(function(event) {
+            event.preventDefault();
+            $('html, body').animate({scrollTop: 0}, 500);
+        })
     });
 </script>
 {% endblock scripts %}

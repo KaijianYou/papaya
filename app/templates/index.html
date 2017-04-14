@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <div class="post-tabs">
-                {% include '_preview_posts.html' %}
+                {% include '_posts_preview.html' %}
 
                 <div class="pagination">
                     {{ paginate_macro.pagination_widget(pagination, endpoint,
@@ -30,7 +30,7 @@
 
         <!-- 侧边栏 -->
         <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
-            <div class="side-widget">
+            <div class="side-widget" data-anijs="if: click, do: hinge animated, to: #my-avatar">
                 <div class="signature">
                     <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}"
                          alt="noahsss" title="noahsss"/>
@@ -41,7 +41,7 @@
             </div>
 
             <div class="side-widget">
-                <div class="widget-heading">{{ gettext('Categories') }}</div>
+                <div class="widget-heading" data-anijs="if: mouseover, do: swing animated, to: .side-widget">{{ gettext('Categories') }}</div>
                 <div class="widget-body">
                     {% if categories_list %}
                     <ul>
@@ -57,7 +57,7 @@
                 </div>
             </div>
 
-            <div class="side-widget">
+            <div class="side-widget" data-anijs="if: click, do: flipInY animated">
                 <div class="widget-heading">{{ gettext('Tags') }}</div>
                 <div class="widget-body">
                     <div class="tag-cloud"></div>
@@ -65,7 +65,7 @@
             </div>
 
             <div class="side-widget">
-                <div class="widget-heading">功能</div>
+                <div class="widget-heading" data-anijs="if: click, do: zoomIn animated, to: .post-title">功能</div>
                 <div class="widget-body">
                     <ul>
                         <li><a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a></li>
@@ -99,8 +99,7 @@
 {% endblock page_content %}
 
 {% block scripts %}
-{{ super() }}
-{{ pagedown.include_pagedown() }}
+    {{ super() }}
 
 <script>
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}

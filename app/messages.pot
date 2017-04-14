@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-03-30 13:56+0800\n"
+"POT-Creation-Date: 2017-04-13 17:29+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Keep me logged in"
 msgstr ""
 
-#: app/auth/forms.py:21 app/templates/base.html:115 app/templates/index.html:73
+#: app/auth/forms.py:21 app/templates/base.html:122 app/templates/index.html:71
 msgid "Log In"
 msgstr ""
 
@@ -221,49 +221,49 @@ msgstr ""
 msgid "Limited to 200 characters"
 msgstr ""
 
-#: app/main/views.py:126
+#: app/main/views.py:134
 msgid "Your profile has been updated"
 msgstr ""
 
-#: app/main/views.py:150
+#: app/main/views.py:158
 msgid "The profile has been updated"
 msgstr ""
 
-#: app/main/views.py:198
+#: app/main/views.py:207
 msgid "The post has been updated"
 msgstr ""
 
-#: app/main/views.py:213 app/main/views.py:229 app/main/views.py:243
-#: app/main/views.py:259
+#: app/main/views.py:222 app/main/views.py:238 app/main/views.py:252
+#: app/main/views.py:271
 msgid "Invalid user"
 msgstr ""
 
-#: app/main/views.py:216
+#: app/main/views.py:225
 msgid "You are already following this user"
 msgstr ""
 
-#: app/main/views.py:219
+#: app/main/views.py:228
 msgid "You are now following"
 msgstr ""
 
-#: app/main/views.py:232
+#: app/main/views.py:241
 msgid "You are not following this user"
 msgstr ""
 
-#: app/main/views.py:235
+#: app/main/views.py:244
 #, python-format
 msgid "Your are not following %(username)s anymore"
 msgstr ""
 
-#: app/main/views.py:250
+#: app/main/views.py:261
 msgid "'s followers"
 msgstr ""
 
-#: app/main/views.py:266
+#: app/main/views.py:280
 msgid " has followed"
 msgstr ""
 
-#: app/main/views.py:280
+#: app/main/views.py:295
 msgid "Your comment has been published"
 msgstr ""
 
@@ -279,61 +279,65 @@ msgstr ""
 msgid "Disable"
 msgstr ""
 
-#: app/templates/_posts.html:57
+#: app/templates/_posts.html:63 app/templates/_preview_posts.html:63
 msgid "Edit"
 msgstr ""
 
-#: app/templates/_posts.html:61
+#: app/templates/_posts.html:67 app/templates/_preview_posts.html:67
 msgid "Edit [Admin]"
 msgstr ""
 
-#: app/templates/_posts.html:65
+#: app/templates/_preview_posts.html:71
 msgid "Read more"
 msgstr ""
 
-#: app/templates/about.html:14 app/templates/base.html:77
+#: app/templates/about.html:14 app/templates/base.html:73
 msgid "About"
 msgstr ""
 
-#: app/templates/base.html:45
+#: app/templates/base.html:49
 msgid "Home"
 msgstr ""
 
-#: app/templates/base.html:51
+#: app/templates/base.html:55
 msgid "All Post"
 msgstr ""
 
-#: app/templates/base.html:57
+#: app/templates/base.html:61
 msgid "Followed Post"
 msgstr ""
 
-#: app/templates/base.html:63 app/templates/publish_post.html:4
+#: app/templates/base.html:67 app/templates/publish_post.html:4
 #: app/templates/publish_post.html:8
 msgid "Publish Post"
 msgstr ""
 
-#: app/templates/base.html:70
-msgid "Profile"
-msgstr ""
-
-#: app/templates/base.html:85
+#: app/templates/base.html:81
 msgid "Moderate Comments"
 msgstr ""
 
-#: app/templates/base.html:92
+#: app/templates/base.html:88
 msgid "Account"
 msgstr ""
 
-#: app/templates/base.html:97
-msgid "Change Password"
+#: app/templates/base.html:95
+msgid "Profile"
 msgstr ""
 
 #: app/templates/base.html:102
+msgid "Change Password"
+msgstr ""
+
+#: app/templates/base.html:108
 msgid "Change Email"
 msgstr ""
 
-#: app/templates/base.html:107
+#: app/templates/base.html:114
 msgid "Log Out"
+msgstr ""
+
+#: app/templates/base.html:189
+msgid "Back to top"
 msgstr ""
 
 #: app/templates/edit_post.html:4 app/templates/edit_post.html:8
@@ -368,15 +372,11 @@ msgstr ""
 msgid "Stranger"
 msgstr ""
 
-#: app/templates/index.html:25
-msgid "hot"
-msgstr ""
-
-#: app/templates/index.html:48
+#: app/templates/index.html:44
 msgid "Categories"
 msgstr ""
 
-#: app/templates/index.html:63
+#: app/templates/index.html:61
 msgid "Tags"
 msgstr ""
 
@@ -457,11 +457,11 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: app/templates/auth/login.html:14
+#: app/templates/auth/login.html:15
 msgid "New user"
 msgstr ""
 
-#: app/templates/auth/login.html:16
+#: app/templates/auth/login.html:17
 msgid "Click here to register"
 msgstr ""
 

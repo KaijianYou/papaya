@@ -266,8 +266,6 @@ class User(UserMixin, db.Model):
     def followed_posts(self):
         return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
             .filter(Follow.follower_id == self.id)
-        # return Post.query.filter(Follow.follower_id == self.id)\
-        #    .join(Follow, Follow.followed_id == Post.author_id)
 
     def __repr__(self):
         return '<User %s>' % self.name
@@ -335,7 +333,7 @@ class Post(db.Model):
     def on_changed_body(target, value, old_value, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1',
-                        'h2', 'h3', 'p', 'hr']
+                        'h2', 'h3', 'p', 'hr', 'br']
         target.body_html = bleach.linkify(bleach.clean(
             markdown(value, output_format='html'), tags=allowed_tags, strip=True))
 

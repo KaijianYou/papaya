@@ -48,7 +48,6 @@
                 </div>
             </div>
 
-            {% if show_post_body %}
             <div class="preview-post-body">
                 {% if post.body_html %}
                     <!--"| safe" 通知 jinja2 不要转义 HTML 元素-->
@@ -57,7 +56,6 @@
                     {{ post.body }}
                 {% endif %}
             </div>
-            {% endif %}
 
             <div class="post-footer hidden-xs">
                 {% if current_user == post.author %}
