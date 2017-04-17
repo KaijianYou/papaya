@@ -3,7 +3,6 @@
 
 from flask import render_template
 from flask import flash
-from flask import jsonify
 from flask import abort
 from flask import redirect, url_for
 from flask import request

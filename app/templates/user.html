@@ -79,7 +79,7 @@
 </div>
 
 <h3>{{ gettext('Posts by %(username)s', username=user.username) }}</h3>
-{% include '_posts.html' %}
+{% include '_posts_detail.html' %}
 
 <div class="pagination">
     {{ paginate_macro.pagination_widget(pagination, '.index') }}

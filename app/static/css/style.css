@@ -52,6 +52,10 @@ a:active {
     margin-left: 280px;
 }
 
+.page-header {
+    border-bottom: 1px solid rgba(0,0,0,0.3);
+}
+
 /*post*/
 ul.posts {
     margin: 16px 0 0 0;
@@ -558,4 +562,74 @@ span.tags {
 
 .back-to-top:hover {
 	background-color: rgba(0,0,0,0.3);
+}
+
+
+.about-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 720px;
+    height: 80px;
+    box-sizing: border-box;
+    padding: 20px 10px 20px 10px;
+}
+
+.about-container {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    width: 720px;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+}
+
+#resume, #history {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.4);
+}
+
+#history {
+    display: none;
+}
+
+#resume-body {
+    width: 100%;
+    height: 100%;
+}
+
+
+ul.icons {
+    margin: 0;
+    padding: 10px 40px 10px 40px;
+    cursor: default;
+    list-style: none;
+}
+
+ul.icons li {
+    display: inline-block;
+    padding-right: 30px;
+    text-align: center;
+}
+
+ul.icons li i {
+    width: 48px;
+    height: 48px;
+    border-radius: 100%;
+    line-height: 48px;
+    border: solid 1px #c8cccf;
+    color: #fff;
+    text-shadow: 1.25px 0 0 #c8cccf, -1.25px 0 0 #c8cccf, 0 1.25px 0 #c8cccf, 0 -1.25px 0 #c8cccf;
+}
+
+ul.icons li i:hover {
+    text-shadow: 1.25px 0 0 #ff7496, -1.25px 0 0 #ff7496, 0 1.25px 0 #ff7496, 0 -1.25px 0 #ff7496;
+    border-color: #ff7496;
 }

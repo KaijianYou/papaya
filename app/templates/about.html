@@ -13,6 +13,13 @@
 
     <title>{{ gettext('About') }}</title>
 
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='image/favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap-theme.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font-awesome/css/font-awesome.min.css') }}">
+
     <style type="text/css">
         body {
             height: 100vh;
@@ -25,27 +32,50 @@
             padding: 0;
             z-index: -1;
         }
-        #wrapper {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin: 0 auto;
-            width: 800px;
-            align-items: center;
-            border: 10px solid red;
-            perspective: 1000px;
-        }
     </style>
 </head>
 
 <body>
-    <!--<canvas id="sakura"></canvas>-->
+    <canvas id="sakura"></canvas>
 
-    <div id="wrapper" class=".container">
-
+    <div class="about-header">
+        <ul class="icons">
+            <li>
+                <a href="{{ url_for('main.index') }}"><i class="fa fa-home fa-2x" title="{{ gettext('Home') }}"></i></a>
+            </li>
+            <li>
+                <a href="JavaScript: void(0)" onclick="showHistory()"><i class="fa fa-list-alt fa-2x" title="{{ gettext('Website history') }}"></i></a>
+            </li>
+            <li>
+                <a href="JavaScript: void(0)" onclick="showResume()"><i class="fa fa-vcard-o fa-2x" title="{{ gettext('Resume') }}"></i></a>
+            </li>
+        </ul>
     </div>
+    <div class="about-container">
+        <div id="history"></div>
+        <div id="resume">
+            <embed src="{{ url_for('static', filename='pdf/resume.pdf') }}" alt="pdf"
+                   pluginspage="http://www.adobe.com/products/acrobat/readstep2.html"
+                   id="resume-body">
+            </embed>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/sakura.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery/jquery-3.2.0.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+
+    <script>
+        function showHistory() {
+            $("#resume").css("display", "none");
+            $("#history").css("display", "block");
+        }
+
+        function showResume() {
+            $("#history").css("display", "none");
+            $("#resume").css("display", "block");
+        }
+    </script>
 
     <!-- sakura shader -->
     <script id="sakura_point_vsh" type="x-shader/x_vertex">
@@ -345,7 +375,5 @@
             gl_FragColor.a = 1.0;
         }
     </script>
-
-    <script src="{{ url_for('static', filename='js/sakura.js') }}"></script>
 </body>
 </html>
