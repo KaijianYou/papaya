@@ -41,9 +41,11 @@ def create_app(config_name):
         sslify = SSLify(app)
 
     from .main import main as main_blueprint
+    from .main import views, errors
     app.register_blueprint(main_blueprint)
 
     from .auth import auth as auth_blueprint
+    from .auth import views
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
     return app

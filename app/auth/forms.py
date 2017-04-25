@@ -83,7 +83,8 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField(lazy_('New password'), validators=[DataRequired()])
     password_confirmation = PasswordField(
         lazy_('Confirm new password'),
-        validators=[DataRequired(), EqualTo('password', message=lazy_('Passwords must match'))])
+        validators=[DataRequired(),
+                    EqualTo('password', message=lazy_('Passwords must match'))])
     submit = SubmitField(lazy_('Reset Password'))
 
     def validate_email(self, field):

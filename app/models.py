@@ -18,8 +18,12 @@ from . import login_manager
 
 class Follow(db.Model):
     __tablename__ = 'follows'
-    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    follower_id = db.Column(db.Integer,
+                            db.ForeignKey('users.id'),
+                            primary_key=True)
+    followed_id = db.Column(db.Integer,
+                            db.ForeignKey('users.id'),
+                            primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -240,9 +244,13 @@ class User(UserMixin, db.Model):
             url = 'http://secure.gravatar.com/avatar'
         else:
             url = 'http://www.gravatar.com/avatar'
-        hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
-        return '{url}/{hash}?s={size}&d={default}&r={rating}' \
-            .format(url=url, hash=hash, size=size, default=default, rating=rating)
+        hash_code = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+        return '{url}/{hash_code}?s={size}&d={default}&r={rating}' \
+            .format(url=url,
+                    hash_code=hash_code,
+                    size=size,
+                    default=default,
+                    rating=rating)
 
     def follow(self, user):
         if not self.is_following(user):
@@ -322,20 +330,26 @@ class Post(db.Model):
     title = db.Column(db.String(64), index=True)
     body = db.Column(db.Text, nullable=False)
     body_html = db.Column(db.Text, nullable=False)
-    create_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    create_timestamp = db.Column(db.DateTime,
+                                 index=True,
+                                 default=datetime.utcnow)
     update_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     tags = db.Column(db.String(200), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    category_id = db.Column(db.Integer,
+                            db.ForeignKey('categories.id'),
+                            nullable=False)
+    author_id = db.Column(db.Integer,
+                          db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     @staticmethod
-    def on_changed_body(target, value, old_value, initiator):
+    def on_changed_body(target, value):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1',
                         'h2', 'h3', 'p', 'hr', 'br']
         target.body_html = bleach.linkify(bleach.clean(
-            markdown(value, output_format='html'), tags=allowed_tags, strip=True))
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
 
     @staticmethod
     def generate_fake(count=100):
@@ -347,7 +361,8 @@ class Post(db.Model):
         for i in range(count):
             user = User.query.offset(randint(0, user_count - 1)).first()
             post = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
-                        create_timestamp=forgery_py.date.date(True), author=user)
+                        create_timestamp=forgery_py.date.date(True),
+                        author=user)
             db.session.add(post)
             db.session.commit()
 
@@ -369,6 +384,7 @@ class Post(db.Model):
 
     def __repr__(self):
         return '<Post %s>' % self.title
+
 
 # 当 Post 实例的 body 字段更新，on_changed_body 会被自动调用
 db.event.listen(Post.body, 'set', Post.on_changed_body)

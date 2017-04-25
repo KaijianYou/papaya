@@ -17,6 +17,3 @@ def inject_permissions():
 @main.context_processor
 def inject_enumerate():
     return dict(enumerate=enumerate)
-
-
-from . import views, errors
