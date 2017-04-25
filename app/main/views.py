@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 
 
+from urllib.parse import urljoin
+
 from flask import render_template
 from flask import flash
 from flask import abort
 from flask import redirect, url_for
 from flask import request
 from flask import current_app
+from werkzeug.contrib.atom import AtomFeed
 from flask_login import login_required
 from flask_login import current_user
 from flask_sqlalchemy import get_debug_queries
@@ -33,8 +36,10 @@ def get_locale():
 def index():
     page = request.args.get('page', 1, type=int)
     pagination = Post.query.outerjoin(Comment)\
-        .group_by(Post.id).order_by(desc(func.count(Comment.id))).paginate(
-        page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+        .group_by(Post.id).order_by(desc(func.count(Comment.id)))\
+        .paginate(page,
+                  per_page=current_app.config['POSTS_PER_PAGE'],
+                  error_out=False)
     posts = pagination.items
     return render_template('index.html',
                            posts=posts,
@@ -47,8 +52,10 @@ def index():
 @main.route('/all', methods=['GET', 'POST'])
 def show_all_posts():
     page = request.args.get('page', 1, type=int)
-    pagination = Post.query.order_by(Post.create_timestamp.desc()).paginate(
-        page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    pagination = Post.query.order_by(Post.create_timestamp.desc())\
+        .paginate(page,
+                  per_page=current_app.config['POSTS_PER_PAGE'],
+                  error_out=False)
     posts = pagination.items
     return render_template('index.html',
                            posts=posts,
@@ -63,8 +70,10 @@ def show_followed_posts():
     if current_user.is_authenticated:
         query = current_user.followed_posts()
         page = request.args.get('page', 1, type=int)
-        pagination = query.order_by(Post.create_timestamp.desc()).paginate(
-            page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+        pagination = query.order_by(Post.create_timestamp.desc())\
+            .paginate(page,
+                      per_page=current_app.config['POSTS_PER_PAGE'],
+                      error_out=False)
         posts = pagination.items
         return render_template('index.html',
                                endpoint='main.show_followed_posts',
@@ -80,8 +89,10 @@ def category(category_name):
     posts = Post.query.join(Category, Post.category_id == Category.id)\
         .filter(Category.id == category_id)
     page = request.args.get('page', 1, type=int)
-    pagination = posts.order_by(Post.create_timestamp.desc()).paginate(
-        page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    pagination = posts.order_by(Post.create_timestamp.desc())\
+        .paginate(page,
+                  per_page=current_app.config['POSTS_PER_PAGE'],
+                  error_out=False)
     posts = pagination.items
     return render_template('index.html',
                            posts=posts,
@@ -95,8 +106,10 @@ def category(category_name):
 def tag(tag_name):
     posts = Post.query.filter(Post.tags.like('%' + tag_name + '%'))
     page = request.args.get('page', 1, type=int)
-    pagination = posts.order_by(Post.create_timestamp.desc()).paginate(
-        page, per_page=current_app.config['POSTS_PER_PAGE'], error_out=False)
+    pagination = posts.order_by(Post.create_timestamp.desc())\
+        .paginate(page,
+                  per_page=current_app.config['POSTS_PER_PAGE'],
+                  error_out=False)
     posts = pagination.items
     return render_template('index.html',
                            posts=posts,
@@ -110,9 +123,10 @@ def tag(tag_name):
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    pagination = user.posts.order_by(Post.create_timestamp.desc()).paginate(
-        page, per_page=current_app.config['POSTS_PER_PAGE'],
-        error_out=False)
+    pagination = user.posts.order_by(Post.create_timestamp.desc())\
+        .paginate(page,
+                  per_page=current_app.config['POSTS_PER_PAGE'],
+                  error_out=False)
     posts = pagination.items
     return render_template('user.html',
                            user=user,
@@ -176,7 +190,6 @@ def publish_post():
         category = Category.query.get(form.category.data)
         tags = form.tags.data
         body = form.body.data
-        print(type(current_user._get_current_object()))
         post = Post(title=title,
                     category=category,
                     tags=tags,
@@ -251,8 +264,10 @@ def followers(username):
         flash(_('Invalid user'), 'warning')
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
-    pagination = user.followers.paginate(
-        page, per_page=current_app.config['FOLLOWERS_PER_PAGE'], error_out=False)
+    pagination = user.followers\
+        .paginate(page,
+                  per_page=current_app.config['FOLLOWERS_PER_PAGE'],
+                  error_out=False)
     follows = [{'user': item.follower, 'timestamp': item.timestamp}
                for item in pagination.items]
     return render_template('followers.html',
@@ -270,8 +285,10 @@ def followed_by(username):
         flash(_('Invalid user'), 'warning')
         return redirect(url_for('.index'))
     page = request.args.get('page', 1, type=int)
-    pagination = user.followed.paginate(
-        page, per_page=current_app.config['FOLLOWERS_PER_PAGE'], error_out=False)
+    pagination = user.followed\
+        .paginate(page,
+                  per_page=current_app.config['FOLLOWERS_PER_PAGE'],
+                  error_out=False)
     follows = [{'user': item.followed, 'timestamp': item.timestamp}
                for item in pagination.items]
     return render_template('followers.html',
@@ -287,7 +304,8 @@ def post(id):
     post = Post.query.get_or_404(id)
     form = CommentForm()
     if form.validate_on_submit():
-        comment = Comment(body=form.body.data, post=post,
+        comment = Comment(body=form.body.data,
+                          post=post,
                           author=current_user._get_current_object())
         db.session.add(comment)
         db.session.commit()
@@ -298,8 +316,10 @@ def post(id):
     if page == -1:
         page = (post.comments.count() - 1) // \
                current_app.config['COMMENTS_PER_PAGE'] + 1
-    pagination = post.comments.order_by(Comment.timestamp.asc()).paginate(
-        page, per_page=current_app.config['COMMENTS_PER_PAGE'], error_out=False)
+    pagination = post.comments.order_by(Comment.timestamp.asc())\
+        .paginate(page,
+                  per_page=current_app.config['COMMENTS_PER_PAGE'],
+                  error_out=False)
     comments = pagination.items
     return render_template('post.html',
                            posts=[post],
@@ -313,8 +333,10 @@ def post(id):
 @permission_required(Permission.MODERATE_COMMENTS)
 def moderate():
     page = request.args.get('page', 1, type=int)
-    pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(
-        page, per_page=current_app.config['COMMENTS_PER_PAGE'], error_out=False)
+    pagination = Comment.query.order_by(Comment.timestamp.desc())\
+        .paginate(page,
+                  per_page=current_app.config['COMMENTS_PER_PAGE'],
+                  error_out=False)
     comments = pagination.items
     return render_template('moderate.html',
                            comments=comments,
@@ -354,6 +376,26 @@ def about():
 @main.route('/_get_tags_string')
 def get_tags_string():
     return Post.get_tags_string()
+
+
+def make_external(url):
+    return urljoin(request.url_root, url)
+
+
+@main.route('/feed')
+def recent_feed():
+    feed = AtomFeed('Recent Articles',
+                    feed_url=request.url,
+                    url=request.url_root)
+    posts = Post.query.order_by(Post.create_timestamp.desc()).limit(15).all()
+    for post in posts:
+        feed.add(post.title,
+                 post.body,
+                 content_type='html',
+                 author=post.author.username,
+                 url=make_external(url_for('main.post', id=post.id)),
+                 updated=post.update_timestamp)
+    return feed.get_response()
 
 
 @main.after_app_request

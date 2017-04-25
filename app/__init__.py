@@ -12,6 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from app.config import config
 
+
 bootstrap = Bootstrap()
 moment = Moment()
 db = SQLAlchemy()
