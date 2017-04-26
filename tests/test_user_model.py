@@ -5,7 +5,7 @@ import unittest
 import time
 from datetime import datetime
 
-from app.models import User, AnonymousUser, Permission
+from app.models import User, AnonymousUser, Permission, Follow
 from app import db
 from app import create_app
 
@@ -23,34 +23,34 @@ class UserModelTestCase(unittest.TestCase):
         self.app_context.pop()
 
     def test_password_setter(self):
-        u = User(username='Birdman', password='tiger', email='birdman@gmail.com')
+        u = User(username='birdman', password='tiger', email='birdman@gmail.com')
         self.assertTrue(u.password_hash is not None)
 
     def test_no_password_getter(self):
-        u = User(username='Birdman', password='tiger', email='birdman@gmail.com')
+        u = User(username='birdman', password='tiger', email='birdman@gmail.com')
         with self.assertRaises(AttributeError):
             u.password
 
     def test_password_verification(self):
-        u = User(username='Birdman', password='tiger', email='birdman@gmail.com')
+        u = User(username='birdman', password='tiger', email='birdman@gmail.com')
         self.assertTrue(u.verify_password('tiger'))
         self.assertFalse(u.verify_password('dog'))
 
     def test_password_salts_are_random(self):
-        u = User(username='Birdman', password='tiger', email='birdman@gmail.com')
-        u2 = User(username='Birdman', password='tiger', email='birdman@gmail.com')
+        u = User(username='birdman', password='tiger', email='birdman@gmail.com')
+        u2 = User(username='birdman', password='tiger', email='birdman@gmail.com')
         self.assertTrue(u.password_hash != u2.password_hash)
 
     def test_valid_confirmation_token(self):
-        u = User(username='Birdman', password='tiger', email='birdman@gmail.com')
+        u = User(username='birdman', password='tiger', email='birdman@gmail.com')
         db.session.add(u)
         db.session.commit()
         token = u.generate_confirmation_token()
         self.assertTrue(u.confirm(token))
 
     def test_invalid_confirmation_token(self):
-        u1 = User(username='Birdman', password='tiger', email='birdman@gmail.com')
-        u2 = User(username='Batman', password='tiger', email='batman@gmail.com')
+        u1 = User(username='birdman', password='tiger', email='birdman@gmail.com')
+        u2 = User(username='batman', password='tiger', email='batman@gmail.com')
         db.session.add(u1)
         db.session.add(u2)
         db.session.commit()
@@ -66,7 +66,7 @@ class UserModelTestCase(unittest.TestCase):
         self.assertFalse(u.confirm(token))
 
     def test_update_last_visited(self):
-        u = User(username='Birdman', password='tiger', email='birdman@gmail.com')
+        u = User(username='birdman', password='tiger', email='birdman@gmail.com')
         db.session.add(u)
         db.session.commit()
         time.sleep(2)
@@ -75,7 +75,7 @@ class UserModelTestCase(unittest.TestCase):
         self.assertTrue(u.last_visited > last_visited_before)
 
     def test_get_avatar(self):
-        u = User(username='Birdman', password='tiger', email='birdman@gmail.com')
+        u = User(username='birdman', password='tiger', email='birdman@gmail.com')
         with self.app.test_request_context('/'):
             avatar = u.get_avatar()
             avatar_256 = u.get_avatar(size=256)
@@ -94,14 +94,14 @@ class UserModelTestCase(unittest.TestCase):
                         '1d0a5d31e8cfa492465874300982b8c8' in avatar_ssl)
 
     def test_timestamps(self):
-        u = User(username='Birdman', password='tiger', email='birdman@gmail.com')
+        u = User(username='birdman', password='tiger', email='birdman@gmail.com')
         db.session.add(u)
         db.session.commit()
         self.assertTrue((datetime.utcnow() - u.register_date).total_seconds() < 3)
         self.assertTrue((datetime.utcnow() - u.last_visited).total_seconds() < 3)
 
     def test_duplicate_email_change_token(self):
-        u1 = User(username='Birdman', password='tiger', email='birdman@gmail.com')
+        u1 = User(username='birdman', password='tiger', email='birdman@gmail.com')
         u2 = User(username='lionheart', password='tiger', email='lionheart@gmail.com')
         db.session.add(u1)
         db.session.add(u2)
@@ -113,3 +113,44 @@ class UserModelTestCase(unittest.TestCase):
     def test_anonymous_user_permission(self):
         u = AnonymousUser()
         self.assertFalse(u.can(Permission.FOLLOW))
+
+    def test_follows(self):
+        u1 = User(username='birdman', email='birdman@gmail.com', password='tiger')
+        u2 = User(username='lionheart', email='batman@gmail.com', password='lion')
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.commit()
+        self.assertFalse(u1.is_following(u2))
+        self.assertFalse(u1.is_followed_by(u2))
+
+        timestamp_before = datetime.utcnow()
+        u1.follow(u2)
+        db.session.add(u1)
+        db.session.commit()
+        timestamp_after = datetime.utcnow()
+        self.assertTrue(u1.is_following(u2))
+        self.assertFalse(u1.is_followed_by(u2))
+        self.assertTrue(u2.is_followed_by(u1))
+        self.assertTrue(u1.followed.count() == 2)
+        self.assertTrue(u2.followers.count() == 2)
+
+        f = u1.followed.all()[-1]
+        self.assertTrue(f.followed == u2)
+        self.assertTrue(timestamp_before <= f.timestamp <= timestamp_after)
+        f = u2.followers.all()[0]
+        self.assertTrue(f.follower == u1)
+
+        u1.unfollow(u2)
+        db.session.add(u1)
+        db.session.commit()
+        self.assertTrue(u1.followed.count() == 1)
+        self.assertTrue(u2.followers.count() == 1)
+        self.assertTrue(Follow.query.count() == 2)
+
+        u2.follow(u1)
+        db.session.add(u1)
+        db.session.add(u2)
+        db.session.commit()
+        db.session.delete(u2)
+        db.session.commit()
+        self.assertTrue(Follow.query.count() == 1)

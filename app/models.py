@@ -276,7 +276,7 @@ class User(UserMixin, db.Model):
             .filter(Follow.follower_id == self.id)
 
     def __repr__(self):
-        return '<User %s>' % self.name
+        return '<User %s>' % self.username
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -343,7 +343,7 @@ class Post(db.Model):
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     @staticmethod
-    def on_changed_body(target, value):
+    def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1',
                         'h2', 'h3', 'p', 'hr', 'br']

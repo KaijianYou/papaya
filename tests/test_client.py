@@ -27,7 +27,8 @@ class FlaskClientTestCase(unittest.TestCase):
 
     def test_home_page(self):
         response = self.client.get(url_for('main.index'))
-        self.assertTrue('Stranger' in response.get_data(as_text=True))
+        # self.assertTrue('Stranger' in response.get_data(as_text=True))
+        self.assertTrue('游客' in response.get_data(as_text=True))
 
     def test_register_and_login(self):
         response = self.client.post(url_for('auth.register'), data={
@@ -43,16 +44,20 @@ class FlaskClientTestCase(unittest.TestCase):
             'password': 'tiger'
         }, follow_redirects=True)
         data = response.get_data(as_text=True)
-        self.assertTrue(re.search('Hello,\s+sugar!', data))
-        self.assertTrue('You have not confirmed your account yet' in data)
+        # self.assertTrue(re.search('Hello,\s+sugar!', data))
+        self.assertTrue(re.search('您好,\s+sugar', data))
+        # self.assertTrue('You have not confirmed your account yet' in data)
+        self.assertTrue('您还没有验证账号' in data)
 
         user = User.query.filter_by(email='sugar@gmail.com').first()
         token = user.generate_confirmation_token()
         response = self.client.get(url_for('auth.confirm', token=token),
                                    follow_redirects=True)
         data = response.get_data(as_text=True)
-        self.assertTrue('You have confirmed your account' in data)
+        # self.assertTrue('You have confirmed your account' in data)
+        self.assertTrue('您已经验证账号' in data)
 
         response = self.client.get(url_for('auth.logout'), follow_redirects=True)
         data = response.get_data(as_text=True)
-        self.assertTrue('You have been logged out' in data)
+        # self.assertTrue('You have been logged out' in data)
+        self.assertTrue('您已经退出' in data)
