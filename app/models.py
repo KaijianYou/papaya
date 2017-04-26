@@ -3,32 +3,38 @@
 
 import hashlib
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
+
 from flask_login import UserMixin, AnonymousUserMixin
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from flask import request
+from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from markdown import markdown
 import bleach
+
 from . import db
 from . import login_manager
 
 
 class Follow(db.Model):
     __tablename__ = 'follows'
-    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    follower_id = db.Column(db.Integer,
+                            db.ForeignKey('users.id'),
+                            primary_key=True)
+    followed_id = db.Column(db.Integer,
+                            db.ForeignKey('users.id'),
+                            primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 
-# ------------------------------------------------------------------
-# |      操  作        |      位  值       |         说  明          |
-# | 关注他人           | 0b00000001 (0x01) | 关注其他用户             |
+# -------------------------------------------------------------------------
+# |        操  作        |      位  值       |         说  明             |
+# | 关注他人             | 0b00000001 (0x01) | 关注其他用户               |
 # | 在他人文章中发表评论 | 0b00000010 (0x02) | 在他人撰写的文章中发布评论 |
-# | 写文章             | 0b00000100 (0x04) | 写原创文章               |
-# | 管理他人发表的评论   | 0b00001000 (0x08) | 查处他人发表的不当评论    |
-# | 管理员权限          | 0b10000000 (0x80) | 管理网站                |
-# ------------------------------------------------------------------
+# | 写文章               | 0b00000100 (0x04) | 写原创文章                 |
+# | 管理他人发表的评论   | 0b00001000 (0x08) | 查处他人发表的不当评论     |
+# | 管理员权限           | 0b10000000 (0x80) | 管理网站                   |
+# -------------------------------------------------------------------------
 class Permission:
     FOLLOW = 0x01
     COMMENT = 0x02
@@ -37,14 +43,14 @@ class Permission:
     ADMINISTER = 0x80
 
 
-# -----------------------------------------------------------------------
-# | 用户角色 |       权  限       |          说明                          |
-# | 匿名     | 0b00000000 (0x00) | 未登录的用户。在程序中只有阅读权限         |
-# | 用户     | 0b00000111 (0x07) | 具有发布文章、发表评论和关注其他用户的权限。 |
-# |         |                   | 这是新用户的默认角色                      |
-# | 协管员   | 0b00001111 (0x0f) | 增加审查不当评论的权限                    |
-# | 管理员   | 0b11111111 (0xff) | 具有所有权限，包括修改其他用户所属角色的权限 |
-# -----------------------------------------------------------------------
+# --------------------------------------------------------------------------------
+# | 用户角色 |       权  限       |          说明                                |
+# | 匿名     | 0b00000000 (0x00)  | 未登录的用户。在程序中只有阅读权限           |
+# | 用户     | 0b00000111 (0x07)  | 具有发布文章、发表评论和关注其他用户的权限。 |
+# |          |                    | 这是新用户的默认角色                         |
+# | 协管员   | 0b00001111 (0x0f)  | 增加审查不当评论的权限                       |
+# | 管理员   | 0b11111111 (0xff)  | 具有所有权限，包括修改其他用户所属角色的权限 |
+# --------------------------------------------------------------------------------
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -238,9 +244,13 @@ class User(UserMixin, db.Model):
             url = 'http://secure.gravatar.com/avatar'
         else:
             url = 'http://www.gravatar.com/avatar'
-        hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
-        return '{url}/{hash}?s={size}&d={default}&r={rating}' \
-            .format(url=url, hash=hash, size=size, default=default, rating=rating)
+        hash_code = hashlib.md5(self.email.encode('utf-8')).hexdigest()
+        return '{url}/{hash_code}?s={size}&d={default}&r={rating}' \
+            .format(url=url,
+                    hash_code=hash_code,
+                    size=size,
+                    default=default,
+                    rating=rating)
 
     def follow(self, user):
         if not self.is_following(user):
@@ -249,7 +259,7 @@ class User(UserMixin, db.Model):
             db.session.commit()
 
     def unfollow(self, user):
-        f = self.followd.filter_by(followed_id=user.id).first()
+        f = self.followed.filter_by(followed_id=user.id).first()
         if f:
             db.session.delete(f)
             db.session.commit()
@@ -264,11 +274,9 @@ class User(UserMixin, db.Model):
     def followed_posts(self):
         return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
             .filter(Follow.follower_id == self.id)
-        # return Post.query.filter(Follow.follower_id == self.id)\
-        #    .join(Follow, Follow.followed_id == Post.author_id)
 
     def __repr__(self):
-        return '<User %s>' % self.name
+        return '<User %s>' % self.username
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -287,23 +295,61 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+class Category(db.Model):
+    __tablename__ = 'categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32), nullable=False, unique=True)
+    posts = db.relationship('Post', backref='category', lazy='dynamic')
+
+    @staticmethod
+    def insert_categories():
+        categories_list = [
+            '计算机与编程', '思考与感言', '读书与写作', '外语学习', '生活',
+            '好玩有趣', '工作', '学习资料', '建议与反馈', '新闻资讯']
+        for category_name in categories_list:
+            category = Category.query.filter_by(name=category_name).first()
+            if category is None:
+                category = Category(name=category_name)
+                db.session.add(category)
+        db.session.commit()
+
+    @staticmethod
+    def get_categories():
+        categories = Category.query.all()
+        categories_list = [(category.name, category.posts.count())
+                           for category in categories]
+        return categories_list
+
+    def __repr__(self):
+        return '<Category %s>' % self.name
+
+
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), index=True)
-    body = db.Column(db.Text)
-    body_html = db.Column(db.Text)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    body = db.Column(db.Text, nullable=False)
+    body_html = db.Column(db.Text, nullable=False)
+    create_timestamp = db.Column(db.DateTime,
+                                 index=True,
+                                 default=datetime.utcnow)
+    update_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    tags = db.Column(db.String(200), nullable=False)
+    category_id = db.Column(db.Integer,
+                            db.ForeignKey('categories.id'),
+                            nullable=False)
+    author_id = db.Column(db.Integer,
+                          db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     @staticmethod
-    def on_changed_body(target, value, old_value, initiator):
+    def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1',
-                        'h2', 'h3', 'p', 'hr']
+                        'h2', 'h3', 'p', 'hr', 'br']
         target.body_html = bleach.linkify(bleach.clean(
-            markdown(value, output_format='html'), tags=allowed_tags, strip=True))
+            markdown(value, output_format='html'),
+            tags=allowed_tags, strip=True))
 
     @staticmethod
     def generate_fake(count=100):
@@ -315,11 +361,31 @@ class Post(db.Model):
         for i in range(count):
             user = User.query.offset(randint(0, user_count - 1)).first()
             post = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
-                        timestamp=forgery_py.date.date(True), author=user)
+                        create_timestamp=forgery_py.date.date(True),
+                        author=user)
             db.session.add(post)
             db.session.commit()
 
-# on_changed_body 被注册为 Post.body 字段的 "set" 事件的监听程序，
+    def get_tags(self):
+        tags_list = [tag for tag in self.tags.split(',') if tag]
+        return tags_list
+
+    @staticmethod
+    def get_tags_string():
+        posts = Post.query.all()
+        tags_set = set()
+        for post in posts:
+            tags_set.update(set(post.get_tags()))
+        tags_string = ' '.join(tags_set)
+        return tags_string
+
+    def get_category_name(self):
+        return Category.query.get(self.category_id).name
+
+    def __repr__(self):
+        return '<Post %s>' % self.title
+
+
 # 当 Post 实例的 body 字段更新，on_changed_body 会被自动调用
 db.event.listen(Post.body, 'set', Post.on_changed_body)
 
@@ -327,18 +393,8 @@ db.event.listen(Post.body, 'set', Post.on_changed_body)
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.Text)
-    body_html = db.Column(db.Text)
+    body = db.Column(db.String(200))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     disabled = db.Column(db.Boolean)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-
-    @staticmethod
-    def on_changed_body(target, value, old_value, initiator):
-        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'code', 'em', 'i', 'strong']
-        target.body_html = bleach.linkify(bleach.clean(
-            markdown(value, output_format='html'), tags=allowed_tags, strip=True))
-
-
-db.event.listen(Comment.body, 'set', Comment.on_changed_body)

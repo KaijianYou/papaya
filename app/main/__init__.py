@@ -2,6 +2,7 @@
 
 
 from flask import Blueprint
+
 from ..models import Permission
 
 
@@ -13,4 +14,6 @@ def inject_permissions():
     return dict(Permission=Permission)
 
 
-from . import views, errors
+@main.context_processor
+def inject_enumerate():
+    return dict(enumerate=enumerate)

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% import "_paginate_macros.html" as macros %}
+{% import "_paginate_macro.html" as paginate_macro %}
 
-{% block title %}FlaskFB - {{ title }} {{ user.username }}{% endblock title %}
+{% block title %}FlaskFB - {{ gettext('Relationship') }}{% endblock title %}
 
 {% block page_content %}
 <dive class="page-header">
-    <h1>{{ title }} {{ user.username }}</h1>
+    <h1>{{ user.username + title }}</h1>
 </dive>
 
 <table class="table table-hover followers">
@@ -19,7 +19,7 @@
         {% if follow.user != user %}
         <tr>
             <td>
-                <a href="{{ url_for('.user', username=follow.user.username) }}">
+                <a href="{{ url_for('main.user', username=follow.user.username) }}">
                     <img class="img-rounded" src="{{ follow.user.get_avatar(size=32) }}">
                     {{ follow.user.username }}
                 </a>
@@ -31,6 +31,6 @@
 </table>
 
 <div class="pagination">
-    {{ macros.pagination_widget(pagination, endpoint, username=user.username) }}
+    {{ paginate_macro.pagination_widget(pagination, endpoint, username=user.username) }}
 </div>
 {% endblock page_content %}

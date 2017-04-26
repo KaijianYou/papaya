@@ -5,6 +5,7 @@ import os
 
 
 class Config(object):
+    # 邮件设置
     MAIL_SUBJECT_PREFIX = 'FlaskFB - '
     MAIL_SENDER = 'FlaskFB <' + os.environ.get('MAIL_USERNAME') + '>'
     ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
@@ -14,9 +15,10 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
-    POSTS_PER_PAGE = 20
+    # 分页设置
+    POSTS_PER_PAGE = 10
     FOLLOWERS_PER_PAGE = 20
-    COMMENTS_PER_PAGE = 30
+    COMMENTS_PER_PAGE = 20
 
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'no zuo no die why you try'
 
@@ -27,6 +29,7 @@ class Config(object):
     DB_QUERY_TIMEOUT = 0.5            # 花费时间超过 0.5s 的查询语句将被记录
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # SQLALCHEMY_COMMIT_ON_TEARDOWN = True  # Flask-SQLALchemy 未来可能会删除
+    # SQLALCHEMY_ECHO = True  # 在 stderr 输出生成的 SQL 语句
 
     SSL_DISABLE = True
 

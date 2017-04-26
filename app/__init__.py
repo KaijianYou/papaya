@@ -2,14 +2,15 @@
 
 
 from flask import Flask
+from flask_babel import Babel
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 from flask_mail import Mail
 from flask_moment import Moment
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from flask_pagedown import PageDown
-from flask_babel import Babel
-from config import config
+from flask_sqlalchemy import SQLAlchemy
+
+from app.config import config
 
 
 bootstrap = Bootstrap()
@@ -41,9 +42,11 @@ def create_app(config_name):
         sslify = SSLify(app)
 
     from .main import main as main_blueprint
+    from .main import views, errors
     app.register_blueprint(main_blueprint)
 
     from .auth import auth as auth_blueprint
+    from .auth import views
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
     return app
