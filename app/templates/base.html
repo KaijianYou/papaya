@@ -211,7 +211,13 @@
 
 <script>
     // particle.js
-    new Particleground.particle('#particle-ground');
+    // 如何使用，请看：http://particleground.duapp.com/examples/particle
+    new Particleground.particle('#particle-ground', {
+        maxSpeed: 0.6,
+        maxR: 2.8,
+        range: 1000,
+        distance: 50
+    });
 
     // flash message box
     $(".alert").fadeTo(3000, 500).slideUp(500, function() {

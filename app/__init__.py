@@ -49,4 +49,8 @@ def create_app(config_name):
     from .auth import views
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
+    from .admin import admin as admin_blueprint
+    from .admin import views
+    app.register_blueprint(admin_blueprint, url_prefix='/admin')
+
     return app

@@ -1,7 +1,7 @@
 # Virtual Environment
 venv/
 
-# Pycharm Project Setting
+# Pycharm Project Settings
 .idea/
 
 # Python cache 

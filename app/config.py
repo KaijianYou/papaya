@@ -20,7 +20,8 @@ class Config(object):
     FOLLOWERS_PER_PAGE = 20
     COMMENTS_PER_PAGE = 20
 
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'no zuo no die why you try'
+    SECRET_KEY = os.environ.get('SECRET_KEY') \
+        or 'mt8-iot!5s%k78hyphj$t&c3-kghp_0uw&ge&53@fntb^hhao6'
 
     BABEL_DEFAULT_LOCALE = 'zh_Hans_CN'
     # BABEL_DEFAULT_TIMEZONE =
@@ -76,8 +77,8 @@ class ProductionConfig(Config):
         app.logger.addHandler(mail_handler)
 
 
-# Heroku
 class HerokuConfig(ProductionConfig):
+    """Heroku configuration"""
     SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
 
     @classmethod

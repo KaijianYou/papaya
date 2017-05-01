@@ -72,11 +72,11 @@ def test(coverage=False):
         COV.erase()
 
 
-# 源码分析器
 @manager.command
 def profile(length=20, profile_dir=None):
-    """启动应用的同时开启源码分析器"""
+    """源码分析器"""
     from werkzeug.contrib.profiler import ProfilerMiddleware
+    # 启动应用的同时开启源码分析器
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[length],
                                      profile_dir=profile_dir)
     app.run()

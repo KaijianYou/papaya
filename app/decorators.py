@@ -9,8 +9,8 @@ from flask_login import current_user
 from .models import Permission
 
 
-# 检查用户权限
 def permission_required(permission):
+    """检查用户权限"""
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):

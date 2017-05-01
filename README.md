@@ -49,7 +49,7 @@ Please visit https://flaskfb.herokuapp.com/<br>
 ### Set environment variables
     (venv) $ export MAIL_USERNAME='your_qq_email_address'
     (venv) $ export MAIL_PASSWORD='your_qq_email_password'
-    (venv) $ export DEV_DATABASE_URL='database_url'  # ???
+    (venv) $ export DEV_DATABASE_URL='your_database_url'
     (venv) $ export ADMIN_EMAIL='your_qq_email_address'
 **database_url**: for example,
 > 'postgresql+psycopg2://username:password@host/database_name'
