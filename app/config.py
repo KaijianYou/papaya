@@ -20,8 +20,7 @@ class Config(object):
     FOLLOWERS_PER_PAGE = 20
     COMMENTS_PER_PAGE = 20
 
-    SECRET_KEY = os.environ.get('SECRET_KEY') \
-        or 'mt8-iot!5s%k78hyphj$t&c3-kghp_0uw&ge&53@fntb^hhao6'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'Why not go die?'
 
     BABEL_DEFAULT_LOCALE = 'zh_Hans_CN'
     # BABEL_DEFAULT_TIMEZONE =

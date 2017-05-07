@@ -1,19 +1,20 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
 {% import "_paginate_macro.html" as paginate_macro %}
 
 {% block title %}FlaskFB{% endblock title %}
 
 {% block page_content %}
-<div class="page-header">
-    <h2>{{ gettext('Hello') }},
-    {% if current_user.is_authenticated %}
-        {{ current_user.username }}
-    {% else %}
-        {{ gettext('Stranger') }}
-    {% endif %}
-    </h2>
-</div>
+{% block page_header %}
+    <div class="page-header">
+        <h2>{{ gettext('Hello') }},
+        {% if current_user.is_authenticated %}
+            {{ current_user.username }}
+        {% else %}
+            {{ gettext('Stranger') }}
+        {% endif %}
+        </h2>
+    </div>
+{% endblock page_header %}
 
 <div class="container">
     <div class="row">
@@ -28,179 +29,207 @@
             </div>
         </div>
 
-        <!-- 侧边栏 -->
-        <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
-            <div class="side-widget" data-anijs="if: click, do: hinge animated, to: #my-avatar">
-                <div class="signature">
-                    <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}"
-                         alt="noahsss" title="noahsss"/>
+        {% block side_widget %}
+            <!-- 侧边栏 -->
+            <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+                <div class="side-widget" data-anijs="if: click, do: hinge animated, to: #my-avatar">
+                    <div class="signature">
+                        <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}"
+                             alt="noahsss" title="noahsss"/>
+                    </div>
+                    <div class="widget-body" style="text-align: center;">
+                        <p>大家，上午好，下午好，晚上好</p>
+                    </div>
                 </div>
-                <div class="widget-body" style="text-align: center;">
-                    <p>大家，上午好，下午好，晚上好</p>
+
+                <div class="side-widget">
+                    <div class="widget-body">
+                        <form role="form" method="post" action="/search">
+                            <input type="text" class="form-control form-search" placeholder="请输入关键字" id="keyword" name="keyword" />
+                                <button class="btn-search"><span class="glyphicon glyphicon-search"></span></button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="side-widget">
+                    <div class="widget-heading" data-anijs="if: mouseover, do: swing animated, to: .side-widget">
+                        <span class="glyphicon glyphicon-paperclip"></span> {{ gettext('Categories') }}
+                    </div>
+                    <div class="widget-body">
+                        {% if categories_list %}
+                        <ul class="categories">
+                            {% for category in categories_list %}
+                                {% if category[1] %}
+                                <li>
+                                    <a href="{{ url_for('main.category', category_name=category[0]) }}">
+                                        {{ category[0] }} ({{ category[1] }})
+                                    </a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="side-widget" data-anijs="if: click, do: flipInY animated">
+                    <div class="widget-heading">
+                        <span class="glyphicon glyphicon-leaf"></span> {{ gettext('Tags') }}
+                    </div>
+                    <div class="widget-body">
+                        <div class="tag-cloud"></div>
+                    </div>
+                </div>
+
+                <div class="side-widget">
+                    <div class="widget-heading" data-anijs="if: click, do: zoomIn animated, to: .post-title">
+                        <span class="glyphicon glyphicon-cog"></span> 功能
+                    </div>
+                    <div class="widget-body">
+                        <ul>
+                            <li><a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a></li>
+                            <li><a href="{{ url_for('main.recent_feed') }}">RSS</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="side-widget">
+                    <div class="widget-heading">
+                        <span class="glyphicon glyphicon-signal"></span> 全站统计
+                    </div>
+                    <div class="widget-body">
+                        <ul>
+                            <li>
+                                <span class="glyphicon glyphicon-stats"></span> 今日访问数()
+                            </li>
+                            <li>
+                                <span class="glyphicon glyphicon-stats"></span> 总访问数()
+                            </li>
+                            <li>
+                                <span class="glyphicon glyphicon-stats"></span> 文章总计()
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="side-widget">
+                    <div class="widget-heading">
+                        <span class="glyphicon glyphicon-transfer"></span> 友情链接
+                    </div>
+                    <div class="widget-body">
+
+                    </div>
                 </div>
             </div>
-
-            <div class="side-widget">
-                <div class="widget-heading" data-anijs="if: mouseover, do: swing animated, to: .side-widget">{{ gettext('Categories') }}</div>
-                <div class="widget-body">
-                    {% if categories_list %}
-                    <ul>
-                        {% for category in categories_list %}
-                        <li>
-                            <a href="{{ url_for('main.category', category_name=category[0]) }}">
-                                {{ category[0] }} ({{ category[1] }})
-                            </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="side-widget" data-anijs="if: click, do: flipInY animated">
-                <div class="widget-heading">{{ gettext('Tags') }}</div>
-                <div class="widget-body">
-                    <div class="tag-cloud"></div>
-                </div>
-            </div>
-
-            <div class="side-widget">
-                <div class="widget-heading" data-anijs="if: click, do: zoomIn animated, to: .post-title">功能</div>
-                <div class="widget-body">
-                    <ul>
-                        <li><a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a></li>
-                        <li><a href="{{ url_for('main.recent_feed') }}">RSS</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="side-widget">
-                <div class="widget-heading">统计</div>
-                <div class="widget-body">
-                    <ul>
-                        <li>今日访问数()</li>
-                        <li>总访问数()</li>
-                        <li>文章总计()</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="side-widget">
-                <div class="widget-heading">友情链接</div>
-                <div class="widget-body">
-
-                </div>
-            </div>
-        </div>
+        {% endblock side_widget %}
     </div>
 </div>
-
 {% endblock page_content %}
 
 {% block scripts %}
     {{ super() }}
 
-<script>
-    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
+    <script>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
 
-    var words = [];
+        // 标签云
+        $.ajax({
+            type: "GET",
+            url: $SCRIPT_ROOT + "/_get_tags_string",
+            dataType: "text"
+        }).then(function(data, textStatus) {
+            var words = [];
+            words[0] = data;
 
-    $.ajax({
-        type: "GET",
-        url: $SCRIPT_ROOT + "/_get_tags_string",
-        dataType: "text"
-    }).then(function(data, textStatus) {
-        words[0] = data;
+            // d3.js word cloud
+            function wordCloud(selector) {
+                var fill = d3.scale.category10();
 
-        // d3.js word cloud
-        function wordCloud(selector) {
-            var fill = d3.scale.category10();
+                // Construct the word cloud's SVG element
+                var svg = d3.select(selector).append("svg")
+                        .attr("width", 200)
+                        .attr("height", 200)
+                        .append("g")
+                        .attr("transform", "translate(100,100)");
 
-            // Construct the word cloud's SVG element
-            var svg = d3.select(selector).append("svg")
-                    .attr("width", 200)
-                    .attr("height", 200)
-                    .append("g")
-                    .attr("transform", "translate(100,100)");
+                // Draw the word cloud
+                function draw(words) {
+                    var cloud = svg.selectAll("g text").data(words, function(d) {
+                        return d.text;
+                    });
 
-            // Draw the word cloud
-            function draw(words) {
-                var cloud = svg.selectAll("g text").data(words, function(d) {
-                    return d.text;
-                });
+                    // Entering words
+                    cloud.enter()
+                        .append("text")
+                        .style("font-family", "Impact")
+                        .style("fill", function(d, i) { return fill(i); })
+                        .attr("text-anchor", "middle")
+                        .attr('font-size', 1)
+                        .text(function(d) { return d.text; });
 
-                // Entering words
-                cloud.enter()
-                    .append("text")
-                    .style("font-family", "Impact")
-                    .style("fill", function(d, i) { return fill(i); })
-                    .attr("text-anchor", "middle")
-                    .attr('font-size', 1)
-                    .text(function(d) { return d.text; });
+                    // Entering and existing words
+                    cloud.transition()
+                        .duration(200)
+                        .style("font-size", function(d) { return d.size + "px"; })
+                        .attr("transform", function(d) {
+                            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                        })
+                        .style("fill-opacity", 1);
 
-                // Entering and existing words
-                cloud.transition()
-                    .duration(200)
-                    .style("font-size", function(d) { return d.size + "px"; })
-                    .attr("transform", function(d) {
-                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                    })
-                    .style("fill-opacity", 1);
+                    // Exiting words
+                    cloud.exit()
+                        .transition()
+                        .duration(200)
+                        .style('fill-opacity', 1e-6)
+                        .attr('font-size', 1)
+                        .remove();
+                }
 
-                // Exiting words
-                cloud.exit()
-                    .transition()
-                    .duration(200)
-                    .style('fill-opacity', 1e-6)
-                    .attr('font-size', 1)
-                    .remove();
-            }
-
-            // Use the module pattern to encapsulate the visualisation code. We'll
-            // expose only the parts that need to be public.
-            return {
-                // Recompute the word cloud for a new set of words. This method will
-                // asycnhronously call draw when the layout has been computed.
-                // The outside world will need to call this function, so make it part
-                // of the wordCloud return value.
-                update: function(words) {
-                    d3.layout.cloud().size([200, 200])
-                        .words(words)
-                        .padding(0)
-                        .rotate(function() { return ~~(Math.random() * 2) * 90; })
-                        .font("Impact")
-                        .fontSize(function(d) { return d.size / 1.5; })
-                        .on("end", draw)
-                        .start();
+                // Use the module pattern to encapsulate the visualisation code. We'll
+                // expose only the parts that need to be public.
+                return {
+                    // Recompute the word cloud for a new set of words. This method will
+                    // asycnhronously call draw when the layout has been computed.
+                    // The outside world will need to call this function, so make it part
+                    // of the wordCloud return value.
+                    update: function(words) {
+                        d3.layout.cloud().size([200, 200])
+                            .words(words)
+                            .padding(0)
+                            .rotate(function() { return ~~(Math.random() * 2) * 90; })
+                            .font("Impact")
+                            .fontSize(function(d) { return d.size / 1.5; })
+                            .on("end", draw)
+                            .start();
+                    }
                 }
             }
-        }
 
-        // Prepare one of the sample sentences by removing punctuation,
-        // creating an array of words and computing a random size attribute.
-        function getWords(i) {
-            return words[i]
-                    .replace(/[!\.,:;\?]/g, '')
-                    .split(' ')
-                    .map(function(d) {
-                        return { text: d, size: 15 + Math.random() * 20 };
-                    });
-        }
+            // Prepare one of the sample sentences by removing punctuation,
+            // creating an array of words and computing a random size attribute.
+            function getWords(i) {
+                return words[i]
+                        .replace(/[!\.,:;\?]/g, '')
+                        .split(' ')
+                        .map(function(d) {
+                            return { text: d, size: 15 + Math.random() * 20 };
+                        });
+            }
 
-        // Create a new instance of the word cloud visualisation.
-        var myWordCloud = wordCloud('div.tag-cloud');
+            // Create a new instance of the word cloud visualisation.
+            var myWordCloud = wordCloud('div.tag-cloud');
 
-        // This method tells the word cloud to redraw with a new set of words.
-        // In reality the new words would probably come from a server request,
-        // user input or some other source.
-        function showNewWords(vis, i) {
-            i = i || 0;
-            vis.update(getWords(i++ % words.length));
-            // setTimeout(function() { showNewWords(vis, i + 1); }, 10000);
-        }
+            // This method tells the word cloud to redraw with a new set of words.
+            // In reality the new words would probably come from a server request,
+            // user input or some other source.
+            function showNewWords(vis, i) {
+                i = i || 0;
+                vis.update(getWords(i++ % words.length));
+                // setTimeout(function() { showNewWords(vis, i + 1); }, 10000);
+            }
 
-        // Start cycling through the demo data
-        showNewWords(myWordCloud);
-    });
-</script>
+            // Start cycling through the demo data
+            showNewWords(myWordCloud);
+        });
+    </script>
 {% endblock scripts %}}

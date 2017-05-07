@@ -360,6 +360,7 @@ class Post(db.Model):
             markdown(value, output_format='html'),
             tags=allowed_tags, attributes=attrs, strip=True))
 
+    # 利用 forgery_py 生成虚拟数据
     @staticmethod
     def generate_fake(count=100):
         from random import seed, randint

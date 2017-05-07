@@ -132,7 +132,7 @@
 {% endblock navbar %}
 
 {% block content %}
-<div id="particle-ground"></div>
+<!--<div id="particle-ground"></div>-->
 
 <div id="main">
     <div class="container">
@@ -156,7 +156,7 @@
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1"></div>
 
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <h3 data-anijs="if: click, do: rotateIn animated, to: .container, after: $removeAnim">不知道写些什么</h3>
+                    <h3 data-anijs="if: click, do: rotateIn animated, to: .container, after: $removeAnim">在这里写几个字</h3>
                 </div>
 
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"></div>
@@ -212,11 +212,11 @@
 <script>
     // particle.js
     // 如何使用，请看：http://particleground.duapp.com/examples/particle
-    new Particleground.particle('#particle-ground', {
-        maxSpeed: 0.6,
+    var particle = new Particleground.particle('#particle-ground', {
+        maxSpeed: 0.4,
         maxR: 2.8,
         range: 1000,
-        distance: 50
+        distance: 40
     });
 
     // flash message box

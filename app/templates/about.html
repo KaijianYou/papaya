@@ -41,13 +41,19 @@
     <div class="about-header">
         <ul class="icons">
             <li>
-                <a href="{{ url_for('main.index') }}"><i class="fa fa-home fa-2x" title="{{ gettext('Home') }}"></i></a>
+                <a href="{{ url_for('main.index') }}">
+                    <i class="fa fa-home fa-2x" title="{{ gettext('Home') }}"></i>
+                </a>
             </li>
             <li>
-                <a href="JavaScript: void(0)" onclick="showHistory()"><i class="fa fa-list-alt fa-2x" title="{{ gettext('Website history') }}"></i></a>
+                <a href="JavaScript: void(0)" onclick="showHistory()">
+                    <i class="fa fa-list-alt fa-2x" title="{{ gettext('Website history') }}"></i>
+                </a>
             </li>
             <li>
-                <a href="JavaScript: void(0)" onclick="showResume()"><i class="fa fa-vcard-o fa-2x" title="{{ gettext('Resume') }}"></i></a>
+                <a href="JavaScript: void(0)" onclick="showResume()">
+                    <i class="fa fa-vcard-o fa-2x" title="{{ gettext('Resume') }}"></i>
+                </a>
             </li>
         </ul>
     </div>
