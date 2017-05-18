@@ -12,19 +12,18 @@ from flask import current_app
 from werkzeug.contrib.atom import AtomFeed
 from flask_login import login_required
 from flask_login import current_user
+from flask_babel import gettext as _
 from flask_sqlalchemy import get_debug_queries
 from sqlalchemy import desc
 from sqlalchemy.sql import func
-from flask_babel import gettext as _
-import html
 
 from app import db, babel
 from . import main
-from .forms import EditProfileForm, EditProfileAdminForm
-from .forms import PostForm, CommentForm
-from ..models import User, Role, Permission, Post, Comment, Category
-from ..decorators import admin_required
-from ..decorators import permission_required
+from .forms import EditProfileForm, EditProfileAdminForm, \
+                   PostForm, CommentForm
+from ..models import User, Role, Permission, \
+                     Post, Comment, Category
+from ..decorators import admin_required,  permission_required
 
 
 @babel.localeselector
@@ -47,6 +46,8 @@ def index():
                            endpoint='main.index',
                            categories_list=Category.get_categories(),
                            pagination=pagination)
+    # user_agent = request.headers.get('User-Agent')
+    # return '<p>Your browser is %s</p>' % user_agent
 
 
 @main.route('/all', methods=['GET', 'POST'])
@@ -197,7 +198,7 @@ def publish_post():
                     author=current_user._get_current_object())
         db.session.add(post)
         db.session.commit()
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.show_all_posts'))
     return render_template('publish_post.html', form=form, user=user)
 
 

@@ -4,126 +4,126 @@
 {% block title %}FlaskFB{% endblock title %}
 
 {% block page_content %}
-{% block page_header %}
-    <div class="page-header">
-        <h2>{{ gettext('Hello') }},
-        {% if current_user.is_authenticated %}
-            {{ current_user.username }}
-        {% else %}
-            {{ gettext('Stranger') }}
-        {% endif %}
-        </h2>
-    </div>
-{% endblock page_header %}
-
-<div class="container">
-    <div class="row">
-        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-            <div class="post-tabs">
-                {% include '_posts_preview.html' %}
-
-                <div class="pagination">
-                    {{ paginate_macro.pagination_widget(pagination, endpoint,
-                        category_name=category_name, tag_name=tag_name) }}
-                </div>
-            </div>
+    {% block page_header %}
+        <div class="page-header">
+            <h2>{{ gettext('Hello') }},
+            {% if current_user.is_authenticated %}
+                {{ current_user.username }}
+            {% else %}
+                {{ gettext('Stranger') }}
+            {% endif %}
+            </h2>
         </div>
+    {% endblock page_header %}
 
-        {% block side_widget %}
-            <!-- 侧边栏 -->
-            <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
-                <div class="side-widget" data-anijs="if: click, do: hinge animated, to: #my-avatar">
-                    <div class="signature">
-                        <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}"
-                             alt="noahsss" title="noahsss"/>
-                    </div>
-                    <div class="widget-body" style="text-align: center;">
-                        <p>大家，上午好，下午好，晚上好</p>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                <div class="post-tabs">
+                    {% include '_posts_preview.html' %}
 
-                <div class="side-widget">
-                    <div class="widget-body">
-                        <form role="form" method="post" action="/search">
-                            <input type="text" class="form-control form-search" placeholder="请输入关键字" id="keyword" name="keyword" />
-                                <button class="btn-search"><span class="glyphicon glyphicon-search"></span></button>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="side-widget">
-                    <div class="widget-heading" data-anijs="if: mouseover, do: swing animated, to: .side-widget">
-                        <span class="glyphicon glyphicon-paperclip"></span> {{ gettext('Categories') }}
-                    </div>
-                    <div class="widget-body">
-                        {% if categories_list %}
-                        <ul class="categories">
-                            {% for category in categories_list %}
-                                {% if category[1] %}
-                                <li>
-                                    <a href="{{ url_for('main.category', category_name=category[0]) }}">
-                                        {{ category[0] }} ({{ category[1] }})
-                                    </a>
-                                </li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="side-widget" data-anijs="if: click, do: flipInY animated">
-                    <div class="widget-heading">
-                        <span class="glyphicon glyphicon-leaf"></span> {{ gettext('Tags') }}
-                    </div>
-                    <div class="widget-body">
-                        <div class="tag-cloud"></div>
-                    </div>
-                </div>
-
-                <div class="side-widget">
-                    <div class="widget-heading" data-anijs="if: click, do: zoomIn animated, to: .post-title">
-                        <span class="glyphicon glyphicon-cog"></span> 功能
-                    </div>
-                    <div class="widget-body">
-                        <ul>
-                            <li><a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a></li>
-                            <li><a href="{{ url_for('main.recent_feed') }}">RSS</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="side-widget">
-                    <div class="widget-heading">
-                        <span class="glyphicon glyphicon-signal"></span> 全站统计
-                    </div>
-                    <div class="widget-body">
-                        <ul>
-                            <li>
-                                <span class="glyphicon glyphicon-stats"></span> 今日访问数()
-                            </li>
-                            <li>
-                                <span class="glyphicon glyphicon-stats"></span> 总访问数()
-                            </li>
-                            <li>
-                                <span class="glyphicon glyphicon-stats"></span> 文章总计()
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="side-widget">
-                    <div class="widget-heading">
-                        <span class="glyphicon glyphicon-transfer"></span> 友情链接
-                    </div>
-                    <div class="widget-body">
-
+                    <div class="pagination">
+                        {{ paginate_macro.pagination_widget(pagination, endpoint,
+                            category_name=category_name, tag_name=tag_name) }}
                     </div>
                 </div>
             </div>
-        {% endblock side_widget %}
+
+            {% block side_widget %}
+                <!-- 侧边栏 -->
+                <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+                    <div class="side-widget" data-anijs="if: click, do: hinge animated, to: #my-avatar">
+                        <div class="signature">
+                            <img id="my-avatar" src="{{ url_for('static', filename='image/avatar.jpg') }}"
+                                 alt="noahsss" title="noahsss"/>
+                        </div>
+                        <div class="widget-body" style="text-align: center;">
+                            <p>大家，上午好，下午好，晚上好</p>
+                        </div>
+                    </div>
+
+                    <div class="side-widget">
+                        <div class="widget-body">
+                            <form role="form" method="post" action="/search">
+                                <input type="text" class="form-control form-search" placeholder="请输入关键字" id="keyword" name="keyword" />
+                                    <button class="btn-search"><span class="glyphicon glyphicon-search"></span></button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="side-widget">
+                        <div class="widget-heading" data-anijs="if: mouseover, do: swing animated, to: .side-widget">
+                            <span class="glyphicon glyphicon-paperclip"></span> {{ gettext('Categories') }}
+                        </div>
+                        <div class="widget-body">
+                            {% if categories_list %}
+                            <ul class="categories">
+                                {% for category in categories_list %}
+                                    {% if category[1] %}
+                                    <li>
+                                        <a href="{{ url_for('main.category', category_name=category[0]) }}">
+                                            {{ category[0] }} ({{ category[1] }})
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="side-widget" data-anijs="if: click, do: flipInY animated">
+                        <div class="widget-heading">
+                            <span class="glyphicon glyphicon-leaf"></span> {{ gettext('Tags') }}
+                        </div>
+                        <div class="widget-body">
+                            <div class="tag-cloud"></div>
+                        </div>
+                    </div>
+
+                    <div class="side-widget">
+                        <div class="widget-heading" data-anijs="if: click, do: zoomIn animated, to: .post-title">
+                            <span class="glyphicon glyphicon-cog"></span> 功能
+                        </div>
+                        <div class="widget-body">
+                            <ul>
+                                <li><a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a></li>
+                                <li><a href="{{ url_for('main.recent_feed') }}">RSS</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="side-widget">
+                        <div class="widget-heading">
+                            <span class="glyphicon glyphicon-signal"></span> 全站统计
+                        </div>
+                        <div class="widget-body">
+                            <ul>
+                                <li>
+                                    <span class="glyphicon glyphicon-stats"></span> 今日访问数()
+                                </li>
+                                <li>
+                                    <span class="glyphicon glyphicon-stats"></span> 总访问数()
+                                </li>
+                                <li>
+                                    <span class="glyphicon glyphicon-stats"></span> 文章总计()
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="side-widget">
+                        <div class="widget-heading">
+                            <span class="glyphicon glyphicon-transfer"></span> 友情链接
+                        </div>
+                        <div class="widget-body">
+
+                        </div>
+                    </div>
+                </div>
+            {% endblock side_widget %}
+        </div>
     </div>
-</div>
 {% endblock page_content %}
 
 {% block scripts %}

@@ -18,11 +18,10 @@ from . import login_manager
 
 class Follow(db.Model):
     __tablename__ = 'follows'
-    follower_id = db.Column(db.Integer,
-                            db.ForeignKey('users.id'),
+
+    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
                             primary_key=True)
-    followed_id = db.Column(db.Integer,
-                            db.ForeignKey('users.id'),
+    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
                             primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -57,9 +56,10 @@ class Role(db.Model):
     # --------------------------------------------------------------------------------
     """
     __tablename__ = 'roles'
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(64), unique=True)
-    default = db.Column(db.Boolean, default=False, index=True)
+    default = db.Column(db.Boolean, default=False)
     permissions = db.Column(db.Integer)
     users = db.relationship('User', backref='role', lazy='dynamic')
 
@@ -92,13 +92,14 @@ class Role(db.Model):
         return '<Role %s>' % self.name
 
 
-class User(UserMixin, db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), nullable=False, index=True)
     password_hash = db.Column(db.String(128), nullable=False)
     role_id = db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
-    real_name = db.Column('real_name', db.String(64))
+    real_name = db.Column(db.String(64))
     email = db.Column(db.String(64), unique=True, index=True, nullable=False)
     location = db.Column(db.String(64),)
     about_me = db.Column(db.Text())
@@ -135,7 +136,7 @@ class User(UserMixin, db.Model):
             try:
                 db.session.commit()
             except IntegrityError:
-                db.session.rolleback()
+                db.session.rollback()
 
     @staticmethod
     def add_self_follows():
@@ -161,7 +162,7 @@ class User(UserMixin, db.Model):
 
     @property
     def password(self):
-        raise AttributeError('passowrd is not readable attribute')
+        raise AttributeError('password is not readable attribute')
 
     @password.setter
     def password(self, password):
@@ -170,7 +171,7 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def generate_confirmation_token(self, expiration=3600):
+    def generate_confirmation_token(self, expiration=60*60):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
 
@@ -188,7 +189,7 @@ class User(UserMixin, db.Model):
         db.session.commit()
         return True
 
-    def generate_password_reset_token(self, expiration=3600):
+    def generate_password_reset_token(self, expiration=60*60):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'reset': self.id})
 
@@ -206,7 +207,7 @@ class User(UserMixin, db.Model):
         db.session.commit()
         return True
 
-    def generate_email_change_token(self, new_email, expiration=3600):
+    def generate_email_change_token(self, new_email, expiration=60*60):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'change_email': self.id, 'new_email': new_email})
 
@@ -301,6 +302,7 @@ def load_user(user_id):
 
 class Category(db.Model):
     __tablename__ = 'categories'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), nullable=False, unique=True)
     posts = db.relationship('Post', backref='category', lazy='dynamic')
@@ -330,6 +332,7 @@ class Category(db.Model):
 
 class Post(db.Model):
     __tablename__ = 'posts'
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), index=True)
     body = db.Column(db.Text, nullable=False)
@@ -350,7 +353,7 @@ class Post(db.Model):
     def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1',
-                        'h2', 'h3', 'p', 'hr', 'br']
+                        'h2', 'h3', 'p', 'hr', 'br', 'img']
         attrs = {
             '*': ['class'],
             'a': ['href', 'rel'],
@@ -402,6 +405,7 @@ db.event.listen(Post.body, 'set', Post.on_changed_body)
 
 class Comment(db.Model):
     __tablename__ = 'comments'
+
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(200))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)

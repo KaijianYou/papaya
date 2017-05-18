@@ -14,12 +14,11 @@ from flask_login import current_user
 from flask_babel import gettext as _
 
 from . import auth
-from .forms import LoginForm, RegistrationForm
-from .forms import ChangePasswordForm
-from .forms import ResetPasswordForm, ResetPasswordRequestForm
-from .forms import ChangeEmailForm
-from ..models import User
+from .forms import LoginForm, RegistrationForm, \
+                   ChangePasswordForm, ResetPasswordForm, \
+                   ResetPasswordRequestForm, ChangeEmailForm
 from .. import db
+from ..models import User
 from ..emails import send_email
 
 
@@ -27,7 +26,7 @@ def is_safe_url(target):
     ref_url = urlparse(request.host_url)
     test_url = urlparse(urljoin(request.host_url, target))
     return test_url.scheme in ('http', 'https') and \
-           ref_url.netloc == test_url.netloc
+        ref_url.netloc == test_url.netloc
 
 
 @auth.before_app_request
@@ -96,15 +95,13 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             login_user(user, remember=form.remeber_me.data)
             flash(_('Logged in successfully'), 'success')
-            next_url = request.args.get(next)
+            next_url = request.args.get('next')
             if not is_safe_url(next_url):
                 return abort(400)
             # 返回重定向的 URL，避免客户端刷新时又向服务器 Post 一次表单数据
             return redirect(next_url or url_for('main.index'))
         flash(_('Invalid email or password'), 'warning')
     return render_template('auth/login.html', form=form)
-    # user_agent = request.headers.get('User-Agent')
-    # return '<p>Your browser is %s</p>' % user_agent
 
 
 @auth.route('/logout')
@@ -116,6 +113,7 @@ def logout():
 
 
 @auth.route('/change-password', methods=['GET', 'POST'])
+@login_required
 def change_password():
     form = ChangePasswordForm()
     if form.validate_on_submit():

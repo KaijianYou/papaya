@@ -13,21 +13,20 @@ from app import db
 from app.models import User, Role, Post, Permission, Comment, Category
 
 
-COV = None
-if os.environ.get('FLASK_COVERAGE'):
-    import coverage
-    COV = coverage.coverage(branch=True, include='app/*')
-    COV.start()
-
-
 app = create_app(os.getenv('FLASKFB_CONFIG') or 'default')
 manager = Manager(app)
 migrate = Migrate(app, db)
 
 
 def make_shell_context():
-    return dict(app=app, db=db, User=User, Role=Role, Permission=Permission,
-                Post=Post, Comment=Comment, Category=Category)
+    return dict(app=app,
+                db=db,
+                User=User,
+                Role=Role,
+                Permission=Permission,
+                Post=Post,
+                Comment=Comment,
+                Category=Category)
 
 
 manager.add_command('shell', Shell(make_context=make_shell_context))
@@ -38,7 +37,6 @@ manager.add_command('db', MigrateCommand)
 def deploy():
     """部署"""
     from flask_migrate import upgrade
-    from app.models import Role, User
 
     # 迁移数据库到最新版本
     upgrade()
@@ -48,18 +46,27 @@ def deploy():
     Category.insert_categories()
 
 
+COV = None
+if os.environ.get('FLASK_COVERAGE'):
+    import coverage
+    COV = coverage.coverage(branch=True, include='app/*')
+    COV.start()
+
+
 @manager.command
 def test(coverage=False):
-    """运行单元测试"""
+    """测试"""
     if coverage and not os.environ.get('FLASK_COVERAGE'):
         import sys
         os.environ['FLASK_COVERAGE'] = '1'
         os.execvp(sys.executable, [sys.executable] + sys.argv)
 
+    # 单元测试
     import unittest
     tests = unittest.TestLoader().discover(start_dir='tests')
     unittest.TextTestRunner(verbosity=2).run(tests)
 
+    # 获取代码测试覆盖率
     if COV:
         COV.stop()
         COV.save()
@@ -77,8 +84,9 @@ def profile(length=20, profile_dir=None):
     """源码分析器"""
     from werkzeug.contrib.profiler import ProfilerMiddleware
     # 启动应用的同时开启源码分析器
-    app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[length],
-                                     profile_dir=profile_dir)
+    app.wsgi_app = ProfilerMiddleware(app.wsgi_app,
+                                      restrictions=[length],
+                                      profile_dir=profile_dir)
     app.run()
 
 
