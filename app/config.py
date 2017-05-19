@@ -20,8 +20,7 @@ class Config(object):
     FOLLOWERS_PER_PAGE = 20
     COMMENTS_PER_PAGE = 20
 
-    SECRET_KEY = os.environ.get('SECRET_KEY') \
-        or 'mt8-iot!5s%k78hyphj$t&c3-kghp_0uw&ge&53@fntb^hhao6'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'Why not go die?'
 
     BABEL_DEFAULT_LOCALE = 'zh_Hans_CN'
     # BABEL_DEFAULT_TIMEZONE =
@@ -57,6 +56,7 @@ class ProductionConfig(Config):
     def init_app(cls, app):
         Config.init_app(app)
 
+        # 配置日志：当发生严重错误时发送电子邮件给管理员
         import logging
         from logging.handlers import SMTPHandler
         credentials = None
@@ -85,13 +85,15 @@ class HerokuConfig(ProductionConfig):
     def init_app(cls, app):
         ProductionConfig.init_app(app)
 
+        # 配置日志，将日志写入 stderr，Heroku 可以捕获到输出的日志，在 Heroku
+        # 客户端中通过 heroku logs 命令可以查看到这些日志
         import logging
         from logging import StreamHandler
         file_handler = StreamHandler()
         file_handler.setLevel(logging.WARNING)
         app.logger.addHandler(file_handler)
 
-        # 处理代理服务器首部
+        # 使用 ProxyFix 处理代理服务器首部，任何使用反向代理的环境都要这样做
         from werkzeug.contrib.fixers import ProxyFix
         app.wsgi_app = ProxyFix(app.wsgi_app)
 

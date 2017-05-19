@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-05-01 00:30+0800\n"
+"POT-Creation-Date: 2017-05-14 18:41+0800\n"
 "PO-Revision-Date: 2017-03-05 15:08+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans_CN\n"
@@ -18,10 +18,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.4.0\n"
 
+#: app/__init__.py:26
+msgid "Please log in to access this page"
+msgstr "请先登录"
+
 #: app/auth/forms.py:14 app/auth/forms.py:16 app/auth/forms.py:25
 #: app/auth/forms.py:27 app/auth/forms.py:70 app/auth/forms.py:72
 #: app/auth/forms.py:81 app/main/forms.py:27 app/main/forms.py:29
-#: app/templates/user.html:25
+#: app/templates/user.html:24
 msgid "Email"
 msgstr "邮箱"
 
@@ -34,7 +38,7 @@ msgstr "密码"
 msgid "Keep me logged in"
 msgstr "自动登录"
 
-#: app/auth/forms.py:21 app/templates/base.html:124 app/templates/index.html:71
+#: app/auth/forms.py:21 app/templates/base.html:124 app/templates/index.html:90
 msgid "Log In"
 msgstr "登录"
 
@@ -101,69 +105,69 @@ msgstr "新邮箱"
 msgid "Update Email Address"
 msgstr "更新邮箱地址"
 
-#: app/auth/views.py:57
+#: app/auth/views.py:56
 msgid "A new confirmation email has been sent to you by email"
 msgstr "一封验证邮件已经发送到您的邮箱"
 
-#: app/auth/views.py:72
+#: app/auth/views.py:71
 msgid "Confirm Your Account"
 msgstr "验证您的账号"
 
-#: app/auth/views.py:74
+#: app/auth/views.py:73
 msgid "A confirmation email has been sent to you by email"
 msgstr "一封验证邮件已经发送到您的邮箱"
 
-#: app/auth/views.py:85
+#: app/auth/views.py:84
 msgid "You have confirmed your account. Thanks!"
 msgstr "您已经验证账号，谢谢！"
 
-#: app/auth/views.py:87
+#: app/auth/views.py:86
 msgid "The confirmation link is invalid or has expired"
 msgstr "此验证链接已经过期或失效"
 
-#: app/auth/views.py:98
+#: app/auth/views.py:97
 msgid "Logged in successfully"
 msgstr "成功登录"
 
-#: app/auth/views.py:104 app/auth/views.py:186
+#: app/auth/views.py:103 app/auth/views.py:184
 msgid "Invalid email or password"
 msgstr "邮箱或密码错误"
 
-#: app/auth/views.py:114
+#: app/auth/views.py:111
 msgid "You have been logged out"
 msgstr "您已经退出"
 
-#: app/auth/views.py:126 app/auth/views.py:163
+#: app/auth/views.py:124 app/auth/views.py:161
 msgid "Your password has been updated"
 msgstr "您的密码已经更新"
 
-#: app/auth/views.py:129
+#: app/auth/views.py:127
 msgid "Invalid password"
 msgstr "密码错误"
 
-#: app/auth/views.py:143
+#: app/auth/views.py:141
 msgid "Reset your password"
 msgstr "重设您的密码"
 
-#: app/auth/views.py:146
+#: app/auth/views.py:144
 msgid "An email with instructions to reset your password has been sent to you"
 msgstr "一封重设密码的邮件已经发送到您的邮箱"
 
-#: app/auth/views.py:179
+#: app/auth/views.py:177
 msgid "Confirm your email address"
 msgstr "验证您的邮箱地址"
 
-#: app/auth/views.py:182
+#: app/auth/views.py:180
 msgid ""
 "An email with instructions to confirm your new email address has been "
 "sent to you."
 msgstr "一封验证新邮箱地址的邮件已经发送到您的邮箱"
 
-#: app/auth/views.py:194
+#: app/auth/views.py:192
 msgid "Your email address has been updated"
 msgstr "您的邮箱地址已经更新"
 
-#: app/auth/views.py:196
+#: app/auth/views.py:194
 msgid "Invalid request"
 msgstr "请求错误"
 
@@ -178,7 +182,7 @@ msgid "Location"
 msgstr "所在地"
 
 #: app/main/forms.py:21 app/main/forms.py:22 app/main/forms.py:44
-#: app/main/forms.py:45 app/templates/user.html:28
+#: app/main/forms.py:45 app/templates/user.html:27
 msgid "About me"
 msgstr "关于我"
 
@@ -222,49 +226,49 @@ msgstr "发布"
 msgid "Limited to 200 characters"
 msgstr "限 200 字"
 
-#: app/main/views.py:147
+#: app/main/views.py:148
 msgid "Your profile has been updated"
 msgstr "您的个人资料已经更新"
 
-#: app/main/views.py:171
+#: app/main/views.py:172
 msgid "The profile has been updated"
 msgstr "个人资料已经更新"
 
-#: app/main/views.py:219
+#: app/main/views.py:220
 msgid "The post has been updated"
 msgstr "文章已经更新"
 
-#: app/main/views.py:234 app/main/views.py:250 app/main/views.py:264
-#: app/main/views.py:285
+#: app/main/views.py:235 app/main/views.py:251 app/main/views.py:265
+#: app/main/views.py:286
 msgid "Invalid user"
 msgstr "无效的用户"
 
-#: app/main/views.py:237
+#: app/main/views.py:238
 msgid "You are already following this user"
 msgstr "您已经关注了该用户"
 
-#: app/main/views.py:240
+#: app/main/views.py:241
 msgid "You are now following"
 msgstr "已关注"
 
-#: app/main/views.py:253
+#: app/main/views.py:254
 msgid "You are not following this user"
 msgstr "您没有关注此用户"
 
-#: app/main/views.py:256
+#: app/main/views.py:257
 #, python-format
 msgid "Your are not following %(username)s anymore"
 msgstr "您已经不再关注 %(username)s"
 
-#: app/main/views.py:275
+#: app/main/views.py:276
 msgid "'s followers"
 msgstr " 的关注者"
 
-#: app/main/views.py:296
+#: app/main/views.py:297
 msgid " has followed"
 msgstr " 关注了"
 
-#: app/main/views.py:312
+#: app/main/views.py:313
 msgid "Your comment has been published"
 msgstr "评论成功"
 
@@ -296,15 +300,15 @@ msgstr "阅读全文"
 msgid "About"
 msgstr "关于"
 
-#: app/templates/about.html:44 app/templates/base.html:51
+#: app/templates/about.html:45 app/templates/base.html:51
 msgid "Home"
 msgstr "首页"
 
-#: app/templates/about.html:47
+#: app/templates/about.html:50
 msgid "Website history"
 msgstr "网站历史"
 
-#: app/templates/about.html:50
+#: app/templates/about.html:55
 msgid "Resume"
 msgstr "简历"
 
@@ -353,7 +357,7 @@ msgstr "回到顶端"
 msgid "Edit Post"
 msgstr "编辑文章"
 
-#: app/templates/edit_profile.html:4 app/templates/user.html:44
+#: app/templates/edit_profile.html:4 app/templates/user.html:43
 msgid "Edit Profile"
 msgstr "编辑个人资料"
 
@@ -381,11 +385,11 @@ msgstr "您好"
 msgid "Stranger"
 msgstr "游客"
 
-#: app/templates/index.html:44
+#: app/templates/index.html:56
 msgid "Categories"
 msgstr "分类"
 
-#: app/templates/index.html:61
+#: app/templates/index.html:77
 msgid "Tags"
 msgstr "标签"
 
@@ -401,47 +405,47 @@ msgstr "评论"
 msgid "From"
 msgstr "来自"
 
-#: app/templates/user.html:31
+#: app/templates/user.html:30
 msgid "Register date"
 msgstr "注册日期"
 
-#: app/templates/user.html:34
+#: app/templates/user.html:33
 msgid "Last visited"
 msgstr "最近访问"
 
-#: app/templates/user.html:37
+#: app/templates/user.html:36
 msgid "blog posts"
 msgstr "篇文章"
 
-#: app/templates/user.html:39
+#: app/templates/user.html:38
 msgid "comments"
 msgstr "条评论"
 
-#: app/templates/user.html:50
+#: app/templates/user.html:49
 msgid "Edit Profile [Admin]"
-msgstr "编辑个人信息 [管理员]"
+msgstr "编辑个人资料 [管理员]"
 
-#: app/templates/user.html:59
+#: app/templates/user.html:58
 msgid "Follow"
 msgstr "关注"
 
-#: app/templates/user.html:63
+#: app/templates/user.html:62
 msgid "Unfollow"
 msgstr "取消关注"
 
-#: app/templates/user.html:68
+#: app/templates/user.html:67
 msgid "Followers"
 msgstr "关注者"
 
-#: app/templates/user.html:71
+#: app/templates/user.html:70
 msgid "Following"
 msgstr "关注了"
 
-#: app/templates/user.html:75
+#: app/templates/user.html:74
 msgid "Follows you"
 msgstr "此用户已关注您"
 
-#: app/templates/user.html:81
+#: app/templates/user.html:80
 #, python-format
 msgid "Posts by %(username)s"
 msgstr "%(username)s 发布的文章"
@@ -466,21 +470,21 @@ msgstr "修改密码"
 msgid "Login"
 msgstr "登录"
 
-#: app/templates/auth/login.html:15
-msgid "Forgot your password"
-msgstr "忘记密码"
-
-#: app/templates/auth/login.html:17
-msgid "Click here to reset password"
-msgstr "重设密码"
-
-#: app/templates/auth/login.html:21
+#: app/templates/auth/login.html:12
 msgid "New user"
 msgstr "新用户"
 
-#: app/templates/auth/login.html:23
+#: app/templates/auth/login.html:14
 msgid "Click here to register"
-msgstr "点击注册"
+msgstr "点此注册"
+
+#: app/templates/auth/login.html:24
+msgid "Forgot your password"
+msgstr "忘记密码"
+
+#: app/templates/auth/login.html:26
+msgid "Click here to reset password"
+msgstr "重设密码"
 
 #: app/templates/auth/reset_password.html:8
 msgid "Reset Your Password"
@@ -600,3 +604,4 @@ msgstr "为了重设您的密码，请点击下面的链接"
 #, python-format
 msgid "user %(username)s has joined"
 msgstr "用户 %(username)s 新加入"
+

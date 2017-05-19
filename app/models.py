@@ -7,22 +7,22 @@ from datetime import datetime
 from flask_login import UserMixin, AnonymousUserMixin
 from flask import current_app
 from flask import request
+from flask import url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from markdown import markdown
 import bleach
 
-from . import db
-from . import login_manager
+from app import db
+from app import login_manager
 
 
 class Follow(db.Model):
     __tablename__ = 'follows'
-    follower_id = db.Column(db.Integer,
-                            db.ForeignKey('users.id'),
+
+    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
                             primary_key=True)
-    followed_id = db.Column(db.Integer,
-                            db.ForeignKey('users.id'),
+    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
                             primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -57,11 +57,15 @@ class Role(db.Model):
     # --------------------------------------------------------------------------------
     """
     __tablename__ = 'roles'
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(64), unique=True)
-    default = db.Column(db.Boolean, default=False, index=True)
+    default = db.Column(db.Boolean, default=False)
     permissions = db.Column(db.Integer)
     users = db.relationship('User', backref='role', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Role %s>' % self.name
 
     @staticmethod
     def insert_roles():
@@ -88,17 +92,15 @@ class Role(db.Model):
             db.session.add(role)
         db.session.commit()
 
-    def __repr__(self):
-        return '<Role %s>' % self.name
 
-
-class User(UserMixin, db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), nullable=False, index=True)
     password_hash = db.Column(db.String(128), nullable=False)
     role_id = db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
-    real_name = db.Column('real_name', db.String(64))
+    real_name = db.Column(db.String(64))
     email = db.Column(db.String(64), unique=True, index=True, nullable=False)
     location = db.Column(db.String(64),)
     about_me = db.Column(db.Text())
@@ -135,7 +137,7 @@ class User(UserMixin, db.Model):
             try:
                 db.session.commit()
             except IntegrityError:
-                db.session.rolleback()
+                db.session.rollback()
 
     @staticmethod
     def add_self_follows():
@@ -159,9 +161,12 @@ class User(UserMixin, db.Model):
 
         self.followed.append(Follow(followed=self))  # 把自己设为自己的关注者
 
+    def __repr__(self):
+        return '<User %s>' % self.username
+
     @property
     def password(self):
-        raise AttributeError('passowrd is not readable attribute')
+        raise AttributeError('password is not readable attribute')
 
     @password.setter
     def password(self, password):
@@ -170,9 +175,22 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def generate_confirmation_token(self, expiration=3600):
+    def generate_confirmation_token(self, expiration=60*60):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
+
+    def generate_auth_token(self, expiration=60*60):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'id': self.id})
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except Exception:
+            return False
+        return User.query.get(data['id'], None)
 
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
@@ -188,7 +206,7 @@ class User(UserMixin, db.Model):
         db.session.commit()
         return True
 
-    def generate_password_reset_token(self, expiration=3600):
+    def generate_password_reset_token(self, expiration=60*60):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'reset': self.id})
 
@@ -206,7 +224,7 @@ class User(UserMixin, db.Model):
         db.session.commit()
         return True
 
-    def generate_email_change_token(self, new_email, expiration=3600):
+    def generate_email_change_token(self, new_email, expiration=60*60):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'change_email': self.id, 'new_email': new_email})
 
@@ -279,8 +297,19 @@ class User(UserMixin, db.Model):
         return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
             .filter(Follow.follower_id == self.id)
 
-    def __repr__(self):
-        return '<User %s>' % self.username
+    def to_json(self):
+        user_json = {
+            'url': url_for('api.get_user', id=self.id, _external=True),
+            'username': self.username,
+            'about_me': self.about_me,
+            'register_date': self.register_date,
+            'last_visit': self.last_visited,
+            'posts': url_for('api.get_user_posts', id=self.id, _external=True),
+            'followed_posts': url_for('api.get_user_followed_posts', id=self.id,
+                                      _external=True),
+            'post_count': self.posts.count(),
+        }
+        return user_json
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -301,9 +330,13 @@ def load_user(user_id):
 
 class Category(db.Model):
     __tablename__ = 'categories'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), nullable=False, unique=True)
     posts = db.relationship('Post', backref='category', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Category %s>' % self.name
 
     @staticmethod
     def insert_categories():
@@ -324,33 +357,44 @@ class Category(db.Model):
                            for category in categories]
         return categories_list
 
-    def __repr__(self):
-        return '<Category %s>' % self.name
+    def to_json(self):
+        category_json = {
+            'url': url_for('api.get_category', id=self.id, _external=True),
+            'name': self.name,
+            # 'posts': url_for('api.get_category_posts', id=self.id,
+            #                  _external=True),
+            'post_count': self.posts.count(),
+        }
+        return category_json
 
 
 class Post(db.Model):
     __tablename__ = 'posts'
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), index=True)
+    category_id = db.Column(db.Integer,
+                            db.ForeignKey('categories.id'),
+                            nullable=False)
+    tags = db.Column(db.String(200), nullable=False)
     body = db.Column(db.Text, nullable=False)
     body_html = db.Column(db.Text, nullable=False)
     create_timestamp = db.Column(db.DateTime,
                                  index=True,
                                  default=datetime.utcnow)
     update_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    tags = db.Column(db.String(200), nullable=False)
-    category_id = db.Column(db.Integer,
-                            db.ForeignKey('categories.id'),
-                            nullable=False)
     author_id = db.Column(db.Integer,
                           db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Post %s>' % self.title
 
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
                         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1',
-                        'h2', 'h3', 'p', 'hr', 'br']
+                        'h2', 'h3', 'p', 'hr', 'br', 'img']
         attrs = {
             '*': ['class'],
             'a': ['href', 'rel'],
@@ -360,6 +404,7 @@ class Post(db.Model):
             markdown(value, output_format='html'),
             tags=allowed_tags, attributes=attrs, strip=True))
 
+    # 利用 forgery_py 生成虚拟数据
     @staticmethod
     def generate_fake(count=100):
         from random import seed, randint
@@ -391,8 +436,41 @@ class Post(db.Model):
     def get_category_name(self):
         return Category.query.get(self.category_id).name
 
-    def __repr__(self):
-        return '<Post %s>' % self.title
+    def to_json(self):
+        post_json = {
+            'url': url_for('api.get_post', id=self.id, _external=True),
+            'title': self.title,
+            'category': url_for('api.get_category', id=self.category_id,
+                                _external=True),
+            'tags': self.get_tags(),
+            'body': self.body,
+            'body_html': self.body_html,
+            'create_time': self.create_timestamp,
+            'update_time': self.update_timestamp,
+            'author': url_for('api.get_user', id=self.author_id, _external=True),
+            'comments': url_for('api.get_post_comments', id=self.id,
+                               _external=True),
+            'comment_count': self.comments.count(),
+        }
+        return post_json
+
+    @staticmethod
+    def from_json(post_json):
+        title = post_json.get('title')
+        if not title:
+            raise ValueError('post does not have a title')
+        category = post_json.get('category')
+        if not category:
+            raise ValueError('post does not have a category')
+        if not Category.query.filter_by(name=category).first():
+            raise ValueError('wrong category')
+        tags = post_json.get('tags')
+        if not tags:
+            raise ValueError('post does not have tags')
+        body = post_json.get('body')
+        if not body:
+            raise ValueError('post does not have a body')
+        return Post(title=title, tags=tags, body=body)
 
 
 # 当 Post 实例的 body 字段更新，on_changed_body 会被自动调用
@@ -401,9 +479,27 @@ db.event.listen(Post.body, 'set', Post.on_changed_body)
 
 class Comment(db.Model):
     __tablename__ = 'comments'
+
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(200))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    disabled = db.Column(db.Boolean)
+    disabled = db.Column(db.Boolean, default=False)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    def to_json(self):
+        comment_json = {
+            'url': url_for('api.get_comment', id=self.id, _external=True),
+            'body': self.body,
+            'timestamp': self.timestamp,
+            'author': url_for('api.get_user', id=self.author_id, _external=True),
+            'post': url_for('api.get_post', id=self.post_id, _external=True),
+        }
+        return comment_json
+
+    @staticmethod
+    def from_json(comment_json):
+        body = comment_json.get('body')
+        if not body:
+            raise ValueError('comment does not have a body')
+        return Comment(body=body)

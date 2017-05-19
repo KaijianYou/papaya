@@ -9,6 +9,7 @@ from flask_mail import Mail
 from flask_moment import Moment
 from flask_pagedown import PageDown
 from flask_sqlalchemy import SQLAlchemy
+from flask_babel import lazy_gettext as lazy_
 
 from app.config import config
 
@@ -22,6 +23,7 @@ babel = Babel()
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
+login_manager.login_message = lazy_('Please log in to access this page')
 
 
 def create_app(config_name):
@@ -52,5 +54,11 @@ def create_app(config_name):
     from .admin import admin as admin_blueprint
     from .admin import views
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
+
+    from .api_1_0 import api as api_1_0_blueprint
+    from .api_1_0 import posts
+    from .api_1_0 import authentication, posts, users, comments, \
+        categories, errors
+    app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1.0')
 
     return app

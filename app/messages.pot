@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-05-01 00:30+0800\n"
+"POT-Creation-Date: 2017-05-14 18:41+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,10 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.4.0\n"
 
+#: app/__init__.py:26
+msgid "Please log in to access this page"
+msgstr ""
+
 #: app/auth/forms.py:14 app/auth/forms.py:16 app/auth/forms.py:25
 #: app/auth/forms.py:27 app/auth/forms.py:70 app/auth/forms.py:72
 #: app/auth/forms.py:81 app/main/forms.py:27 app/main/forms.py:29
-#: app/templates/user.html:25
+#: app/templates/user.html:24
 msgid "Email"
 msgstr ""
 
@@ -33,7 +37,7 @@ msgstr ""
 msgid "Keep me logged in"
 msgstr ""
 
-#: app/auth/forms.py:21 app/templates/base.html:124 app/templates/index.html:71
+#: app/auth/forms.py:21 app/templates/base.html:124 app/templates/index.html:90
 msgid "Log In"
 msgstr ""
 
@@ -100,69 +104,69 @@ msgstr ""
 msgid "Update Email Address"
 msgstr ""
 
-#: app/auth/views.py:57
+#: app/auth/views.py:56
 msgid "A new confirmation email has been sent to you by email"
 msgstr ""
 
-#: app/auth/views.py:72
+#: app/auth/views.py:71
 msgid "Confirm Your Account"
 msgstr ""
 
-#: app/auth/views.py:74
+#: app/auth/views.py:73
 msgid "A confirmation email has been sent to you by email"
 msgstr ""
 
-#: app/auth/views.py:85
+#: app/auth/views.py:84
 msgid "You have confirmed your account. Thanks!"
 msgstr ""
 
-#: app/auth/views.py:87
+#: app/auth/views.py:86
 msgid "The confirmation link is invalid or has expired"
 msgstr ""
 
-#: app/auth/views.py:98
+#: app/auth/views.py:97
 msgid "Logged in successfully"
 msgstr ""
 
-#: app/auth/views.py:104 app/auth/views.py:186
+#: app/auth/views.py:103 app/auth/views.py:184
 msgid "Invalid email or password"
 msgstr ""
 
-#: app/auth/views.py:114
+#: app/auth/views.py:111
 msgid "You have been logged out"
 msgstr ""
 
-#: app/auth/views.py:126 app/auth/views.py:163
+#: app/auth/views.py:124 app/auth/views.py:161
 msgid "Your password has been updated"
 msgstr ""
 
-#: app/auth/views.py:129
+#: app/auth/views.py:127
 msgid "Invalid password"
 msgstr ""
 
-#: app/auth/views.py:143
+#: app/auth/views.py:141
 msgid "Reset your password"
 msgstr ""
 
-#: app/auth/views.py:146
+#: app/auth/views.py:144
 msgid "An email with instructions to reset your password has been sent to you"
 msgstr ""
 
-#: app/auth/views.py:179
+#: app/auth/views.py:177
 msgid "Confirm your email address"
 msgstr ""
 
-#: app/auth/views.py:182
+#: app/auth/views.py:180
 msgid ""
 "An email with instructions to confirm your new email address has been "
 "sent to you."
 msgstr ""
 
-#: app/auth/views.py:194
+#: app/auth/views.py:192
 msgid "Your email address has been updated"
 msgstr ""
 
-#: app/auth/views.py:196
+#: app/auth/views.py:194
 msgid "Invalid request"
 msgstr ""
 
@@ -177,7 +181,7 @@ msgid "Location"
 msgstr ""
 
 #: app/main/forms.py:21 app/main/forms.py:22 app/main/forms.py:44
-#: app/main/forms.py:45 app/templates/user.html:28
+#: app/main/forms.py:45 app/templates/user.html:27
 msgid "About me"
 msgstr ""
 
@@ -221,49 +225,49 @@ msgstr ""
 msgid "Limited to 200 characters"
 msgstr ""
 
-#: app/main/views.py:147
+#: app/main/views.py:148
 msgid "Your profile has been updated"
 msgstr ""
 
-#: app/main/views.py:171
+#: app/main/views.py:172
 msgid "The profile has been updated"
 msgstr ""
 
-#: app/main/views.py:219
+#: app/main/views.py:220
 msgid "The post has been updated"
 msgstr ""
 
-#: app/main/views.py:234 app/main/views.py:250 app/main/views.py:264
-#: app/main/views.py:285
+#: app/main/views.py:235 app/main/views.py:251 app/main/views.py:265
+#: app/main/views.py:286
 msgid "Invalid user"
 msgstr ""
 
-#: app/main/views.py:237
+#: app/main/views.py:238
 msgid "You are already following this user"
 msgstr ""
 
-#: app/main/views.py:240
+#: app/main/views.py:241
 msgid "You are now following"
 msgstr ""
 
-#: app/main/views.py:253
+#: app/main/views.py:254
 msgid "You are not following this user"
 msgstr ""
 
-#: app/main/views.py:256
+#: app/main/views.py:257
 #, python-format
 msgid "Your are not following %(username)s anymore"
 msgstr ""
 
-#: app/main/views.py:275
+#: app/main/views.py:276
 msgid "'s followers"
 msgstr ""
 
-#: app/main/views.py:296
+#: app/main/views.py:297
 msgid " has followed"
 msgstr ""
 
-#: app/main/views.py:312
+#: app/main/views.py:313
 msgid "Your comment has been published"
 msgstr ""
 
@@ -295,15 +299,15 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: app/templates/about.html:44 app/templates/base.html:51
+#: app/templates/about.html:45 app/templates/base.html:51
 msgid "Home"
 msgstr ""
 
-#: app/templates/about.html:47
+#: app/templates/about.html:50
 msgid "Website history"
 msgstr ""
 
-#: app/templates/about.html:50
+#: app/templates/about.html:55
 msgid "Resume"
 msgstr ""
 
@@ -352,7 +356,7 @@ msgstr ""
 msgid "Edit Post"
 msgstr ""
 
-#: app/templates/edit_profile.html:4 app/templates/user.html:44
+#: app/templates/edit_profile.html:4 app/templates/user.html:43
 msgid "Edit Profile"
 msgstr ""
 
@@ -380,11 +384,11 @@ msgstr ""
 msgid "Stranger"
 msgstr ""
 
-#: app/templates/index.html:44
+#: app/templates/index.html:56
 msgid "Categories"
 msgstr ""
 
-#: app/templates/index.html:61
+#: app/templates/index.html:77
 msgid "Tags"
 msgstr ""
 
@@ -400,47 +404,47 @@ msgstr ""
 msgid "From"
 msgstr ""
 
-#: app/templates/user.html:31
+#: app/templates/user.html:30
 msgid "Register date"
 msgstr ""
 
-#: app/templates/user.html:34
+#: app/templates/user.html:33
 msgid "Last visited"
 msgstr ""
 
-#: app/templates/user.html:37
+#: app/templates/user.html:36
 msgid "blog posts"
 msgstr ""
 
-#: app/templates/user.html:39
+#: app/templates/user.html:38
 msgid "comments"
 msgstr ""
 
-#: app/templates/user.html:50
+#: app/templates/user.html:49
 msgid "Edit Profile [Admin]"
 msgstr ""
 
-#: app/templates/user.html:59
+#: app/templates/user.html:58
 msgid "Follow"
 msgstr ""
 
-#: app/templates/user.html:63
+#: app/templates/user.html:62
 msgid "Unfollow"
 msgstr ""
 
-#: app/templates/user.html:68
+#: app/templates/user.html:67
 msgid "Followers"
 msgstr ""
 
-#: app/templates/user.html:71
+#: app/templates/user.html:70
 msgid "Following"
 msgstr ""
 
-#: app/templates/user.html:75
+#: app/templates/user.html:74
 msgid "Follows you"
 msgstr ""
 
-#: app/templates/user.html:81
+#: app/templates/user.html:80
 #, python-format
 msgid "Posts by %(username)s"
 msgstr ""
@@ -465,20 +469,20 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: app/templates/auth/login.html:15
-msgid "Forgot your password"
-msgstr ""
-
-#: app/templates/auth/login.html:17
-msgid "Click here to reset password"
-msgstr ""
-
-#: app/templates/auth/login.html:21
+#: app/templates/auth/login.html:12
 msgid "New user"
 msgstr ""
 
-#: app/templates/auth/login.html:23
+#: app/templates/auth/login.html:14
 msgid "Click here to register"
+msgstr ""
+
+#: app/templates/auth/login.html:24
+msgid "Forgot your password"
+msgstr ""
+
+#: app/templates/auth/login.html:26
+msgid "Click here to reset password"
 msgstr ""
 
 #: app/templates/auth/reset_password.html:8
