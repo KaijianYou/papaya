@@ -18,12 +18,12 @@ from sqlalchemy import desc
 from sqlalchemy.sql import func
 
 from app import db, babel
-from . import main
-from .forms import EditProfileForm, EditProfileAdminForm, \
-                   PostForm, CommentForm
-from ..models import User, Role, Permission, \
-                     Post, Comment, Category
-from ..decorators import admin_required,  permission_required
+from app.main import main
+from app.main.forms import EditProfileForm, EditProfileAdminForm, \
+                           PostForm, CommentForm
+from app.models import User, Role, Permission, \
+                       Post, Comment, Category
+from app.decorators import admin_required,  permission_required
 
 
 @babel.localeselector

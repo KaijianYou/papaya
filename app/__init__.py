@@ -55,4 +55,10 @@ def create_app(config_name):
     from .admin import views
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
+    from .api_1_0 import api as api_1_0_blueprint
+    from .api_1_0 import posts
+    from .api_1_0 import authentication, posts, users, comments, \
+        categories, errors
+    app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1.0')
+
     return app

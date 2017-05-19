@@ -206,25 +206,28 @@ ul.posts li.post:hover {
     margin-top: 20px;
     margin-bottom: 14px;
     border-bottom: 1px solid rgba(47,111,171,0.5) !important;
-    font-size: 150%;
+    font-size: 1.5em;
+    color: rgb(70,81,88);
     font-weight: bold;
 }
 
 .post-body h2, .preview-post-body h2 {
     margin-top: 14px;
     margin-bottom: 10px;
-    font-size: 130%;
+    font-size: 1.3em;
     font-weight: bold;
 }
 
 .post-body h3, .preview-post-body h3 {
     margin-top: 10px;
     margin-bottom: 8px;
-    font-size: 110%;
+    font-size: 1.1em;
+    font-weight: bold;
 }
 
 .post-body pre, .preview-post-body pre {
     overflow: auto;
+    margin-left: 10px;
     padding: 8px;
 	background-color: #eee;
     border: 1px solid rgba(47,111,171,0.5);
@@ -237,9 +240,10 @@ ul.posts li.post:hover {
 }
 
 .post-body blockquote, .preview-post-body blockquote {
-    margin: 0;
+    margin: 0 0 0 10px;
     padding-left: 20px;
-    border-left: 6px #EEE solid;
+    border-left: 10px #B0C4DE solid;
+    background-color: #EBEBEB;
     color: #666666;
 }
 
@@ -247,6 +251,10 @@ ul.posts li.post:hover {
 	vertical-align: top;
 	border-top: 1px solid #ccc;
 	padding: 5px;
+}
+
+.post-body img, .preview-post-body img {
+    width: 100%;
 }
 
 .edit-post {

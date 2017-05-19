@@ -7,13 +7,14 @@ from datetime import datetime
 from flask_login import UserMixin, AnonymousUserMixin
 from flask import current_app
 from flask import request
+from flask import url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from markdown import markdown
 import bleach
 
-from . import db
-from . import login_manager
+from app import db
+from app import login_manager
 
 
 class Follow(db.Model):
@@ -63,6 +64,9 @@ class Role(db.Model):
     permissions = db.Column(db.Integer)
     users = db.relationship('User', backref='role', lazy='dynamic')
 
+    def __repr__(self):
+        return '<Role %s>' % self.name
+
     @staticmethod
     def insert_roles():
         roles = {
@@ -87,9 +91,6 @@ class Role(db.Model):
             role.default = roles[role_name][1]
             db.session.add(role)
         db.session.commit()
-
-    def __repr__(self):
-        return '<Role %s>' % self.name
 
 
 class User(db.Model, UserMixin):
@@ -160,6 +161,9 @@ class User(db.Model, UserMixin):
 
         self.followed.append(Follow(followed=self))  # 把自己设为自己的关注者
 
+    def __repr__(self):
+        return '<User %s>' % self.username
+
     @property
     def password(self):
         raise AttributeError('password is not readable attribute')
@@ -174,6 +178,19 @@ class User(db.Model, UserMixin):
     def generate_confirmation_token(self, expiration=60*60):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
+
+    def generate_auth_token(self, expiration=60*60):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'id': self.id})
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except Exception:
+            return False
+        return User.query.get(data['id'], None)
 
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
@@ -280,8 +297,19 @@ class User(db.Model, UserMixin):
         return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
             .filter(Follow.follower_id == self.id)
 
-    def __repr__(self):
-        return '<User %s>' % self.username
+    def to_json(self):
+        user_json = {
+            'url': url_for('api.get_user', id=self.id, _external=True),
+            'username': self.username,
+            'about_me': self.about_me,
+            'register_date': self.register_date,
+            'last_visit': self.last_visited,
+            'posts': url_for('api.get_user_posts', id=self.id, _external=True),
+            'followed_posts': url_for('api.get_user_followed_posts', id=self.id,
+                                      _external=True),
+            'post_count': self.posts.count(),
+        }
+        return user_json
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -307,6 +335,9 @@ class Category(db.Model):
     name = db.Column(db.String(32), nullable=False, unique=True)
     posts = db.relationship('Post', backref='category', lazy='dynamic')
 
+    def __repr__(self):
+        return '<Category %s>' % self.name
+
     @staticmethod
     def insert_categories():
         categories_list = [
@@ -326,8 +357,15 @@ class Category(db.Model):
                            for category in categories]
         return categories_list
 
-    def __repr__(self):
-        return '<Category %s>' % self.name
+    def to_json(self):
+        category_json = {
+            'url': url_for('api.get_category', id=self.id, _external=True),
+            'name': self.name,
+            # 'posts': url_for('api.get_category_posts', id=self.id,
+            #                  _external=True),
+            'post_count': self.posts.count(),
+        }
+        return category_json
 
 
 class Post(db.Model):
@@ -335,19 +373,22 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), index=True)
+    category_id = db.Column(db.Integer,
+                            db.ForeignKey('categories.id'),
+                            nullable=False)
+    tags = db.Column(db.String(200), nullable=False)
     body = db.Column(db.Text, nullable=False)
     body_html = db.Column(db.Text, nullable=False)
     create_timestamp = db.Column(db.DateTime,
                                  index=True,
                                  default=datetime.utcnow)
     update_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    tags = db.Column(db.String(200), nullable=False)
-    category_id = db.Column(db.Integer,
-                            db.ForeignKey('categories.id'),
-                            nullable=False)
     author_id = db.Column(db.Integer,
                           db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Post %s>' % self.title
 
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
@@ -395,8 +436,41 @@ class Post(db.Model):
     def get_category_name(self):
         return Category.query.get(self.category_id).name
 
-    def __repr__(self):
-        return '<Post %s>' % self.title
+    def to_json(self):
+        post_json = {
+            'url': url_for('api.get_post', id=self.id, _external=True),
+            'title': self.title,
+            'category': url_for('api.get_category', id=self.category_id,
+                                _external=True),
+            'tags': self.get_tags(),
+            'body': self.body,
+            'body_html': self.body_html,
+            'create_time': self.create_timestamp,
+            'update_time': self.update_timestamp,
+            'author': url_for('api.get_user', id=self.author_id, _external=True),
+            'comments': url_for('api.get_post_comments', id=self.id,
+                               _external=True),
+            'comment_count': self.comments.count(),
+        }
+        return post_json
+
+    @staticmethod
+    def from_json(post_json):
+        title = post_json.get('title')
+        if not title:
+            raise ValueError('post does not have a title')
+        category = post_json.get('category')
+        if not category:
+            raise ValueError('post does not have a category')
+        if not Category.query.filter_by(name=category).first():
+            raise ValueError('wrong category')
+        tags = post_json.get('tags')
+        if not tags:
+            raise ValueError('post does not have tags')
+        body = post_json.get('body')
+        if not body:
+            raise ValueError('post does not have a body')
+        return Post(title=title, tags=tags, body=body)
 
 
 # 当 Post 实例的 body 字段更新，on_changed_body 会被自动调用
@@ -409,6 +483,23 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(200))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    disabled = db.Column(db.Boolean)
+    disabled = db.Column(db.Boolean, default=False)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    def to_json(self):
+        comment_json = {
+            'url': url_for('api.get_comment', id=self.id, _external=True),
+            'body': self.body,
+            'timestamp': self.timestamp,
+            'author': url_for('api.get_user', id=self.author_id, _external=True),
+            'post': url_for('api.get_post', id=self.post_id, _external=True),
+        }
+        return comment_json
+
+    @staticmethod
+    def from_json(comment_json):
+        body = comment_json.get('body')
+        if not body:
+            raise ValueError('comment does not have a body')
+        return Comment(body=body)

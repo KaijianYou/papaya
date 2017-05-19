@@ -13,13 +13,13 @@ from flask_login import login_user, logout_user, login_required
 from flask_login import current_user
 from flask_babel import gettext as _
 
-from . import auth
-from .forms import LoginForm, RegistrationForm, \
+from app.auth import auth
+from app.auth.forms import LoginForm, RegistrationForm, \
                    ChangePasswordForm, ResetPasswordForm, \
                    ResetPasswordRequestForm, ChangeEmailForm
-from .. import db
-from ..models import User
-from ..emails import send_email
+from app import db
+from app.models import User
+from app.emails import send_email
 
 
 def is_safe_url(target):
