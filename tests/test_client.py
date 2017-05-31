@@ -15,10 +15,11 @@ class FlaskClientTestCase(unittest.TestCase):
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
         self.app_context.push()
+        self.client = self.app.test_client(use_cookies=True)
+
         db.create_all()
         Role.insert_roles()
         Category.insert_categories()
-        self.client = self.app.test_client(use_cookies=True)
 
     def tearDown(self):
         db.session.remove()

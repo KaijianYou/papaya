@@ -9,6 +9,7 @@ from flask import request
 from flask import flash
 from flask import url_for
 from flask import abort
+from flask import current_app
 from flask_login import login_user, logout_user, login_required
 from flask_login import current_user
 from flask_babel import gettext as _
@@ -68,8 +69,11 @@ def register():
         db.session.commit()
 
         token = user.generate_confirmation_token()
-        send_email(user.email, _('Confirm Your Account'),
-                   'auth/email/confirm', user=user, token=token)
+        send_email(user.email,
+                   _('Confirm Your Account'),
+                   'auth/email/confirm',
+                   user=user,
+                   token=token)
         flash(_('A confirmation email has been sent to you by email'), 'info')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
@@ -82,6 +86,13 @@ def confirm(token):
         return redirect(url_for('main.index'))
     if current_user.confirm(token):
         flash(_('You have confirmed your account. Thanks!'), 'success')
+        send_email(current_app.config['ADMIN_EMAIL'],
+                   _('New user'),
+                   'auth/email/new_user',
+                   user=current_user)
+        print('-' * 20)
+        print('send email')
+        print('-' * 20)
     else:
         flash(_('The confirmation link is invalid or has expired'), 'warning')
     return redirect(url_for('main.index'))
@@ -132,7 +143,6 @@ def change_password():
 def reset_password_request():
     if not current_user.is_anonymous:
         return redirect(url_for('main.index'))
-
     form = ResetPasswordRequestForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -151,7 +161,6 @@ def reset_password_request():
 def reset_password(token):
     if not current_user.is_anonymous:
         return redirect(url_for('main.index'))
-
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()

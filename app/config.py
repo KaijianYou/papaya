@@ -11,6 +11,7 @@ class Config(object):
     ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
     MAIL_SERVER = 'smtp.qq.com'
     MAIL_PORT = 465
+    MAIL_USE_TLS = False
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
@@ -20,8 +21,9 @@ class Config(object):
     FOLLOWERS_PER_PAGE = 20
     COMMENTS_PER_PAGE = 20
 
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'Why not go die?'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'WhyNotGoDie?'
 
+    # 国际化设置
     BABEL_DEFAULT_LOCALE = 'zh_Hans_CN'
     # BABEL_DEFAULT_TIMEZONE =
 
@@ -33,28 +35,37 @@ class Config(object):
 
     SSL_DISABLE = True
 
+    # 表单设置
+    WTF_CSRF_SECRET_KEY = 'NotTellYou'
+    WTF_CSRF_ENABLED = True
+    WTF_CSRF_CHECK_DEFAULT = True
+    WTF_CSRF_TIME_LIMIT = 20 * 60
+
     @staticmethod
     def init_app(app):
         pass
 
 
-class DevelopmentConfig(Config):
+class DevConfig(Config):
+    NAME = 'dev'
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL')
 
 
-class TestingConfig(Config):
+class TestConfig(Config):
+    NAME = 'test'
     TESTING = True
     WTF_CSRF_ENABLED = False  # 禁用表单 CSRF 保护
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL')
 
 
-class ProductionConfig(Config):
+class ProdConfig(Config):
+    NAME = 'prod'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
     @classmethod
     def init_app(cls, app):
-        Config.init_app(app)
+        super().init_app(app)
 
         # 配置日志：当发生严重错误时发送电子邮件给管理员
         import logging
@@ -77,13 +88,14 @@ class ProductionConfig(Config):
         app.logger.addHandler(mail_handler)
 
 
-class HerokuConfig(ProductionConfig):
+class HerokuConfig(ProdConfig):
     """Heroku configuration"""
+    NAME = 'heroku'
     SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
 
     @classmethod
     def init_app(cls, app):
-        ProductionConfig.init_app(app)
+        ProdConfig.init_app(app)
 
         # 配置日志，将日志写入 stderr，Heroku 可以捕获到输出的日志，在 Heroku
         # 客户端中通过 heroku logs 命令可以查看到这些日志
@@ -99,9 +111,9 @@ class HerokuConfig(ProductionConfig):
 
 
 config = {
-    'default': DevelopmentConfig,
-    'development': DevelopmentConfig,
-    'testing': TestingConfig,
-    'production': ProductionConfig,
-    'heroku': HerokuConfig
+    'default': DevConfig,
+    'dev': DevConfig,
+    'test': TestConfig,
+    'prod': ProdConfig,
+    'heroku': HerokuConfig,
 }

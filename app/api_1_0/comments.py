@@ -27,9 +27,6 @@ def get_comment(id):
 def get_post_comments(id):
     post = Post.query.get_or_404(id)
     comments = post.comments.all()
-    print('0' * 20)
-    print(comments)
-    print('0' * 20)
     return jsonify({'comments': [comment.to_json() for comment in comments]})
 
 

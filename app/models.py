@@ -20,9 +20,11 @@ from app import login_manager
 class Follow(db.Model):
     __tablename__ = 'follows'
 
-    follower_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+    follower_id = db.Column(db.Integer,
+                            db.ForeignKey('users.id'),
                             primary_key=True)
-    followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),
+    followed_id = db.Column(db.Integer,
+                            db.ForeignKey('users.id'),
                             primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -139,14 +141,6 @@ class User(db.Model, UserMixin):
             except IntegrityError:
                 db.session.rollback()
 
-    @staticmethod
-    def add_self_follows():
-        for user in User.query.all():
-            if not user.is_following(user):
-                user.follow(user)
-                db.session.add(user)
-                db.session.commit()
-
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
 
@@ -192,13 +186,20 @@ class User(db.Model, UserMixin):
             return False
         return User.query.get(data['id'], None)
 
+    @staticmethod
+    def add_self_follows():
+        for user in User.query.all():
+            if not user.is_following(user):
+                user.follow(user)
+                db.session.add(user)
+                db.session.commit()
+
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
             data = s.loads(token)
         except Exception:
             return False
-
         if data.get('confirm') != self.id:
             return False
         self.confirmed = True
@@ -216,7 +217,6 @@ class User(db.Model, UserMixin):
             data = s.loads(token)
         except Exception:
             return False
-
         if data.get('reset') != self.id:
             return False
         self.password = new_password
@@ -234,7 +234,6 @@ class User(db.Model, UserMixin):
             data = s.loads(token)
         except Exception:
             return False
-
         if data.get('change_email') != self.id:
             return False
         new_email = data.get('new_email')
