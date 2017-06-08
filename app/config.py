@@ -5,6 +5,7 @@ import os
 
 
 class Config(object):
+
     # 邮件设置
     MAIL_SUBJECT_PREFIX = 'FlaskFB - '
     MAIL_SENDER = 'FlaskFB <' + os.environ.get('MAIL_USERNAME') + '>'
@@ -47,12 +48,14 @@ class Config(object):
 
 
 class DevConfig(Config):
+
     NAME = 'dev'
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL')
 
 
 class TestConfig(Config):
+
     NAME = 'test'
     TESTING = True
     WTF_CSRF_ENABLED = False  # 禁用表单 CSRF 保护
@@ -60,6 +63,7 @@ class TestConfig(Config):
 
 
 class ProdConfig(Config):
+
     NAME = 'prod'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
@@ -90,6 +94,7 @@ class ProdConfig(Config):
 
 class HerokuConfig(ProdConfig):
     """Heroku configuration"""
+
     NAME = 'heroku'
     SSL_DISABLE = bool(os.environ.get('SSL_DISABLE'))
 

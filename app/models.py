@@ -18,6 +18,7 @@ from app import login_manager
 
 
 class Follow(db.Model):
+
     __tablename__ = 'follows'
 
     follower_id = db.Column(db.Integer,
@@ -40,6 +41,7 @@ class Permission:
     # | 管理员权限           | 0b10000000 (0x80) | 管理网站                   |
     # -------------------------------------------------------------------------    
     """
+
     FOLLOW = 0x01
     COMMENT = 0x02
     WRITE_ARTICLES = 0x04
@@ -58,6 +60,7 @@ class Role(db.Model):
     # | 管理员   | 0b11111111 (0xff)  | 具有所有权限，包括修改其他用户所属角色的权限 |
     # --------------------------------------------------------------------------------
     """
+
     __tablename__ = 'roles'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -96,6 +99,7 @@ class Role(db.Model):
 
 
 class User(db.Model, UserMixin):
+
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -312,6 +316,7 @@ class User(db.Model, UserMixin):
 
 
 class AnonymousUser(AnonymousUserMixin):
+
     def can(self, permissions):
         return False
 
@@ -328,6 +333,7 @@ def load_user(user_id):
 
 
 class Category(db.Model):
+
     __tablename__ = 'categories'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -368,6 +374,7 @@ class Category(db.Model):
 
 
 class Post(db.Model):
+
     __tablename__ = 'posts'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -477,6 +484,7 @@ db.event.listen(Post.body, 'set', Post.on_changed_body)
 
 
 class Comment(db.Model):
+
     __tablename__ = 'comments'
 
     id = db.Column(db.Integer, primary_key=True)

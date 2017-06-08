@@ -12,6 +12,7 @@ from app.models import User, Role, Category
 
 
 class EditProfileForm(FlaskForm):
+
     real_name = StringField(lazy_('Real name'),
                             validators=[Length(0, 64)],
                             render_kw={'placeholder': lazy_('Real name')})
@@ -24,6 +25,7 @@ class EditProfileForm(FlaskForm):
 
 
 class EditProfileAdminForm(FlaskForm):
+
     email = StringField(lazy_('Email'),
                         validators=[DataRequired(), Length(1, 64), Email()],
                         render_kw={'placeholder': lazy_('Email')})
@@ -63,6 +65,7 @@ class EditProfileAdminForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
+
     title = StringField(lazy_('Title'),
                         validators=[DataRequired(), Length(1, 64)],
                         render_kw={'placeholder': lazy_('Title')})
@@ -83,6 +86,7 @@ class PostForm(FlaskForm):
 
 
 class CommentForm(FlaskForm):
+
     body = TextAreaField('',
                          validators=[DataRequired(), Length(1, 200)],
                          render_kw={'placeholder':

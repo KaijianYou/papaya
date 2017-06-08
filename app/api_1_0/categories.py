@@ -19,7 +19,7 @@ def get_categories():
     return jsonify({'categories': [category.to_json() for category in categories]})
 
 
-@api.route('/categories/<int:id>/posts')
+@api.route('/categories/<int:id>/posts/')
 def get_categories_posts(id):
     category = Category.query.get_or_404(id)
     posts = category.posts.all()

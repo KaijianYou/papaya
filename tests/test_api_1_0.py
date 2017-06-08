@@ -2,10 +2,6 @@
 
 
 import unittest
-import json
-import base64
-
-from flask import url_for
 
 from app import db
 from app import create_app
@@ -13,6 +9,7 @@ from app.models import User, Role, Post, Comment, Category
 
 
 class APITestCase(unittest.TestCase):
+
     def setUp(self):
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
@@ -27,7 +24,7 @@ class APITestCase(unittest.TestCase):
         r = Role.query.filter_by(name='User').first()
         self.assertIsNotNone(r)
         u = User(email='maria@fly.com', password='hello', confirmed=True, role=r)
-        db.session.add()
+        db.session.add(u)
         db.session.commit()
 
     def tearDown(self):

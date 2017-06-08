@@ -9,6 +9,7 @@ from app import create_app
 
 
 class RoleModelTestCase(unittest.TestCase):
+
     def setUp(self):
         self.app = create_app('testing')
         self.app_context = self.app.app_context()
