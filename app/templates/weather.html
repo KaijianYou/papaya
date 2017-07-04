@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>天气</title>
+</head>
+<body>
+    {% if reason %}
+        <p>{{ reason }}</p>
+    {% else %}
+        <p>{{ gettext('City') }}: {{ city }}</p>
+        <p>{{ gettext('Date') }}: {{ date }}</p>
+        <p>{{ gettext('Weather') }}: {{ weather }}</p>
+    {% endif %}
+</body>
+</html>

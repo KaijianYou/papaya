@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 
-from urllib.parse import urljoin
+import urllib.parse
+import urllib.request
+import json
 
 from flask import render_template
 from flask import flash
@@ -20,9 +22,10 @@ from sqlalchemy.sql import func
 from app import db, babel
 from app.main import main
 from app.main.forms import EditProfileForm, EditProfileAdminForm, \
-                           PostForm, CommentForm
+                           PostForm, CommentForm, WeatherForm
 from app.models import User, Role, Permission, \
                        Post, Comment, Category
+from app.models import JUHEErrorCodeType
 from app.decorators import admin_required,  permission_required
 
 
@@ -374,13 +377,35 @@ def about():
     return render_template('about.html')
 
 
-@main.route('/_get_tags_string')
-def get_tags_string():
-    return Post.get_tags_string()
+@main.route('/weather_forecast', methods=['GET', 'POST'])
+def weather_forecast():
+    form = WeatherForm()
+    if form.validate_on_submit():
+        city = form.city.data
+        param = urllib.parse.urlencode({'cityname': city,
+                                        'dtype': current_app.config['JUHE_DATA_TYPE'],
+                                        'format': current_app.config['JUHE_DATA_FORMAT'],
+                                        'key': current_app.config['JUHE_API_KEY']})
+        url = current_app.config['JUHE_WEATHER_URL'] + '?' + param
+        result = json.loads(urllib.request.urlopen(url).read().decode('utf-8'))
+        if result['error_code'] != 0:
+            reason = result['reason']
+            return render_template('weather.html', reason=reason)
+        else:
+            city = result['result']['today']['city']
+            date = result['result']['today']['date_y']
+            weather = result['result']['today']['weather']
+            return render_template('weather.html', city=city, date=date, weather=weather)
+    return render_template('weather_forecast.html', form=form)
+
+
+@main.route('/tags_string')
+def tags_string():
+    return Post.string_from_tags()
 
 
 def make_external(url):
-    return urljoin(request.url_root, url)
+    return urllib.parse.urljoin(request.url_root, url)
 
 
 @main.route('/feed')

@@ -92,3 +92,10 @@ class CommentForm(FlaskForm):
                          render_kw={'placeholder':
                                     lazy_('Limited to 200 characters')})
     submit = SubmitField(lazy_('Submit'))
+
+
+class WeatherForm(FlaskForm):
+    city = StringField(lazy_('City'),
+                       validators=[DataRequired(), Length(1, 10)],
+                       render_kw={'placeholder': lazy_('City')})
+    submit = SubmitField(lazy_('Search'))

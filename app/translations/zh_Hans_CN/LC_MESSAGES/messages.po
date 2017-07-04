@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-05-14 18:41+0800\n"
+"POT-Creation-Date: 2017-07-04 17:51+0800\n"
 "PO-Revision-Date: 2017-03-05 15:08+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans_CN\n"
@@ -22,253 +22,265 @@ msgstr ""
 msgid "Please log in to access this page"
 msgstr "请先登录"
 
-#: app/auth/forms.py:14 app/auth/forms.py:16 app/auth/forms.py:25
-#: app/auth/forms.py:27 app/auth/forms.py:70 app/auth/forms.py:72
-#: app/auth/forms.py:81 app/main/forms.py:27 app/main/forms.py:29
+#: app/auth/forms.py:15 app/auth/forms.py:17 app/auth/forms.py:27
+#: app/auth/forms.py:29 app/auth/forms.py:74 app/auth/forms.py:76
+#: app/auth/forms.py:86 app/main/forms.py:29 app/main/forms.py:31
 #: app/templates/user.html:24
 msgid "Email"
 msgstr "邮箱"
 
-#: app/auth/forms.py:17 app/auth/forms.py:19 app/auth/forms.py:35
-#: app/auth/forms.py:37 app/auth/forms.py:99 app/auth/forms.py:101
+#: app/auth/forms.py:18 app/auth/forms.py:20 app/auth/forms.py:37
+#: app/auth/forms.py:39 app/auth/forms.py:105 app/auth/forms.py:107
 msgid "Password"
 msgstr "密码"
 
-#: app/auth/forms.py:20
+#: app/auth/forms.py:21
 msgid "Keep me logged in"
 msgstr "自动登录"
 
-#: app/auth/forms.py:21 app/templates/base.html:124 app/templates/index.html:90
+#: app/auth/forms.py:22 app/templates/base.html:124 app/templates/index.html:90
 msgid "Log In"
 msgstr "登录"
 
-#: app/auth/forms.py:28 app/auth/forms.py:34 app/main/forms.py:30
-#: app/main/forms.py:36
+#: app/auth/forms.py:30 app/auth/forms.py:36 app/main/forms.py:32
+#: app/main/forms.py:38
 msgid "Username"
 msgstr "用户名"
 
-#: app/auth/forms.py:31 app/main/forms.py:33
+#: app/auth/forms.py:33 app/main/forms.py:35
 msgid "Username must have only letters, numbers, dots or underscores"
 msgstr "用户名只能包含英文字母、数字、小数点和下划线"
 
-#: app/auth/forms.py:39 app/auth/forms.py:42
+#: app/auth/forms.py:41 app/auth/forms.py:44
 msgid "Confirm password"
 msgstr "确认密码"
 
-#: app/auth/forms.py:41 app/auth/forms.py:64 app/auth/forms.py:87
+#: app/auth/forms.py:43 app/auth/forms.py:67 app/auth/forms.py:92
 msgid "Passwords must match"
 msgstr "两次输入的密码必须相同"
 
-#: app/auth/forms.py:43 app/templates/auth/register.html:4
+#: app/auth/forms.py:45 app/templates/auth/register.html:4
 #: app/templates/auth/register.html:8
 msgid "Register"
 msgstr "注册"
 
-#: app/auth/forms.py:47 app/auth/forms.py:106 app/main/forms.py:57
+#: app/auth/forms.py:49 app/auth/forms.py:112 app/main/forms.py:59
 msgid "Email already registered"
 msgstr "该邮箱已经被注册"
 
-#: app/auth/forms.py:51 app/main/forms.py:62
+#: app/auth/forms.py:53 app/main/forms.py:64
 msgid "Username already in use"
 msgstr "该用户名已使用"
 
-#: app/auth/forms.py:55 app/auth/forms.py:57
+#: app/auth/forms.py:58 app/auth/forms.py:60
 msgid "Old password"
 msgstr "原密码"
 
-#: app/auth/forms.py:58 app/auth/forms.py:60 app/auth/forms.py:83
+#: app/auth/forms.py:61 app/auth/forms.py:63 app/auth/forms.py:88
 msgid "New password"
 msgstr "新密码"
 
-#: app/auth/forms.py:62 app/auth/forms.py:65 app/auth/forms.py:85
+#: app/auth/forms.py:65 app/auth/forms.py:68 app/auth/forms.py:90
 msgid "Confirm new password"
 msgstr "确认新密码"
 
-#: app/auth/forms.py:66
+#: app/auth/forms.py:69
 msgid "Update Password"
 msgstr "修改密码"
 
-#: app/auth/forms.py:73 app/auth/forms.py:88
+#: app/auth/forms.py:77 app/auth/forms.py:93
 #: app/templates/auth/reset_password.html:4
 msgid "Reset Password"
 msgstr "重设密码"
 
-#: app/auth/forms.py:77 app/auth/forms.py:92
+#: app/auth/forms.py:81 app/auth/forms.py:97
 msgid "Unknown email address"
 msgstr "无法识别邮件地址"
 
-#: app/auth/forms.py:96 app/auth/forms.py:98
+#: app/auth/forms.py:102 app/auth/forms.py:104
 msgid "New email"
 msgstr "新邮箱"
 
-#: app/auth/forms.py:102
+#: app/auth/forms.py:108
 msgid "Update Email Address"
 msgstr "更新邮箱地址"
 
-#: app/auth/views.py:56
+#: app/auth/views.py:57
 msgid "A new confirmation email has been sent to you by email"
 msgstr "一封验证邮件已经发送到您的邮箱"
 
-#: app/auth/views.py:71
+#: app/auth/views.py:73
 msgid "Confirm Your Account"
 msgstr "验证您的账号"
 
-#: app/auth/views.py:73
+#: app/auth/views.py:77
 msgid "A confirmation email has been sent to you by email"
 msgstr "一封验证邮件已经发送到您的邮箱"
 
-#: app/auth/views.py:84
+#: app/auth/views.py:88
 msgid "You have confirmed your account. Thanks!"
 msgstr "您已经验证账号，谢谢！"
 
-#: app/auth/views.py:86
+#: app/auth/views.py:90 app/templates/auth/login.html:12
+msgid "New user"
+msgstr "新用户"
+
+#: app/auth/views.py:97
 msgid "The confirmation link is invalid or has expired"
 msgstr "此验证链接已经过期或失效"
 
-#: app/auth/views.py:97
+#: app/auth/views.py:108
 msgid "Logged in successfully"
 msgstr "成功登录"
 
-#: app/auth/views.py:103 app/auth/views.py:184
+#: app/auth/views.py:114 app/auth/views.py:193
 msgid "Invalid email or password"
 msgstr "邮箱或密码错误"
 
-#: app/auth/views.py:111
+#: app/auth/views.py:122
 msgid "You have been logged out"
 msgstr "您已经退出"
 
-#: app/auth/views.py:124 app/auth/views.py:161
+#: app/auth/views.py:135 app/auth/views.py:170
 msgid "Your password has been updated"
 msgstr "您的密码已经更新"
 
-#: app/auth/views.py:127
+#: app/auth/views.py:138
 msgid "Invalid password"
 msgstr "密码错误"
 
-#: app/auth/views.py:141
+#: app/auth/views.py:151
 msgid "Reset your password"
 msgstr "重设您的密码"
 
-#: app/auth/views.py:144
+#: app/auth/views.py:154
 msgid "An email with instructions to reset your password has been sent to you"
 msgstr "一封重设密码的邮件已经发送到您的邮箱"
 
-#: app/auth/views.py:177
+#: app/auth/views.py:186
 msgid "Confirm your email address"
 msgstr "验证您的邮箱地址"
 
-#: app/auth/views.py:180
+#: app/auth/views.py:189
 msgid ""
 "An email with instructions to confirm your new email address has been "
 "sent to you."
 msgstr "一封验证新邮箱地址的邮件已经发送到您的邮箱"
 
-#: app/auth/views.py:192
+#: app/auth/views.py:201
 msgid "Your email address has been updated"
 msgstr "您的邮箱地址已经更新"
 
-#: app/auth/views.py:194
+#: app/auth/views.py:203
 msgid "Invalid request"
 msgstr "请求错误"
 
-#: app/main/forms.py:15 app/main/forms.py:17 app/main/forms.py:40
-#: app/main/forms.py:41
+#: app/main/forms.py:16 app/main/forms.py:18 app/main/forms.py:42
+#: app/main/forms.py:43
 msgid "Real name"
 msgstr "真实姓名"
 
-#: app/main/forms.py:18 app/main/forms.py:20 app/main/forms.py:42
-#: app/main/forms.py:43
+#: app/main/forms.py:19 app/main/forms.py:21 app/main/forms.py:44
+#: app/main/forms.py:45
 msgid "Location"
 msgstr "所在地"
 
-#: app/main/forms.py:21 app/main/forms.py:22 app/main/forms.py:44
-#: app/main/forms.py:45 app/templates/user.html:27
+#: app/main/forms.py:22 app/main/forms.py:23 app/main/forms.py:46
+#: app/main/forms.py:47 app/templates/user.html:27
 msgid "About me"
 msgstr "关于我"
 
-#: app/main/forms.py:23 app/main/forms.py:46 app/main/forms.py:90
+#: app/main/forms.py:24 app/main/forms.py:48 app/main/forms.py:94
 msgid "Submit"
 msgstr "提交"
 
-#: app/main/forms.py:37
+#: app/main/forms.py:39
 msgid "Confirmed"
 msgstr "确认"
 
-#: app/main/forms.py:38 app/main/forms.py:39
+#: app/main/forms.py:40 app/main/forms.py:41
 msgid "Role"
 msgstr "角色"
 
-#: app/main/forms.py:66 app/main/forms.py:68
+#: app/main/forms.py:69 app/main/forms.py:71
 msgid "Title"
 msgstr "标题"
 
-#: app/main/forms.py:69 app/main/forms.py:70
+#: app/main/forms.py:72 app/main/forms.py:73
 msgid "Category"
 msgstr "分类"
 
-#: app/main/forms.py:71
+#: app/main/forms.py:74
 msgid "Tag"
 msgstr "标签"
 
-#: app/main/forms.py:73
+#: app/main/forms.py:76
 msgid "More than one tag should separate them by comma"
 msgstr "标签多于一个则用 \",\" 分隔"
 
-#: app/main/forms.py:75 app/templates/post.html:5
+#: app/main/forms.py:78 app/templates/post.html:5
 msgid "Post"
 msgstr "文章"
 
-#: app/main/forms.py:76
+#: app/main/forms.py:79
 msgid "Publish"
 msgstr "发布"
 
-#: app/main/forms.py:89
+#: app/main/forms.py:93
 msgid "Limited to 200 characters"
 msgstr "限 200 字"
 
-#: app/main/views.py:148
+#: app/main/forms.py:98 app/main/forms.py:100 app/templates/weather.html:11
+msgid "City"
+msgstr "城市"
+
+#: app/main/forms.py:101
+msgid "Search"
+msgstr "查询"
+
+#: app/main/views.py:151
 msgid "Your profile has been updated"
 msgstr "您的个人资料已经更新"
 
-#: app/main/views.py:172
+#: app/main/views.py:175
 msgid "The profile has been updated"
 msgstr "个人资料已经更新"
 
-#: app/main/views.py:220
+#: app/main/views.py:223
 msgid "The post has been updated"
 msgstr "文章已经更新"
 
-#: app/main/views.py:235 app/main/views.py:251 app/main/views.py:265
-#: app/main/views.py:286
+#: app/main/views.py:238 app/main/views.py:254 app/main/views.py:268
+#: app/main/views.py:289
 msgid "Invalid user"
 msgstr "无效的用户"
 
-#: app/main/views.py:238
+#: app/main/views.py:241
 msgid "You are already following this user"
 msgstr "您已经关注了该用户"
 
-#: app/main/views.py:241
+#: app/main/views.py:244
 msgid "You are now following"
 msgstr "已关注"
 
-#: app/main/views.py:254
+#: app/main/views.py:257
 msgid "You are not following this user"
 msgstr "您没有关注此用户"
 
-#: app/main/views.py:257
+#: app/main/views.py:260
 #, python-format
 msgid "Your are not following %(username)s anymore"
 msgstr "您已经不再关注 %(username)s"
 
-#: app/main/views.py:276
+#: app/main/views.py:279
 msgid "'s followers"
 msgstr " 的关注者"
 
-#: app/main/views.py:297
+#: app/main/views.py:300
 msgid " has followed"
 msgstr " 关注了"
 
-#: app/main/views.py:313
+#: app/main/views.py:316
 msgid "Your comment has been published"
 msgstr "评论成功"
 
@@ -393,11 +405,15 @@ msgstr "分类"
 msgid "Tags"
 msgstr "标签"
 
+#: app/templates/index.html:92 app/templates/weather_forecast.html:6
+msgid "Weather Forecast"
+msgstr "天气预报"
+
 #: app/templates/moderate.html:4 app/templates/moderate.html:8
 msgid "Comment Moderation"
 msgstr "评论管理"
 
-#: app/templates/post.html:10
+#: app/templates/post.html:11
 msgid "Comments"
 msgstr "评论"
 
@@ -433,22 +449,30 @@ msgstr "关注"
 msgid "Unfollow"
 msgstr "取消关注"
 
-#: app/templates/user.html:67
+#: app/templates/user.html:68
 msgid "Followers"
 msgstr "关注者"
 
-#: app/templates/user.html:70
+#: app/templates/user.html:71
 msgid "Following"
 msgstr "关注了"
 
-#: app/templates/user.html:74
+#: app/templates/user.html:76
 msgid "Follows you"
 msgstr "此用户已关注您"
 
-#: app/templates/user.html:80
+#: app/templates/user.html:82
 #, python-format
 msgid "Posts by %(username)s"
 msgstr "%(username)s 发布的文章"
+
+#: app/templates/weather.html:12
+msgid "Date"
+msgstr "日期"
+
+#: app/templates/weather.html:13
+msgid "Weather"
+msgstr "天气"
 
 #: app/templates/auth/change_email.html:4
 msgid "Change Email Address"
@@ -469,10 +493,6 @@ msgstr "修改密码"
 #: app/templates/auth/login.html:4 app/templates/auth/login.html:8
 msgid "Login"
 msgstr "登录"
-
-#: app/templates/auth/login.html:12
-msgid "New user"
-msgstr "新用户"
 
 #: app/templates/auth/login.html:14
 msgid "Click here to register"
@@ -587,6 +607,12 @@ msgstr "要验证邮箱，请"
 msgid "To confirm your account please click on the following link"
 msgstr "为了验证您的账号，请点击下面的链接"
 
+#: app/templates/auth/email/new_user.html:5
+#: app/templates/auth/email/new_user.txt:1
+#, python-format
+msgid "user %(username)s has joined"
+msgstr "用户 %(username)s 新加入"
+
 #: app/templates/auth/email/reset_password.html:3
 msgid "To reset your password please"
 msgstr "要重设密码，请"
@@ -599,9 +625,3 @@ msgstr "如果您没有请求重设密码，那么可以忽略该信息"
 #: app/templates/auth/email/reset_password.txt:3
 msgid "To reset your password please click on the following link"
 msgstr "为了重设您的密码，请点击下面的链接"
-
-#: app/templates/mail/new_user.html:5 app/templates/mail/new_user.txt:1
-#, python-format
-msgid "user %(username)s has joined"
-msgstr "用户 %(username)s 新加入"
-
