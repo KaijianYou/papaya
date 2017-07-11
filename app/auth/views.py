@@ -9,7 +9,6 @@ from flask import request
 from flask import flash
 from flask import url_for
 from flask import abort
-from flask import current_app
 from flask_login import login_user, logout_user, login_required
 from flask_login import current_user
 from flask_babel import gettext as _
@@ -20,7 +19,7 @@ from app.auth.forms import LoginForm, RegistrationForm, \
                    ResetPasswordRequestForm, ChangeEmailForm
 from app import db
 from app.models import User
-from app.emails import send_email
+from app.emails import EmailUtils
 
 
 def is_safe_url(target):
@@ -52,8 +51,7 @@ def unconfirmed():
 @login_required
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
-    send_email(current_user.email, 'Confirm Your Account',
-               'auth/email/confirm', user=current_user, token=token)
+    EmailUtils.send_confirm_email(user=current_user, token=token)
     flash(_('A new confirmation email has been sent to you by email'), 'info')
     return redirect(url_for('main.index'))
 
@@ -69,11 +67,7 @@ def register():
         db.session.commit()
 
         token = user.generate_confirmation_token()
-        send_email(user.email,
-                   _('Confirm Your Account'),
-                   'auth/email/confirm',
-                   user=user,
-                   token=token)
+        EmailUtils.send_confirm_email(user=user, token=token)
         flash(_('A confirmation email has been sent to you by email'), 'info')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
@@ -86,13 +80,7 @@ def confirm(token):
         return redirect(url_for('main.index'))
     if current_user.confirm(token):
         flash(_('You have confirmed your account. Thanks!'), 'success')
-        send_email(current_app.config['ADMIN_EMAIL'],
-                   _('New user'),
-                   'auth/email/new_user',
-                   user=current_user)
-        print('-' * 20)
-        print('send email')
-        print('-' * 20)
+        EmailUtils.send_new_user_email(user=current_user)
     else:
         flash(_('The confirmation link is invalid or has expired'), 'warning')
     return redirect(url_for('main.index'))
@@ -148,9 +136,9 @@ def reset_password_request():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None:
             token = user.generate_password_reset_token()
-            send_email(user.email, _('Reset your password'),
-                       'auth/email/reset_password', user=user, token=token,
-                       next=request.args.get(next))
+            EmailUtils.send_reset_password_email(user=user,
+                                                 token=token,
+                                                 next=request.args.get(next))
             flash(_('An email with instructions to reset your password '
                     'has been sent to you'), 'info')
         return redirect(url_for('auth.login'))
@@ -183,9 +171,10 @@ def change_email_request():
             new_email = form.email.data
             # 将新设的邮箱账号保存到令牌中
             token = current_user.generate_email_change_token(new_email)
-            send_email(new_email, _('Confirm your email address'),
-                       '/auth/email/change_email', user=current_user,
-                       token=token, next=request.args.get(next))
+            EmailUtils.send_change_email_email([new_email],
+                                               user=current_user,
+                                               token=token,
+                                               next=request.args.get(next))
             flash(_('An email with instructions to confirm your '
                     'new email address has been sent to you.'), 'info')
             return redirect(url_for('main.index'))
