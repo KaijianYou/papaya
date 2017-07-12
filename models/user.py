@@ -43,28 +43,6 @@ class User(db.Model, UserMixin):
                                 backref=db.backref('followed', lazy='joined'),
                                 lazy='dynamic', cascade='all, delete-orphan')
 
-    @staticmethod
-    def generate_fake(count=100):
-        from sqlalchemy.exc import IntegrityError
-        from random import seed
-        import forgery_py
-
-        seed()
-        for i in range(count):
-            user = User(email=forgery_py.internet.email_address(),
-                        username=forgery_py.internet.user_name(True),
-                        password=forgery_py.lorem_ipsum.word(),
-                        confirmed=True,
-                        real_name=forgery_py.name.full_name(),
-                        location=forgery_py.address.city(),
-                        about_me=forgery_py.lorem_ipsum.sentence(),
-                        last_visited=forgery_py.date.date(True))
-            db.session.add(user)
-            try:
-                db.session.commit()
-            except IntegrityError:
-                db.session.rollback()
-
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
 
