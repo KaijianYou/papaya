@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-from urllib.parse import urlparse, urljoin
-
 from flask import render_template
 from flask import redirect
 from flask import request
@@ -15,18 +13,12 @@ from flask_babel import gettext as _
 
 from app.auth import auth
 from app.auth.forms import LoginForm, RegistrationForm, \
-                   ChangePasswordForm, ResetPasswordForm, \
-                   ResetPasswordRequestForm, ChangeEmailForm
+                           ChangePasswordForm, ResetPasswordForm, \
+                           ResetPasswordRequestForm, ChangeEmailForm
 from app import db
 from app.models import User
 from app.emails import EmailUtils
-
-
-def is_safe_url(target):
-    ref_url = urlparse(request.host_url)
-    test_url = urlparse(urljoin(request.host_url, target))
-    return test_url.scheme in ('http', 'https') and \
-        ref_url.netloc == test_url.netloc
+from app.utils.request_utils import RequestUtils
 
 
 @auth.before_app_request
@@ -95,7 +87,7 @@ def login():
             login_user(user, remember=form.remeber_me.data)
             flash(_('Logged in successfully'), 'success')
             next_url = request.args.get('next')
-            if not is_safe_url(next_url):
+            if not RequestUtils.is_safe_url(next_url):
                 return abort(400)
             # 返回重定向的 URL，避免客户端刷新时又向服务器 Post 一次表单数据
             return redirect(next_url or url_for('main.index'))
