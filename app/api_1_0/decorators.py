@@ -3,8 +3,8 @@
 
 from functools import wraps
 
-from app.models import Permission
 from app.api_1_0.errors import forbidden
+from models.role import Permission
 
 
 def permission_required(permissions):

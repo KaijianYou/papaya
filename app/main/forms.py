@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 
 
-from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext as lazy_
-from wtforms import StringField, SubmitField, BooleanField, SelectField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, Regexp
-from wtforms import ValidationError
 from flask_pagedown.fields import PageDownField
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, BooleanField, SelectField, \
+    TextAreaField
+from wtforms import ValidationError
+from wtforms.validators import DataRequired, Length, Email, Regexp
 
-from app.models import User, Role, Category
+from models.category import Category
+from models.role import Role
+from models.user import User
 
 
 class EditProfileForm(FlaskForm):

@@ -3,8 +3,7 @@
 
 from flask import Blueprint
 
-from ..models import Permission
-
+from models.role import Permission
 
 main = Blueprint('main', __name__)
 

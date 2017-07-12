@@ -3,9 +3,10 @@
 
 import unittest
 
-from app.models import Role, User, AnonymousUser, Permission
-from app import db
 from app import create_app
+from app import db
+from models.role import Role, Permission
+from models.user import User
 
 
 class RoleModelTestCase(unittest.TestCase):

@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
 
-import unittest
 import re
+import unittest
 
 from flask import url_for
 
 from app import create_app, db
-from app.models import User, Role, Category
+from models.category import Category
+from models.role import Role
+from models.user import User
 
 
 class FlaskClientTestCase(unittest.TestCase):
