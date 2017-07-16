@@ -16,7 +16,7 @@ from flask_login import current_user
 from flask_login import login_required
 from flask_sqlalchemy import get_debug_queries
 from sqlalchemy import desc
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, and_
 from werkzeug.contrib.atom import AtomFeed
 
 from app import db, babel
@@ -308,8 +308,15 @@ def followed_by(username):
 @main.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
     post = Post.query.get_or_404(id)
+    prev_post = Post.query.filter(and_(Post.author_id == post.author_id,
+                                       Post.create_timestamp < post.create_timestamp))\
+                          .order_by(Post.create_timestamp.desc()).first()
+    next_post = Post.query.filter(and_(Post.author_id == post.author_id,
+                                       Post.create_timestamp > post.create_timestamp))\
+                          .order_by(Post.create_timestamp.asc()).first()
     if request.method == 'GET':
         post.read_count += 1
+    db.session.commit()
     form = CommentForm()
     if form.validate_on_submit():
         comment = Comment(body=form.body.data,
@@ -331,6 +338,8 @@ def post(id):
     comments = pagination.items
     return render_template('post.html',
                            posts=[post],
+                           prev_post=prev_post,
+                           next_post=next_post,
                            form=form,
                            comments=comments,
                            pagination=pagination)
