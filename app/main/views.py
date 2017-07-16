@@ -1,29 +1,34 @@
 # -*- coding: utf-8 -*-
 
 
-from urllib.parse import urljoin
+import json
+import urllib.parse
+import urllib.request
 
-from flask import render_template
-from flask import flash
 from flask import abort
-from flask import redirect, url_for
-from flask import request
 from flask import current_app
-from werkzeug.contrib.atom import AtomFeed
-from flask_login import login_required
-from flask_login import current_user
+from flask import flash
+from flask import redirect, url_for
+from flask import render_template
+from flask import request
 from flask_babel import gettext as _
+from flask_login import current_user
+from flask_login import login_required
 from flask_sqlalchemy import get_debug_queries
 from sqlalchemy import desc
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, and_
+from werkzeug.contrib.atom import AtomFeed
 
 from app import db, babel
+from app.decorators import admin_required, permission_required
 from app.main import main
 from app.main.forms import EditProfileForm, EditProfileAdminForm, \
-                           PostForm, CommentForm
-from app.models import User, Role, Permission, \
-                       Post, Comment, Category
-from app.decorators import admin_required,  permission_required
+    PostForm, CommentForm, WeatherForm
+from models.post import Post
+from models.category import Category
+from models.comment import Comment
+from models.role import Role, Permission
+from models.user import User
 
 
 @babel.localeselector
@@ -303,6 +308,15 @@ def followed_by(username):
 @main.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
     post = Post.query.get_or_404(id)
+    prev_post = Post.query.filter(and_(Post.author_id == post.author_id,
+                                       Post.create_timestamp < post.create_timestamp))\
+                          .order_by(Post.create_timestamp.desc()).first()
+    next_post = Post.query.filter(and_(Post.author_id == post.author_id,
+                                       Post.create_timestamp > post.create_timestamp))\
+                          .order_by(Post.create_timestamp.asc()).first()
+    if request.method == 'GET':
+        post.read_count += 1
+    db.session.commit()
     form = CommentForm()
     if form.validate_on_submit():
         comment = Comment(body=form.body.data,
@@ -324,6 +338,8 @@ def post(id):
     comments = pagination.items
     return render_template('post.html',
                            posts=[post],
+                           prev_post=prev_post,
+                           next_post=next_post,
                            form=form,
                            comments=comments,
                            pagination=pagination)
@@ -374,13 +390,35 @@ def about():
     return render_template('about.html')
 
 
-@main.route('/_get_tags_string')
-def get_tags_string():
-    return Post.get_tags_string()
+@main.route('/weather_forecast', methods=['GET', 'POST'])
+def weather_forecast():
+    form = WeatherForm()
+    if form.validate_on_submit():
+        city = form.city.data
+        param = urllib.parse.urlencode({'cityname': city,
+                                        'dtype': current_app.config['JUHE_DATA_TYPE'],
+                                        'format': current_app.config['JUHE_DATA_FORMAT'],
+                                        'key': current_app.config['JUHE_API_KEY']})
+        url = current_app.config['JUHE_WEATHER_URL'] + '?' + param
+        result = json.loads(urllib.request.urlopen(url).read().decode('utf-8'))
+        if result['error_code'] != 0:
+            reason = result['reason']
+            return render_template('weather.html', reason=reason)
+        else:
+            city = result['result']['today']['city']
+            date = result['result']['today']['date_y']
+            weather = result['result']['today']['weather']
+            return render_template('weather.html', city=city, date=date, weather=weather)
+    return render_template('weather_forecast.html', form=form)
+
+
+@main.route('/tags_string')
+def tags_string():
+    return Post.string_from_tags()
 
 
 def make_external(url):
-    return urljoin(request.url_root, url)
+    return urllib.parse.urljoin(request.url_root, url)
 
 
 @main.route('/feed')

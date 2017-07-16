@@ -21,28 +21,22 @@ mail = Mail()
 pagedown = PageDown()
 babel = Babel()
 login_manager = LoginManager()
-login_manager.session_protection = 'strong'
-login_manager.login_view = 'auth.login'
-login_manager.login_message = lazy_('Please log in to access this page')
 
 
-def create_app(config_name):
-    app = Flask(__name__)
-    app.config.from_object(config[config_name])
-    config[config_name].init_app(app)
-
+def register_extensions(app):
     bootstrap.init_app(app)
     moment.init_app(app)
     db.init_app(app)
     mail.init_app(app)
-    login_manager.init_app(app)
     pagedown.init_app(app)
     babel.init_app(app)
+    login_manager.init_app(app)
+    login_manager.session_protection = 'strong'
+    login_manager.login_view = 'auth.login'
+    login_manager.login_message = lazy_('Please log in to access this page')
 
-    if not app.debug and not app.testing and not app.config['SSL_DISABLE']:
-        from flask_sslify import SSLify
-        sslify = SSLify(app)
 
+def register_blueprint(app):
     from .main import main as main_blueprint
     from .main import views, errors
     app.register_blueprint(main_blueprint)
@@ -57,8 +51,21 @@ def create_app(config_name):
 
     from .api_1_0 import api as api_1_0_blueprint
     from .api_1_0 import posts
-    from .api_1_0 import authentication, posts, users, comments, \
-        categories, errors
+    from .api_1_0 import authentication, posts, users, comments, categories, errors
     app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1.0')
+
+
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
+
+    register_extensions(app)
+
+    if not app.debug and not app.testing and not app.config['SSL_DISABLE']:
+        from flask_sslify import SSLify
+        sslify = SSLify(app)
+
+    register_blueprint(app)
 
     return app

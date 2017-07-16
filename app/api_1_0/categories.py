@@ -4,7 +4,7 @@
 from flask import jsonify
 
 from app.api_1_0 import api
-from app.models import Category
+from models.category import Category
 
 
 @api.route('/categories/<int:id>')

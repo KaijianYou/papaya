@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 
 
-from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext as lazy_
-from wtforms import StringField, SubmitField, BooleanField, SelectField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, Regexp
-from wtforms import ValidationError
 from flask_pagedown.fields import PageDownField
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, BooleanField, SelectField, \
+    TextAreaField
+from wtforms import ValidationError
+from wtforms.validators import DataRequired, Length, Email, Regexp
 
-from app.models import User, Role, Category
+from models.category import Category
+from models.role import Role
+from models.user import User
 
 
 class EditProfileForm(FlaskForm):
@@ -33,8 +36,8 @@ class EditProfileAdminForm(FlaskForm):
                            validators=[DataRequired(), Length(1, 64),
                                        Regexp('^[A-Za-z0-9_.]*$', 0,
                                               lazy_('Username must have only'
-                                                    ' letters, numbers, dots'
-                                                    ' or underscores'))],
+                                                    ' letters, numbers, "."'
+                                                    ' or "_"'))],
                            render_kw={'placeholder': lazy_('Username')})
     confirmed = BooleanField(lazy_('Confirmed'))
     role = SelectField(lazy_('Role'), coerce=int,
@@ -92,3 +95,10 @@ class CommentForm(FlaskForm):
                          render_kw={'placeholder':
                                     lazy_('Limited to 200 characters')})
     submit = SubmitField(lazy_('Submit'))
+
+
+class WeatherForm(FlaskForm):
+    city = StringField(lazy_('City'),
+                       validators=[DataRequired(), Length(1, 10)],
+                       render_kw={'placeholder': lazy_('City')})
+    submit = SubmitField(lazy_('Search'))

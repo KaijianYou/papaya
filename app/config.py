@@ -42,6 +42,12 @@ class Config(object):
     WTF_CSRF_CHECK_DEFAULT = True
     WTF_CSRF_TIME_LIMIT = 20 * 60
 
+    # 聚合数据
+    JUHE_WEATHER_URL = 'http://v.juhe.cn/weather/index'
+    JUHE_API_KEY = '44a2fea2e2780f71257feb28b22c6048'
+    JUHE_DATA_TYPE = 'json'
+    JUHE_DATA_FORMAT = '1'
+
     @staticmethod
     def init_app(app):
         pass

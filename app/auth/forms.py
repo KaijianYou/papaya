@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 
-from flask_wtf import FlaskForm
 from flask_babel import lazy_gettext as lazy_
+from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
+from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 
-from app.models import User
+from models.user import User
 
 
 class LoginForm(FlaskForm):
@@ -29,13 +29,17 @@ class RegistrationForm(FlaskForm):
                         render_kw={'placeholder': lazy_('Email')})
     username = StringField(lazy_('Username'),
                            validators=[DataRequired(), Length(1, 64),
-                                       Regexp('^[A-Za-z0-9_.]*$', 0,
+                                       Regexp('^[A-Za-z0-9_.]+$', 0,
                                               lazy_('Username must have only'
-                                                    ' letters, numbers, dots'
-                                                    ' or underscores'))],
+                                                    ' letters, numbers, "."'
+                                                    ' or "_"'))],
                            render_kw={'placeholder': lazy_('Username')})
     password = PasswordField(lazy_('Password'),
-                             validators=[DataRequired()],
+                             validators=[DataRequired(),
+                                         Regexp('^[A-Za-z0-9_.@#]+$'), 0,
+                                         lazy_('Password must have only'
+                                               ' letters, numbers, ".",'
+                                               ' "_", "@" or "#"')],
                              render_kw={'placeholder': lazy_('Password')})
     password_confirmation = PasswordField(
         lazy_('Confirm password'), validators=[

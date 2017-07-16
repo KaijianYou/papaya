@@ -4,9 +4,8 @@
 from flask import g
 from flask_httpauth import HTTPBasicAuth
 
-from app.api_1_0 import api
-from app.models import User, AnonymousUser
 from app.api_1_0.errors import *
+from models.user import User, AnonymousUser
 
 
 api_auth = HTTPBasicAuth()

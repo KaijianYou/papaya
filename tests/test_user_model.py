@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
 
-import unittest
 import time
+import unittest
 from datetime import datetime
 
-from app.models import User, AnonymousUser, Permission, Follow
-from app import db
 from app import create_app
+from app import db
+from models.follow import Follow
+from models.role import Permission
+from models.user import User, AnonymousUser
 
 
 class UserModelTestCase(unittest.TestCase):

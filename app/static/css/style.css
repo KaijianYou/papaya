@@ -152,7 +152,30 @@ ul.posts li.post:hover {
     margin-left: 48px;
 }
 
+.post-nav {
+    margin-top: 20px;
+    padding: 4px 2px 4px 2px;
+    text-align: left;
+    line-height: 16px;
+    font-size: 16px;
+}
+
+.post-nav-prev {
+    float: left;
+    width: 50%;
+    padding-right: 40px;
+    text-align: left;
+}
+
+.post-nav-next {
+    float: left;
+    width: 50%;
+    padding-right: 40px;
+    text-align: left;
+}
+
 .post-footer {
+    margin-top: 20px;
     padding: 4px 2px 4px 2px;
     text-align: right;
 }

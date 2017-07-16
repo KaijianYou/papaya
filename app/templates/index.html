@@ -89,6 +89,7 @@
                             <ul>
                                 <li><a href="{{ url_for('auth.login') }}">{{ gettext('Log In') }}</a></li>
                                 <li><a href="{{ url_for('main.recent_feed') }}">RSS</a></li>
+                                <li><a href="{{ url_for('main.weather_forecast') }}">{{ gettext('Weather Forecast') }}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -135,7 +136,7 @@
         // 标签云
         $.ajax({
             type: "GET",
-            url: $SCRIPT_ROOT + "/_get_tags_string",
+            url: $SCRIPT_ROOT + "/tags_string",
             dataType: "text"
         }).then(function(data, textStatus) {
             var words = [];

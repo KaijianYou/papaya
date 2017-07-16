@@ -4,12 +4,16 @@
 
 import os
 
-from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager, Shell
 
 from app import create_app
 from app import db
-from app.models import User, Role, Post, Permission, Comment, Category
+from models.post import Post
+from models.category import Category
+from models.comment import Comment
+from models.role import Role, Permission
+from models.user import User
 
 
 def make_shell_context():

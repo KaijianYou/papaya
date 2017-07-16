@@ -3,9 +3,11 @@
 
 import unittest
 
-from app import db
 from app import create_app
-from app.models import User, Role, Post, Comment, Category
+from app import db
+from models.category import Category
+from models.role import Role
+from models.user import User
 
 
 class APITestCase(unittest.TestCase):

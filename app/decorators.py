@@ -2,11 +2,12 @@
 
 
 from functools import wraps
+from threading import Thread
 
 from flask import abort
 from flask_login import current_user
 
-from app.models import Permission
+from models.role import Permission
 
 
 def permission_required(permission):
@@ -23,3 +24,11 @@ def permission_required(permission):
 
 def admin_required(func):
     return permission_required(Permission.ADMINISTER)(func)
+
+
+def async_task(func):
+    @wraps(func)
+    def decorator(*args, **kwargs):
+        thread = Thread(target=func, args=args, kwargs=kwargs)
+        thread.start()
+    return decorator
