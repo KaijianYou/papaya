@@ -308,6 +308,8 @@ def followed_by(username):
 @main.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
     post = Post.query.get_or_404(id)
+    if request.method == 'GET':
+        post.read_count += 1
     form = CommentForm()
     if form.validate_on_submit():
         comment = Comment(body=form.body.data,

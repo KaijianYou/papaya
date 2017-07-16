@@ -22,6 +22,7 @@ class Post(db.Model):
     body_html = db.Column(db.Text, nullable=False)
     create_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     update_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    read_count = db.Column(db.Integer)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 

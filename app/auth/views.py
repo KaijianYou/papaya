@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
+from utils.request_utils import RequestUtils
 from flask import abort
 from flask import flash
 from flask import redirect
@@ -16,9 +17,8 @@ from app.auth import auth
 from app.auth.forms import LoginForm, RegistrationForm, \
     ChangePasswordForm, ResetPasswordForm, \
     ResetPasswordRequestForm, ChangeEmailForm
-from app.utils.email_utils import EmailUtils
-from app.utils.request_utils import RequestUtils
 from models.user import User
+from utils.email_utils import EmailUtils
 
 
 @auth.before_app_request
