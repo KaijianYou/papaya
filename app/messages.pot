@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-07-13 11:34+0800\n"
+"POT-Creation-Date: 2017-07-23 15:41+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -267,7 +267,7 @@ msgstr ""
 msgid " has followed"
 msgstr ""
 
-#: app/main/views.py:320
+#: app/main/views.py:327
 msgid "Your comment has been published"
 msgstr ""
 
@@ -283,15 +283,15 @@ msgstr ""
 msgid "Disable"
 msgstr ""
 
-#: app/templates/_posts_detail.html:63 app/templates/_posts_preview.html:63
+#: app/templates/_posts_detail.html:86 app/templates/_posts_preview.html:67
 msgid "Edit"
 msgstr ""
 
-#: app/templates/_posts_detail.html:67 app/templates/_posts_preview.html:67
+#: app/templates/_posts_detail.html:90 app/templates/_posts_preview.html:71
 msgid "Edit [Admin]"
 msgstr ""
 
-#: app/templates/_posts_preview.html:71
+#: app/templates/_posts_preview.html:75
 msgid "Read more"
 msgstr ""
 
@@ -481,7 +481,7 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: app/templates/auth/login.html:12 app/utils/email_utils.py:58
+#: app/templates/auth/login.html:12 utils/email_utils.py:58
 msgid "New user"
 msgstr ""
 
@@ -569,7 +569,7 @@ msgstr ""
 #: app/templates/auth/email/confirm.txt:9
 #: app/templates/auth/email/reset_password.html:15
 #: app/templates/auth/email/reset_password.txt:9
-msgid "The FlaskFB Team"
+msgid "The Papaya Team"
 msgstr ""
 
 #: app/templates/auth/email/change_email.html:16
@@ -617,15 +617,15 @@ msgstr ""
 msgid "To reset your password please click on the following link"
 msgstr ""
 
-#: app/utils/email_utils.py:42
+#: utils/email_utils.py:42
 msgid "Confirm your email address"
 msgstr ""
 
-#: app/utils/email_utils.py:50
+#: utils/email_utils.py:50
 msgid "Confirm Your Account"
 msgstr ""
 
-#: app/utils/email_utils.py:65
+#: utils/email_utils.py:65
 msgid "Reset your password"
 msgstr ""
 

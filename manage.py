@@ -27,7 +27,7 @@ def make_shell_context():
                 Category=Category)
 
 
-app = create_app(os.getenv('FLASKFB_CONFIG') or 'default')
+app = create_app(os.getenv('PAPAYA_CONFIG') or 'default')
 
 manager = Manager(app)
 manager.add_command('shell', Shell(make_context=make_shell_context))

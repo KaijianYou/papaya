@@ -3,7 +3,7 @@
 
 <p>{{ gettext('Dear') }} {{ user.username }},</p>
 
-<p>{{ gettext('Welcome to') }} <b>FlaskFB</b>!</p>
+<p>{{ gettext('Welcome to') }} <b>Papaya</b>!</p>
 
 <p>{{ gettext('To confirm your account please') }}
     <a href="{{ url_for('auth.confirm', token=token, _external=True) }}">
@@ -15,7 +15,7 @@
 <p>&emsp;{{ url_for('auth.confirm', token=token, _external=True) }}</p>
 
 <p>{{ gettext('Sincerely') }},</p>
-<p>{{ gettext('The FlaskFB Team') }}</p>
+<p>{{ gettext('The Papaya Team') }}</p>
 
 <p>
     <small>{{ gettext('Note: replies to this email address are not monitored') }}.</small>

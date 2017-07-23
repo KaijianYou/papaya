@@ -1,9 +1,9 @@
-# FlaskFB
+# Papaya
 A simple blog system based on Flask -- a framework for Python.<br/>
 
 
 ## Demo
-Please visit https://flaskfb.herokuapp.com/<br>
+[Wasted] Please visit https://flaskfb.herokuapp.com/<br>
 
 
 ## Reference

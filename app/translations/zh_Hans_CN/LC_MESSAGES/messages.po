@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-07-13 11:34+0800\n"
+"POT-Creation-Date: 2017-07-23 15:41+0800\n"
 "PO-Revision-Date: 2017-03-05 15:08+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans_CN\n"
@@ -268,7 +268,7 @@ msgstr " 的关注者"
 msgid " has followed"
 msgstr " 关注了"
 
-#: app/main/views.py:320
+#: app/main/views.py:327
 msgid "Your comment has been published"
 msgstr "评论成功"
 
@@ -284,15 +284,15 @@ msgstr "解禁"
 msgid "Disable"
 msgstr "屏蔽"
 
-#: app/templates/_posts_detail.html:63 app/templates/_posts_preview.html:63
+#: app/templates/_posts_detail.html:86 app/templates/_posts_preview.html:67
 msgid "Edit"
 msgstr "编辑"
 
-#: app/templates/_posts_detail.html:67 app/templates/_posts_preview.html:67
+#: app/templates/_posts_detail.html:90 app/templates/_posts_preview.html:71
 msgid "Edit [Admin]"
 msgstr "编辑 [管理员]"
 
-#: app/templates/_posts_preview.html:71
+#: app/templates/_posts_preview.html:75
 msgid "Read more"
 msgstr "阅读全文"
 
@@ -482,7 +482,7 @@ msgstr "修改密码"
 msgid "Login"
 msgstr "登录"
 
-#: app/templates/auth/login.html:12 app/utils/email_utils.py:58
+#: app/templates/auth/login.html:12 utils/email_utils.py:58
 msgid "New user"
 msgstr "新用户"
 
@@ -570,8 +570,8 @@ msgstr "此致"
 #: app/templates/auth/email/confirm.txt:9
 #: app/templates/auth/email/reset_password.html:15
 #: app/templates/auth/email/reset_password.txt:9
-msgid "The FlaskFB Team"
-msgstr "FlaskFB 团队敬上"
+msgid "The Papaya Team"
+msgstr "Papaya 团队敬上"
 
 #: app/templates/auth/email/change_email.html:16
 #: app/templates/auth/email/change_email.txt:9
@@ -618,14 +618,14 @@ msgstr "如果您没有请求重设密码，那么可以忽略该信息"
 msgid "To reset your password please click on the following link"
 msgstr "为了重设您的密码，请点击下面的链接"
 
-#: app/utils/email_utils.py:42
+#: utils/email_utils.py:42
 msgid "Confirm your email address"
 msgstr "验证您的邮箱地址"
 
-#: app/utils/email_utils.py:50
+#: utils/email_utils.py:50
 msgid "Confirm Your Account"
 msgstr "验证您的账号"
 
-#: app/utils/email_utils.py:65
+#: utils/email_utils.py:65
 msgid "Reset your password"
 msgstr "重设您的密码"

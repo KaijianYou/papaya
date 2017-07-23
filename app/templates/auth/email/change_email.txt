@@ -4,6 +4,6 @@
     {{ url_for('auth.change_email', token=token, _external=True) }}
 
 {{ gettext('Sincerely') }},
-{{ gettext('The FlaskFB Team') }}
+{{ gettext('The Papaya Team') }}
 
 {{ gettext('Note: replies to this email address are not monitored') }}.

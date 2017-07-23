@@ -7,8 +7,8 @@ import os
 class Config(object):
 
     # 邮件设置
-    MAIL_SUBJECT_PREFIX = 'FlaskFB - '
-    MAIL_SENDER = 'FlaskFB <' + os.environ.get('MAIL_USERNAME') + '>'
+    MAIL_SUBJECT_PREFIX = 'Papaya - '
+    MAIL_SENDER = 'Papaya <' + os.environ.get('MAIL_USERNAME') + '>'
     ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
     MAIL_SERVER = 'smtp.qq.com'
     MAIL_PORT = 465

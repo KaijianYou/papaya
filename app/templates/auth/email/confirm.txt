@@ -1,11 +1,11 @@
 {{ gettext('Dear') }} {{ user.username }},
 
-{{ gettext('Welcome to') }} FlaskFB!
+{{ gettext('Welcome to') }} Papaya!
 
 {{ gettext('To confirm your account please click on the following link') }}:
     {{ url_for('auth.confirm', token=token, _external=True) }}
 
 {{ gettext('Sincerely') }},
-{{ gettext('The FlaskFB Team') }}
+{{ gettext('The Papaya Team') }}
 
 {{ gettext('Note: replies to this email address are not monitored') }}.
