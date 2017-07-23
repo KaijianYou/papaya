@@ -9,7 +9,7 @@ from app.main import main
 
 
 @main.app_errorhandler(403)
-def fobidden(e):
+def forbidden(e):
     if request.accept_mimetypes.accept_json and \
             not request.accept_mimetypes.accept_html:
         response = jsonify({'error': 'forbidden'})

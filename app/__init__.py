@@ -9,6 +9,7 @@ from flask_mail import Mail
 from flask_moment import Moment
 from flask_pagedown import PageDown
 from flask_sqlalchemy import SQLAlchemy
+from raven.contrib.flask import Sentry
 from flask_babel import lazy_gettext as lazy_
 
 from app.config import config
@@ -20,6 +21,7 @@ db = SQLAlchemy()
 mail = Mail()
 pagedown = PageDown()
 babel = Babel()
+sentry = Sentry()
 login_manager = LoginManager()
 
 
@@ -30,6 +32,7 @@ def register_extensions(app):
     mail.init_app(app)
     pagedown.init_app(app)
     babel.init_app(app)
+    sentry.init_app(app, dsn=app.config['SENTRY_DSN'])
     login_manager.init_app(app)
     login_manager.session_protection = 'strong'
     login_manager.login_view = 'auth.login'

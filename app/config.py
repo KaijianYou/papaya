@@ -59,6 +59,9 @@ class DevConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL')
 
+    # Sentry 配置
+    SENTRY_DSN = 'https://269ded54b4d84ca2b27c70e972653dd9:9126d7016fe941a98b4ea8ccc8d1510b@sentry.io/194714'
+
 
 class TestConfig(Config):
 
@@ -73,6 +76,9 @@ class ProdConfig(Config):
     NAME = 'prod'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
+    # Sentry 配置
+    SENTRY_DSN = 'https://ccc720773a1040acaf1d484f9763f7db:e84abd18e1924143a554c5874305c435@sentry.io/194712'
+
     @classmethod
     def init_app(cls, app):
         super().init_app(app)
@@ -80,9 +86,11 @@ class ProdConfig(Config):
         # 配置日志：当发生严重错误时发送电子邮件给管理员
         import logging
         from logging.handlers import SMTPHandler
+        from logging.handlers import RotatingFileHandler
+
         credentials = None
         secure = None
-        if getattr(cls, 'MAIL_USERNAME', None) is not None:
+        if getattr(cls, 'ADMIN_EMAIL', None) is not None:
             credentials = (cls.MAIL_USERNAME, cls.MAIL_PASSWORD)
             if getattr(cls, 'MAIL_USE_SSL', None):
                 secure = ()
@@ -91,11 +99,17 @@ class ProdConfig(Config):
             mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
             fromaddr=cls.MAIL_SENDER,
             toaddrs=[cls.ADMIN_EMAIL],
-            subject=cls.MAIL_SUBJECT_PREFIX + ' Application Error',
+            subject=cls.MAIL_SUBJECT_PREFIX + 'Application Error',
             credentials=credentials,
             secure=secure)
         mail_handler.setLevel(logging.ERROR)
         app.logger.addHandler(mail_handler)
+
+        file_handler = RotatingFileHandler('papaya-server.log',
+                                           maxBytes=10 * 1024 * 1024,
+                                           backupCount=10)
+        file_handler.setLevel(logging.WARNING)
+        app.logger.addHandler(file_handler)
 
 
 class HerokuConfig(ProdConfig):
