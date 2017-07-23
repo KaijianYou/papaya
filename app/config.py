@@ -87,6 +87,7 @@ class ProdConfig(Config):
         import logging
         from logging.handlers import SMTPHandler
         from logging.handlers import RotatingFileHandler
+        from logging import Formatter
 
         credentials = None
         secure = None
@@ -103,12 +104,26 @@ class ProdConfig(Config):
             credentials=credentials,
             secure=secure)
         mail_handler.setLevel(logging.ERROR)
+        mail_handler.setFormatter(Formatter('''
+        Message type: %(levelname)s
+        Location:     %(pathname)s:%(lineno)d
+        Module:       %(module)s
+        Function:     %(funcName)s
+        Time:         %(asctime)s
+        
+        Message:
+            %(message)s
+        '''))
         app.logger.addHandler(mail_handler)
 
         file_handler = RotatingFileHandler('papaya-server.log',
                                            maxBytes=10 * 1024 * 1024,
                                            backupCount=10)
         file_handler.setLevel(logging.WARNING)
+        file_handler.setFormatter(Formatter(
+            '%(asctime)s %(levelname)s: %(message)s '
+            '[in %(pathname)s:%(lineno)d]'
+        ))
         app.logger.addHandler(file_handler)
 
 
