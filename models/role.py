@@ -49,17 +49,20 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'User':
-                (Permission.FOLLOW |
-                 Permission.COMMENT |
-                 Permission.WRITE_ARTICLES, True),
-            'Moderator':
-                (Permission.FOLLOW |
-                 Permission.COMMENT |
-                 Permission.WRITE_ARTICLES |
-                 Permission.MODERATE_COMMENTS, False),
-            'Administrator':
-                (0xff, False)
+            'User': (
+                Permission.FOLLOW |
+                Permission.COMMENT |
+                Permission.WRITE_ARTICLES, True
+            ),
+            'Moderator': (
+                Permission.FOLLOW |
+                Permission.COMMENT |
+                Permission.WRITE_ARTICLES |
+                Permission.MODERATE_COMMENTS, False
+            ),
+            'Administrator': (
+                0xff, False
+            )
         }
 
         for role_name in roles:

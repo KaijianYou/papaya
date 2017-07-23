@@ -21,7 +21,8 @@ class Category(db.Model):
     def insert_categories():
         categories_list = [
             '计算机与编程', '思考与感言', '读书与写作', '外语学习', '生活',
-            '好玩有趣', '工作', '学习资料', '建议与反馈', '新闻资讯']
+            '好玩有趣', '工作', '学习资料', '建议与反馈', '新闻资讯'
+        ]
         for category_name in categories_list:
             category = Category.query.filter_by(name=category_name).first()
             if category is None:
