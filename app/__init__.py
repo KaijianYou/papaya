@@ -32,7 +32,9 @@ def register_extensions(app):
     mail.init_app(app)
     pagedown.init_app(app)
     babel.init_app(app)
-    sentry.init_app(app, dsn=app.config['SENTRY_DSN'])
+    env =  app.config['NAME']
+    if env == 'Development' or env == 'Production':
+        sentry.init_app(app, dsn=app.config['SENTRY_DSN'])
     login_manager.init_app(app)
     login_manager.session_protection = 'strong'
     login_manager.login_view = 'auth.login'

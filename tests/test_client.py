@@ -15,9 +15,11 @@ from models.user import User
 class FlaskClientTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.app = create_app('testing')
+        self.app = create_app('test')
         self.app_context = self.app.app_context()
         self.app_context.push()
+        self.ctx = self.app.test_request_context()
+        self.ctx.push()
         self.client = self.app.test_client(use_cookies=True)
 
         db.create_all()
@@ -35,12 +37,13 @@ class FlaskClientTestCase(unittest.TestCase):
         self.assertTrue('游客' in response.get_data(as_text=True))
 
     def test_register_and_login(self):
-        response = self.client.post(url_for('auth.register'), data={
-            'email': 'sugar@gmail.com',
-            'username': 'sugar',
-            'password': 'tiger',
-            'password_confirmation': 'tiger'
-        })
+        response = self.client.post(url_for('auth.register'),
+                                    data={
+                                        'email': 'sugar@gmail.com',
+                                        'username': 'sugar',
+                                        'password': 'tiger',
+                                        'password_confirmation': 'tiger'
+                                    })
         self.assertTrue(response.status_code == 302)
 
         response = self.client.post(url_for('auth.login'), data={

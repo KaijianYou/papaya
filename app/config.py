@@ -48,12 +48,14 @@ class Config(object):
     JUHE_DATA_TYPE = 'json'
     JUHE_DATA_FORMAT = '1'
 
+    JSON_AS_ASCII = False
+
     @staticmethod
     def init_app(app):
         pass
 
 
-class DevConfig(Config):
+class DevelopmentConfig(Config):
 
     NAME = 'dev'
     DEBUG = True
@@ -63,7 +65,7 @@ class DevConfig(Config):
     SENTRY_DSN = 'https://269ded54b4d84ca2b27c70e972653dd9:9126d7016fe941a98b4ea8ccc8d1510b@sentry.io/194714'
 
 
-class TestConfig(Config):
+class TestingConfig(Config):
 
     NAME = 'test'
     TESTING = True
@@ -71,7 +73,7 @@ class TestConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL')
 
 
-class ProdConfig(Config):
+class ProductionConfig(Config):
 
     NAME = 'prod'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
@@ -127,7 +129,7 @@ class ProdConfig(Config):
         app.logger.addHandler(file_handler)
 
 
-class HerokuConfig(ProdConfig):
+class HerokuConfig(ProductionConfig):
     """Heroku configuration"""
 
     NAME = 'heroku'
@@ -135,7 +137,7 @@ class HerokuConfig(ProdConfig):
 
     @classmethod
     def init_app(cls, app):
-        ProdConfig.init_app(app)
+        ProductionConfig.init_app(app)
 
         # 配置日志，将日志写入 stderr，Heroku 可以捕获到输出的日志，在 Heroku
         # 客户端中通过 heroku logs 命令可以查看到这些日志
@@ -151,9 +153,9 @@ class HerokuConfig(ProdConfig):
 
 
 config = {
-    'default': DevConfig,
-    'dev': DevConfig,
-    'test': TestConfig,
-    'prod': ProdConfig,
+    'default': DevelopmentConfig,
+    'dev': DevelopmentConfig,
+    'test': TestingConfig,
+    'prod': ProductionConfig,
     'heroku': HerokuConfig,
 }
