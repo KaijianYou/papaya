@@ -36,10 +36,10 @@ class RegistrationForm(FlaskForm):
                            render_kw={'placeholder': lazy_('Username')})
     password = PasswordField(lazy_('Password'),
                              validators=[DataRequired(),
-                                         Regexp('^[A-Za-z0-9_.@#]+$'), 0,
+                                         Regexp('^[A-Za-z0-9_.@#]+$', 0,
                                          lazy_('Password must have only'
                                                ' letters, numbers, ".",'
-                                               ' "_", "@" or "#"')],
+                                               ' "_", "@" or "#"'))],
                              render_kw={'placeholder': lazy_('Password')})
     password_confirmation = PasswordField(
         lazy_('Confirm password'), validators=[

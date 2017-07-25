@@ -55,7 +55,6 @@ class FlaskClientTestCase(unittest.TestCase):
         self.assertTrue(re.search('您好,\s+sugar', data))
         # self.assertTrue('You have not confirmed your account yet' in data)
         self.assertTrue('您还没有验证账号' in data)
-
         user = User.query.filter_by(email='sugar@gmail.com').first()
         token = user.generate_confirmation_token()
         response = self.client.get(url_for('auth.confirm', token=token),
@@ -64,7 +63,8 @@ class FlaskClientTestCase(unittest.TestCase):
         # self.assertTrue('You have confirmed your account' in data)
         self.assertTrue('您已经验证账号' in data)
 
-        response = self.client.get(url_for('auth.logout'), follow_redirects=True)
+        response = self.client.get(url_for('auth.logout'),
+                                   follow_redirects=True)
         data = response.get_data(as_text=True)
         # self.assertTrue('You have been logged out' in data)
         self.assertTrue('您已经退出' in data)
