@@ -1,18 +1,7 @@
-# Virtual Environment
 venv/
-
-# Pycharm Project Settings
 .idea/
-
-# Python cache 
 __pycache__/
-
-# Coverage reports
 coverage/
-
-# Foreman test
 .env
-
-# Gunicorn configuration file
 gunicorn.conf
 
