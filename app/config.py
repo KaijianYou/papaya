@@ -42,11 +42,16 @@ class Config(object):
     WTF_CSRF_CHECK_DEFAULT = True
     WTF_CSRF_TIME_LIMIT = 20 * 60
 
-    # 聚合数据
+    # 聚合数据 API 接口设置
     JUHE_WEATHER_URL = 'http://v.juhe.cn/weather/index'
     JUHE_API_KEY = '44a2fea2e2780f71257feb28b22c6048'
     JUHE_DATA_TYPE = 'json'
     JUHE_DATA_FORMAT = '1'
+
+    # 七牛云 API 接口设置
+    QINIU_ACCESS_KEY = 'EDWKdOVPLAyBiE8QK-zRg-C_AaVkriaUQmxy8BuT'
+    QINIU_SECRET_KEY = 'B2sX9RcKXz6TtFYWf-3Qwb6T6CfSVYLJkSkzMKdI'
+
 
     JSON_AS_ASCII = False
 
@@ -64,6 +69,10 @@ class DevelopmentConfig(Config):
     # Sentry 配置
     SENTRY_DSN = 'https://269ded54b4d84ca2b27c70e972653dd9:9126d7016fe941a98b4ea8ccc8d1510b@sentry.io/194714'
 
+    # 七牛云 API 接口设置
+    QINIU_BUCKET_NAME = 'papaya-dev'
+    QINIU_BUCKET_DOMAIN = ''
+
 
 class TestingConfig(Config):
 
@@ -80,6 +89,10 @@ class ProductionConfig(Config):
 
     # Sentry 配置
     SENTRY_DSN = 'https://ccc720773a1040acaf1d484f9763f7db:e84abd18e1924143a554c5874305c435@sentry.io/194712'
+
+    # 七牛云 API 接口设置
+    QINIU_BUCKET_NAME = 'papaya-prod'
+    QINIU_BUCKET_DOMAIN = ''
 
     @classmethod
     def init_app(cls, app):
