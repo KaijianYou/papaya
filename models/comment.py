@@ -14,7 +14,7 @@ class Comment(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(200))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    create_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     disabled = db.Column(db.Boolean, default=False)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))

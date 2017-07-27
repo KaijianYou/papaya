@@ -10,7 +10,7 @@
         <div class="comment-content">
             <div class="comment-date">
                 <span class="glyphicon glyphicon-calendar"></span>
-                {{ moment(comment.timestamp).format('YYYY-MM-DD') }}
+                {{ moment(comment.create_timestamp).format('YYYY-MM-DD') }}
             </div>
             <div class="comment-author">
                 <a href="{{ url_for('main.user', username=comment.author.username) }}">

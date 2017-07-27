@@ -358,7 +358,7 @@ def post(id):
         page = ((post.comments.count() - 1) //
                 current_app.config['COMMENTS_PER_PAGE'] + 1)
     pagination = post.comments\
-        .order_by(Comment.timestamp.asc())\
+        .order_by(Comment.id.asc())\
         .paginate(page,
                   per_page=current_app.config['COMMENTS_PER_PAGE'],
                   error_out=False)
@@ -378,7 +378,7 @@ def post(id):
 def moderate():
     page = request.args.get('page', 1, type=int)
     pagination = Comment.query\
-        .order_by(Comment.timestamp.desc())\
+        .order_by(Comment.id.desc())\
         .paginate(page,
                   per_page=current_app.config['COMMENTS_PER_PAGE'],
                   error_out=False)
