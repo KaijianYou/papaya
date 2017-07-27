@@ -22,8 +22,13 @@ from werkzeug.contrib.atom import AtomFeed
 from app import db, babel
 from app.decorators import admin_required, permission_required
 from app.main import main
-from app.main.forms import EditProfileForm, EditProfileAdminForm, \
-    PostForm, CommentForm, WeatherForm
+from app.main.forms import (
+    EditProfileForm,
+    EditProfileAdminForm,
+    PostForm,
+    CommentForm,
+    WeatherForm
+)
 from models.post import Post
 from models.category import Category
 from models.comment import Comment
@@ -36,12 +41,13 @@ def get_locale():
     return request.accept_languages.best_match(['en', 'zh_Hans_CN'])
 
 
-# 如果不指定 methods 参数，则默认将函数注册为 GET 请求的处理程序
 @main.route('/', methods=['GET', 'POST'])
 def index():
     page = request.args.get('page', 1, type=int)
-    pagination = Post.query.outerjoin(Comment)\
-        .group_by(Post.id).order_by(desc(func.count(Comment.id)))\
+    pagination = Post.query\
+        .outerjoin(Comment)\
+        .group_by(Post.id)\
+        .order_by(desc(func.count(Comment.id)))\
         .paginate(page,
                   per_page=current_app.config['POSTS_PER_PAGE'],
                   error_out=False)
@@ -58,7 +64,8 @@ def index():
 @main.route('/all', methods=['GET', 'POST'])
 def show_all_posts():
     page = request.args.get('page', 1, type=int)
-    pagination = Post.query.order_by(Post.create_timestamp.desc())\
+    pagination = Post.query\
+        .order_by(Post.id.desc())\
         .paginate(page,
                   per_page=current_app.config['POSTS_PER_PAGE'],
                   error_out=False)
@@ -76,7 +83,8 @@ def show_followed_posts():
     if current_user.is_authenticated:
         query = current_user.followed_posts()
         page = request.args.get('page', 1, type=int)
-        pagination = query.order_by(Post.create_timestamp.desc())\
+        pagination = query\
+            .order_by(Post.id.desc())\
             .paginate(page,
                       per_page=current_app.config['POSTS_PER_PAGE'],
                       error_out=False)
@@ -92,10 +100,12 @@ def show_followed_posts():
 @main.route('/category/<string:category_name>', methods=['GET', 'POST'])
 def category(category_name):
     category_id = Category.query.filter_by(name=category_name).first().id
-    posts = Post.query.join(Category, Post.category_id == Category.id)\
+    posts = Post.query\
+        .join(Category, Post.category_id == Category.id)\
         .filter(Category.id == category_id)
     page = request.args.get('page', 1, type=int)
-    pagination = posts.order_by(Post.create_timestamp.desc())\
+    pagination = posts\
+        .order_by(Post.id.desc())\
         .paginate(page,
                   per_page=current_app.config['POSTS_PER_PAGE'],
                   error_out=False)
@@ -112,7 +122,8 @@ def category(category_name):
 def tag(tag_name):
     posts = Post.query.filter(Post.tags.like('%' + tag_name + '%'))
     page = request.args.get('page', 1, type=int)
-    pagination = posts.order_by(Post.create_timestamp.desc())\
+    pagination = posts\
+        .order_by(Post.id.desc())\
         .paginate(page,
                   per_page=current_app.config['POSTS_PER_PAGE'],
                   error_out=False)
@@ -129,7 +140,8 @@ def tag(tag_name):
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    pagination = user.posts.order_by(Post.create_timestamp.desc())\
+    pagination = user.posts\
+        .order_by(Post.id.desc())\
         .paginate(page,
                   per_page=current_app.config['POSTS_PER_PAGE'],
                   error_out=False)
@@ -152,6 +164,7 @@ def edit_profile():
         db.session.commit()
         flash(_('Your profile has been updated'), 'success')
         return redirect(url_for('main.user', username=current_user.username))
+
     form.real_name.data = current_user.real_name
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
@@ -176,6 +189,7 @@ def edit_profile_admin(id):
         db.session.commit()
         flash(_('The profile has been updated'), 'success')
         return redirect(url_for('main.user', username=user.username))
+
     form.email.data = user.email
     form.username.data = user.username
     form.confirmed.data = user.confirmed
@@ -190,8 +204,8 @@ def edit_profile_admin(id):
 @login_required
 def publish_post():
     form = PostForm()
-    if current_user.can(Permission.WRITE_ARTICLES) and \
-            form.validate_on_submit():
+    if current_user.can(Permission.WRITE_ARTICLES) \
+            and form.validate_on_submit():
         title = form.title.data
         category = Category.query.get(form.category.data)
         tags = form.tags.data
@@ -224,6 +238,7 @@ def edit_post(id):
         db.session.commit()
         flash(_('The post has been updated'), 'success')
         return redirect(url_for('main.post', id=post.id))
+
     form.title.data = post.title
     form.category.data = post.category_id
     form.tags.data = post.tags
@@ -239,9 +254,11 @@ def follow(username):
     if user is None:
         flash(_('Invalid user'), 'warning')
         return redirect(url_for('main.index'))
+
     if current_user.is_following(user):
         flash(_('You are already following this user'), 'info')
         return redirect(url_for('main.user', username=username))
+
     current_user.follow(user)
     flash(_('You are now following') + '%s' % username, 'info')
     return redirect(url_for('.user', username=username))
@@ -255,9 +272,11 @@ def unfollow(username):
     if user is None:
         flash(_('Invalid user'), 'warning')
         return redirect(url_for('main.index'))
+
     if not current_user.is_following(user):
         flash(_('You are not following this user'), 'info')
         return redirect(url_for('main.user', username=username))
+
     current_user.unfollow(user)
     flash(_('Your are not following %(username)s anymore', username=username), 'info')
     return redirect(url_for('main.user', username=username))
@@ -269,6 +288,7 @@ def followers(username):
     if user is None:
         flash(_('Invalid user'), 'warning')
         return redirect(url_for('main.index'))
+
     page = request.args.get('page', 1, type=int)
     pagination = user.followers\
         .paginate(page,
@@ -290,6 +310,7 @@ def followed_by(username):
     if user is None:
         flash(_('Invalid user'), 'warning')
         return redirect(url_for('main.index'))
+
     page = request.args.get('page', 1, type=int)
     pagination = user.followed\
         .paginate(page,
@@ -308,16 +329,21 @@ def followed_by(username):
 @main.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
     post = Post.query.get_or_404(id)
-    prev_post = Post.query.filter(and_(Post.author_id == post.author_id,
-                                       Post.create_timestamp < post.create_timestamp))\
-                          .order_by(Post.create_timestamp.desc()).first()
-    next_post = Post.query.filter(and_(Post.author_id == post.author_id,
-                                       Post.create_timestamp > post.create_timestamp))\
-                          .order_by(Post.create_timestamp.asc()).first()
+    prev_post = Post.query\
+        .filter(and_(Post.author_id == post.author_id,
+                     Post.create_timestamp < post.create_timestamp))\
+        .order_by(Post.id.desc())\
+        .first()
+    next_post = Post.query\
+        .filter(and_(Post.author_id == post.author_id,
+                     Post.create_timestamp > post.create_timestamp))\
+        .order_by(Post.id.asc()).first()
+
     if request.method == 'GET':
         post.read_count += 1
     db.session.commit()
     form = CommentForm()
+
     if form.validate_on_submit():
         comment = Comment(body=form.body.data,
                           post=post,
@@ -329,9 +355,10 @@ def post(id):
 
     page = request.args.get('page', 1, type=int)
     if page == -1:
-        page = (post.comments.count() - 1) // \
-               current_app.config['COMMENTS_PER_PAGE'] + 1
-    pagination = post.comments.order_by(Comment.timestamp.asc())\
+        page = ((post.comments.count() - 1) //
+                current_app.config['COMMENTS_PER_PAGE'] + 1)
+    pagination = post.comments\
+        .order_by(Comment.timestamp.asc())\
         .paginate(page,
                   per_page=current_app.config['COMMENTS_PER_PAGE'],
                   error_out=False)
@@ -350,7 +377,8 @@ def post(id):
 @permission_required(Permission.MODERATE_COMMENTS)
 def moderate():
     page = request.args.get('page', 1, type=int)
-    pagination = Comment.query.order_by(Comment.timestamp.desc())\
+    pagination = Comment.query\
+        .order_by(Comment.timestamp.desc())\
         .paginate(page,
                   per_page=current_app.config['COMMENTS_PER_PAGE'],
                   error_out=False)
@@ -395,10 +423,11 @@ def weather_forecast():
     form = WeatherForm()
     if form.validate_on_submit():
         city = form.city.data
-        param = urllib.parse.urlencode({'cityname': city,
-                                        'dtype': current_app.config['JUHE_DATA_TYPE'],
-                                        'format': current_app.config['JUHE_DATA_FORMAT'],
-                                        'key': current_app.config['JUHE_API_KEY']})
+        param = urllib.parse\
+            .urlencode({'cityname': city,
+                        'dtype': current_app.config['JUHE_DATA_TYPE'],
+                        'format': current_app.config['JUHE_DATA_FORMAT'],
+                        'key': current_app.config['JUHE_API_KEY']})
         url = current_app.config['JUHE_WEATHER_URL'] + '?' + param
         result = json.loads(urllib.request.urlopen(url).read().decode('utf-8'))
         if result['error_code'] != 0:
@@ -408,7 +437,10 @@ def weather_forecast():
             city = result['result']['today']['city']
             date = result['result']['today']['date_y']
             weather = result['result']['today']['weather']
-            return render_template('weather.html', city=city, date=date, weather=weather)
+            return render_template('weather.html',
+                                   city=city,
+                                   date=date,
+                                   weather=weather)
     return render_template('weather_forecast.html', form=form)
 
 
@@ -426,7 +458,7 @@ def recent_feed():
     feed = AtomFeed('Recent Articles',
                     feed_url=request.url,
                     url=request.url_root)
-    posts = Post.query.order_by(Post.create_timestamp.desc()).limit(15).all()
+    posts = Post.query.order_by(Post.id.desc()).limit(15).all()
     for post in posts:
         feed.add(post.title,
                  post.body_html,
@@ -455,7 +487,12 @@ def search():
 def after_request(response):
     for query in get_debug_queries():
         if query.duration >= current_app.config['DB_QUERY_TIMEOUT']:
-            current_app.logger.warning(
-                'Slow query: %s\nParameters: %s\nDuration: %fs\nContext: %s\n' %
-                (query.statement, query.parameters, query.duration, query.context))
+            current_app.logger.warning('Slow query: {}\n'
+                                       'Parameters: {}\n'
+                                       'Duration: %{:f}\n'
+                                       'Context: {}\n'
+                                       .format(query.statement,
+                                               query.parameters,
+                                               query.duration,
+                                               query.context))
     return response

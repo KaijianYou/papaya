@@ -3,9 +3,20 @@
 
 from flask_babel import lazy_gettext as lazy_
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import (
+    StringField,
+    PasswordField,
+    BooleanField,
+    SubmitField
+)
 from wtforms import ValidationError
-from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
+from wtforms.validators import (
+    DataRequired,
+    Length,
+    Email,
+    Regexp,
+    EqualTo
+)
 
 from models.user import User
 
@@ -28,24 +39,28 @@ class RegistrationForm(FlaskForm):
                         validators=[DataRequired(), Length(1, 64), Email()],
                         render_kw={'placeholder': lazy_('Email')})
     username = StringField(lazy_('Username'),
-                           validators=[DataRequired(), Length(1, 64),
-                                       Regexp('^[A-Za-z0-9_.]+$', 0,
+                           validators=[DataRequired(),
+                                       Length(1, 64),
+                                       Regexp('^[A-Za-z0-9_.]+$',
+                                              0,
                                               lazy_('Username must have only'
                                                     ' letters, numbers, "."'
                                                     ' or "_"'))],
                            render_kw={'placeholder': lazy_('Username')})
     password = PasswordField(lazy_('Password'),
                              validators=[DataRequired(),
-                                         Regexp('^[A-Za-z0-9_.@#]+$', 0,
-                                         lazy_('Password must have only'
-                                               ' letters, numbers, ".",'
-                                               ' "_", "@" or "#"'))],
+                                         Regexp('^[A-Za-z0-9_.@#]+$',
+                                                0,
+                                                lazy_('Password must have only'
+                                                      ' letters, numbers, ".",'
+                                                      ' "_", "@" or "#"'))],
                              render_kw={'placeholder': lazy_('Password')})
-    password_confirmation = PasswordField(
-        lazy_('Confirm password'), validators=[
-            DataRequired(),
-            EqualTo('password', message=lazy_('Passwords must match'))],
-        render_kw={'placeholder': lazy_('Confirm password')})
+    password_confirmation = \
+        PasswordField(lazy_('Confirm password'),
+                      validators=[DataRequired(),
+                                  EqualTo('password',
+                                          message=lazy_('Passwords must match'))],
+                      render_kw={'placeholder': lazy_('Confirm password')})
     submit = SubmitField(lazy_('Register'))
 
     def validate_email(self, field):
@@ -65,11 +80,12 @@ class ChangePasswordForm(FlaskForm):
     new_password = PasswordField(lazy_('New password'),
                                  validators=[DataRequired()],
                                  render_kw={'placeholder': lazy_('New password')})
-    new_password_confirmation = PasswordField(
-        lazy_('Confirm new password'), validators=[
-            DataRequired(), EqualTo('new_password',
-                                    message=lazy_('Passwords must match'))],
-        render_kw={'placeholder': lazy_('Confirm new password')})
+    new_password_confirmation = \
+        PasswordField(lazy_('Confirm new password'),
+                      validators=[DataRequired(),
+                                  EqualTo('new_password',
+                                          message=lazy_('Passwords must match'))],
+                      render_kw={'placeholder': lazy_('Confirm new password')})
     submit = SubmitField(lazy_('Update Password'))
 
 
@@ -90,10 +106,11 @@ class ResetPasswordForm(FlaskForm):
     email = StringField(lazy_('Email'),
                         validators=[DataRequired(), Length(1, 64), Email()])
     password = PasswordField(lazy_('New password'), validators=[DataRequired()])
-    password_confirmation = PasswordField(
-        lazy_('Confirm new password'),
-        validators=[DataRequired(),
-                    EqualTo('password', message=lazy_('Passwords must match'))])
+    password_confirmation = \
+        PasswordField(lazy_('Confirm new password'),
+                      validators=[DataRequired(),
+                                  EqualTo('password',
+                                          message=lazy_('Passwords must match'))])
     submit = SubmitField(lazy_('Reset Password'))
 
     def validate_email(self, field):
