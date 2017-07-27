@@ -2,7 +2,6 @@
 
 
 class JUHEErrorCodeType(object):
-
     @staticmethod
     def to_string(error_code):
         return {

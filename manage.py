@@ -52,6 +52,7 @@ def deploy():
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
     import coverage
+
     COV = coverage.coverage(branch=True, include='app/*')
     COV.start()
 
@@ -61,6 +62,7 @@ def test(coverage=False):
     """测试"""
     if coverage and not os.environ.get('FLASK_COVERAGE'):
         import sys
+
         os.environ['FLASK_COVERAGE'] = '1'
         os.execvp(sys.executable, [sys.executable] + sys.argv)
 
@@ -86,6 +88,7 @@ def test(coverage=False):
 def profile(length=20, profile_dir=None):
     """源码分析器"""
     from werkzeug.contrib.profiler import ProfilerMiddleware
+
     # 启动应用的同时开启源码分析器
     app.wsgi_app = ProfilerMiddleware(app.wsgi_app,
                                       restrictions=[length],

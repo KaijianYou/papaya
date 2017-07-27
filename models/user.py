@@ -36,12 +36,16 @@ class User(db.Model, UserMixin):
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
-    followed = db.relationship('Follow', foreign_keys=[Follow.follower_id],
+    followed = db.relationship('Follow',
+                               foreign_keys=[Follow.follower_id],
                                backref=db.backref('follower', lazy='joined'),
-                               lazy='dynamic', cascade='all, delete-orphan')
-    followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],
+                               lazy='dynamic',
+                               cascade='all, delete-orphan')
+    followers = db.relationship('Follow',
+                                foreign_keys=[Follow.followed_id],
                                 backref=db.backref('followed', lazy='joined'),
-                                lazy='dynamic', cascade='all, delete-orphan')
+                                lazy='dynamic',
+                                cascade='all, delete-orphan')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)

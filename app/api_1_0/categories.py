@@ -16,11 +16,15 @@ def get_category(id):
 @api.route('/categories/')
 def get_categories():
     categories = Category.query.all()
-    return jsonify({'categories': [category.to_json() for category in categories]})
+    return jsonify({
+        'categories': [category.to_json() for category in categories]
+    })
 
 
 @api.route('/categories/<int:id>/posts/')
 def get_categories_posts(id):
     category = Category.query.get_or_404(id)
     posts = category.posts.all()
-    return jsonify({'posts': [post.to_json() for post in posts]})
+    return jsonify({
+        'posts': [post.to_json() for post in posts]
+    })

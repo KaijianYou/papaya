@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from utils.request_utils import RequestUtils
+from utils.request_utils import is_safe_url
 from flask import abort
 from flask import flash
 from flask import redirect
@@ -34,10 +34,10 @@ from utils.email_utils import EmailUtils
 def before_request():
     if current_user.is_authenticated:
         current_user.update_last_visited()
-        if (not current_user.confirmed
-                and request.endpoint
-                and request.endpoint[:5] != 'auth.'
-                and request.endpoint != 'static'):
+        if (not current_user.confirmed and
+                request.endpoint and
+                request.endpoint[:5] != 'auth.' and
+                request.endpoint != 'static'):
             return redirect(url_for('auth.unconfirmed'))
 
 
@@ -96,7 +96,7 @@ def login():
             login_user(user, remember=form.remeber_me.data)
             flash(_('Logged in successfully'), 'success')
             next_url = request.args.get('next')
-            if not RequestUtils.is_safe_url(next_url):
+            if not is_safe_url(next_url):
                 return abort(400)
             return redirect(next_url or url_for('main.index'))
         flash(_('Invalid email or password'), 'warning')

@@ -17,7 +17,9 @@ from models.role import Permission
 @api.route('/comments/')
 def get_comments():
     comments = Comment.query.all()
-    return jsonify({'comments': [comment.to_json() for comment in comments]})
+    return jsonify({
+        'comments': [comment.to_json() for comment in comments]
+    })
 
 
 @api.route('/comments/<int:id>')
@@ -30,7 +32,9 @@ def get_comment(id):
 def get_post_comments(id):
     post = Post.query.get_or_404(id)
     comments = post.comments.all()
-    return jsonify({'comments': [comment.to_json() for comment in comments]})
+    return jsonify({
+        'comments': [comment.to_json() for comment in comments]
+    })
 
 
 @api.route('/posts/<int:id>/comments/', methods=['POST'])
@@ -42,5 +46,8 @@ def new_post_comments(id):
     comment.post = post
     db.session.add(comment)
     db.session.commit()
-    return jsonify(comment.to_json()), 201, \
-           {'Location': url_for('api.get_comment', id=comment.id, _external=True)}
+    return (
+        jsonify(comment.to_json()),
+        201,
+        {'Location': url_for('api.get_comment', id=comment.id, _external=True)}
+    )

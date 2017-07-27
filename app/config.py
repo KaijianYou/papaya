@@ -143,12 +143,14 @@ class HerokuConfig(ProductionConfig):
         # 客户端中通过 heroku logs 命令可以查看到这些日志
         import logging
         from logging import StreamHandler
+
         file_handler = StreamHandler()
         file_handler.setLevel(logging.WARNING)
         app.logger.addHandler(file_handler)
 
         # 使用 ProxyFix 处理代理服务器首部，任何使用反向代理的环境都要这样做
         from werkzeug.contrib.fixers import ProxyFix
+
         app.wsgi_app = ProxyFix(app.wsgi_app)
 
 

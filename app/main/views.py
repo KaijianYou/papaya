@@ -204,8 +204,8 @@ def edit_profile_admin(id):
 @login_required
 def publish_post():
     form = PostForm()
-    if current_user.can(Permission.WRITE_ARTICLES) \
-            and form.validate_on_submit():
+    if current_user.can(Permission.WRITE_ARTICLES) and \
+            form.validate_on_submit():
         title = form.title.data
         category = Category.query.get(form.category.data)
         tags = form.tags.data

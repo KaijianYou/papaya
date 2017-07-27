@@ -5,6 +5,7 @@ from flask import Blueprint
 
 from models.role import Permission
 
+
 main = Blueprint('main', __name__)
 
 
