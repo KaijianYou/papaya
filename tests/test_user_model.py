@@ -139,7 +139,7 @@ class UserModelTestCase(unittest.TestCase):
 
         f = u1.followed.all()[-1]
         self.assertTrue(f.followed == u2)
-        self.assertTrue(timestamp_before <= f.timestamp <= timestamp_after)
+        self.assertTrue(timestamp_before <= f.create_timestamp <= timestamp_after)
         f = u2.followers.all()[0]
         self.assertTrue(f.follower == u1)
 

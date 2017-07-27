@@ -294,7 +294,7 @@ def followers(username):
         .paginate(page,
                   per_page=current_app.config['FOLLOWERS_PER_PAGE'],
                   error_out=False)
-    follows = [{'user': item.follower, 'timestamp': item.timestamp}
+    follows = [{'user': item.follower, 'create_timestamp': item.create_timestamp}
                for item in pagination.items]
     return render_template('followers.html',
                            user=user,
@@ -316,7 +316,7 @@ def followed_by(username):
         .paginate(page,
                   per_page=current_app.config['FOLLOWERS_PER_PAGE'],
                   error_out=False)
-    follows = [{'user': item.followed, 'timestamp': item.timestamp}
+    follows = [{'user': item.followed, 'create_timestamp': item.create_timestamp}
                for item in pagination.items]
     return render_template('followers.html',
                            user=user,

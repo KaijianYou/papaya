@@ -23,7 +23,7 @@ class Comment(db.Model):
         comment_json = {
             'url': url_for('api.get_comment', id=self.id, _external=True),
             'body': self.body,
-            'timestamp': self.timestamp,
+            'create_timestamp': self.create_timestamp,
             'author': url_for('api.get_user', id=self.author_id, _external=True),
             'post': url_for('api.get_post', id=self.post_id, _external=True),
         }
