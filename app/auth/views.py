@@ -98,7 +98,6 @@ def login():
             next_url = request.args.get('next')
             if not RequestUtils.is_safe_url(next_url):
                 return abort(400)
-            # 返回重定向的 URL，避免客户端刷新时又向服务器 Post 一次表单数据
             return redirect(next_url or url_for('main.index'))
         flash(_('Invalid email or password'), 'warning')
     return render_template('auth/login.html', form=form)
@@ -140,8 +139,9 @@ def reset_password_request():
             EmailUtils.send_reset_password_email(user=user,
                                                  token=token,
                                                  next=request.args.get(next))
-            flash(_('An email with instructions to reset your password '
-                    'has been sent to you'), 'info')
+            flash(_('An email with instructions to reset '
+                    'your password has been sent to you'),
+                  'info')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form)
 
@@ -172,7 +172,7 @@ def change_email_request():
             new_email = form.email.data
             # 将新设的邮箱账号保存到令牌中
             token = current_user.generate_email_change_token(new_email)
-            EmailUtils.send_change_email_email([new_email],
+            EmailUtils.send_change_email_email(new_email,
                                                user=current_user,
                                                token=token,
                                                next=request.args.get(next))

@@ -37,8 +37,8 @@ class EmailUtils(object):
         cls._send_email(subject, body, html, from_email, to_emails, cc_emails, bcc_emails)
 
     @classmethod
-    def send_change_email_email(cls, **kwargs):
-        to_emails = [kwargs['user'].email]
+    def send_change_email_email(cls, new_email, **kwargs):
+        to_emails = [new_email]
         subject = _('Confirm your email address')
         body = render_template('/auth/email/change_email.txt', **kwargs)
         html = render_template('/auth/email/change_email.html', **kwargs)
@@ -61,7 +61,8 @@ class EmailUtils(object):
         cls._send_system_email(subject, body, html, to_emails)
 
     @classmethod
-    def send_reset_password_email(cls, to_emails, **kwargs):
+    def send_reset_password_email(cls, **kwargs):
+        to_emails = [kwargs['user'].email]
         subject = _('Reset your password')
         body = render_template('auth/email/reset_password.txt', **kwargs)
         html = render_template('auth/email/reset_password.html', **kwargs)
