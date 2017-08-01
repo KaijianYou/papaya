@@ -43,6 +43,8 @@ def get_locale():
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
+    from utils.qiniu_utils import QiniuUtils
+    print(QiniuUtils.generate_upload_token())
     page = request.args.get('page', 1, type=int)
     pagination = Post.query\
         .outerjoin(Comment)\

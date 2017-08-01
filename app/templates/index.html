@@ -131,14 +131,12 @@
     {{ super() }}
 
     <script>
-        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
-
         // 标签云
         $.ajax({
             type: "GET",
-            url: $SCRIPT_ROOT + "/tags_string",
+            url: '/tags_string',
             dataType: "text"
-        }).then(function(data, textStatus) {
+        }).done(function(data, textStatus) {
             var words = [];
             words[0] = data;
 

@@ -6,6 +6,7 @@
 {% block page_content %}
     <div class="page-header">
         <img class="img-rounded profile-thumbnail shake-chunk" src="{{ user.get_avatar(size=240) }}"/>
+        <button class="btn-upload-avatar btn-default btn">{{ gettext('Upload New Avatar') }}</button>
 
         <div class="profile-header">
             <h1 data-anijs="if: click, do: rollIn animated, to: .profile-header">{{ user.username }}</h1>
@@ -86,3 +87,17 @@
         {{ paginate_macro.pagination_widget(pagination, '.index') }}
     </div>
 {% endblock page_content %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script>
+        $('.btn-upload-avatar').on('click', function(event) {
+            $.ajax({
+
+            }).done(function(data) {
+
+            });
+        });
+    </script>
+{% endblock scripts %}
