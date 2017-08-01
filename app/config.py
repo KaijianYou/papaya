@@ -52,7 +52,6 @@ class Config(object):
     QINIU_ACCESS_KEY = 'EDWKdOVPLAyBiE8QK-zRg-C_AaVkriaUQmxy8BuT'
     QINIU_SECRET_KEY = 'B2sX9RcKXz6TtFYWf-3Qwb6T6CfSVYLJkSkzMKdI'
 
-
     JSON_AS_ASCII = False
 
     @staticmethod

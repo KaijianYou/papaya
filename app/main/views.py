@@ -39,6 +39,8 @@ def get_locale():
 # 如果不指定 methods 参数，则默认将函数注册为 GET 请求的处理程序
 @main.route('/', methods=['GET', 'POST'])
 def index():
+    from utils.qiniu_utils import QiniuUtils
+    print(QiniuUtils.generate_upload_token())
     page = request.args.get('page', 1, type=int)
     pagination = Post.query.outerjoin(Comment)\
         .group_by(Post.id).order_by(desc(func.count(Comment.id)))\
