@@ -485,6 +485,11 @@ def search():
                            keyword=keyword)
 
 
+@main.route('/upload-avatar', methods=['POST'])
+def upload_avatar():
+    pass
+
+
 @main.after_app_request
 def after_request(response):
     for query in get_debug_queries():

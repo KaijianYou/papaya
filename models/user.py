@@ -34,6 +34,7 @@ class User(db.Model, UserMixin):
     last_visited = db.Column(db.DateTime(), default=datetime.utcnow)
     confirmed = db.Column(db.Boolean, default=False)
     avatar_hash = db.Column(db.String(32))
+    avatar_url = db.Column(db.String(256))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
     followed = db.relationship('Follow',

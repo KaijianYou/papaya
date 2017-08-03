@@ -70,7 +70,7 @@ class DevelopmentConfig(Config):
 
     # 七牛云 API 接口设置
     QINIU_BUCKET_NAME = 'papaya-dev'
-    QINIU_BUCKET_DOMAIN = ''
+    QINIU_BUCKET_DOMAIN = 'otp6zybkp.bkt.clouddn.com'
 
 
 class TestingConfig(Config):

@@ -10,9 +10,10 @@ import qiniu
 class QiniuUtils(object):
 
     app = current_app._get_current_object()
-    access_key = app.config['QINIU_ACCESS_KEY']
-    secret_key = app.config['QINIU_SECRET_KEY']
-    bucket = app.config['QINIU_BUCKET_NAME']
+    access_key = app.config.get('QINIU_ACCESS_KEY', '')
+    secret_key = app.config.get('QINIU_SECRET_KEY', '')
+    bucket = app.config.get('QINIU_BUCKET_NAME', '')
+    domain = app.config.get('QINIU_DOMAIN_NAME', '')
     auth = qiniu.Auth(access_key, secret_key)
 
     @classmethod
@@ -35,5 +36,8 @@ class QiniuUtils(object):
 
     @classmethod
     def url(cls, key):
-        base_url = ''
-        return urljoin(base_url + key)
+        if cls.domain:
+            base_url = 'http://' + cls.domain
+        else:
+            base_url = 'http://' + cls.bucket + '.static.com'
+        return urljoin(base_url, key)

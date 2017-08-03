@@ -5,7 +5,10 @@
 
 {% block page_content %}
     <div class="page-header">
-        <img class="img-rounded profile-thumbnail shake-chunk" src="{{ user.get_avatar(size=240) }}"/>
+        <div class="avatar">
+            <img class="img-rounded profile-thumbnail shake-chunk" src="{{ user.get_avatar(size=240) }}"/>
+        </div>
+
         <button class="btn-upload-avatar btn-default btn">{{ gettext('Upload New Avatar') }}</button>
 
         <div class="profile-header">
