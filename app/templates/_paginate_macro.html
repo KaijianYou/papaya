@@ -1,70 +1,70 @@
 {% macro pagination_widget(pagination, endpoint, category_name='', tag_name='', fragment='') %}
-  <!-- 分页 -->
-  <ul class="pagination">
-    <li {% if not pagination.has_prev %} class="disabled" {% endif %}>
-      <a href="
-          {% if pagination.has_prev %}
-              {% if category_name %}
-                  {{ url_for(endpoint, category_name=category_name, page=pagination.page-1, **kwargs) }}
-              {% elif tag_name %}
-                  {{ url_for(endpoint, tag_name=tag_name, page=pagination.page-1, **kwargs) }}
-              {% else %}
-                  {{ url_for(endpoint, page=pagination.page-1, **kwargs) }}
-              {% endif %}
-          {% else %}
-              #
-          {% endif %}">
-        &laquo;
-      </a>
-    </li>
-
-    {% for page in pagination.iter_pages() %}
-      {% if page %}
-        {% if page == pagination.page %}
-          <li class="active">
+    <!-- 分页 -->
+    <ul class="pagination">
+        <li {% if not pagination.has_prev %} class="disabled" {% endif %}>
             <a href="
-                {% if category_name %}
-                    {{ url_for(endpoint, category_name=category_name, page=page, **kwargs) }}
-                {% elif tag_name %}
-                    {{ url_for(endpoint, tag_name=tag_name, page=page, **kwargs) }}
+                {% if pagination.has_prev %}
+                    {% if category_name %}
+                        {{ url_for(endpoint, category_name=category_name, page=pagination.page-1, **kwargs) }}
+                    {% elif tag_name %}
+                        {{ url_for(endpoint, tag_name=tag_name, page=pagination.page-1, **kwargs) }}
+                    {% else %}
+                        {{ url_for(endpoint, page=pagination.page-1, **kwargs) }}
+                    {% endif %}
                 {% else %}
-                    {{ url_for(endpoint, page=page, **kwargs) }}
-                {% endif %}">{{ page }}
+                    #
+                {% endif %}">
+                    &laquo;
             </a>
-          </li>
-        {% else %}
-          <li>
-            <a href="
-                {% if category_name %}
-                    {{ url_for(endpoint, category_name=category_name, page=page, **kwargs) }}
-                {% elif tag_name %}
-                    {{ url_for(endpoint, tag_name=tag_name, page=page, **kwargs) }}
-                {% else %}
-                    {{ url_for(endpoint, page=page, **kwargs) }}
-                {% endif %}">{{ page }}
-            </a>
-          </li>
-        {% endif %}
-      {% else %}
-        <li class="disabled"><a href="#">&hellip;</a></li>
-      {% endif %}
-    {% endfor %}
+        </li>
 
-    <li {% if not pagination.has_next %}class="disabled"{% endif %}>
-      <a href="
-          {% if pagination.has_next %}
-            {% if category_name %}
-              {{ url_for(endpoint, category_name=category_name, page=pagination.page+1, **kwargs) }}
-            {% elif tag_name %}
-              {{ url_for(endpoint, tag_name=tag_name, page=pagination.page+1, **kwargs) }}
+        {% for page in pagination.iter_pages() %}
+            {% if page %}
+                {% if page == pagination.page %}
+                    <li class="active">
+                        <a href="
+                            {% if category_name %}
+                                {{ url_for(endpoint, category_name=category_name, page=page, **kwargs) }}
+                            {% elif tag_name %}
+                                {{ url_for(endpoint, tag_name=tag_name, page=page, **kwargs) }}
+                            {% else %}
+                                {{ url_for(endpoint, page=page, **kwargs) }}
+                            {% endif %}">{{ page }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="
+                            {% if category_name %}
+                                {{ url_for(endpoint, category_name=category_name, page=page, **kwargs) }}
+                            {% elif tag_name %}
+                                {{ url_for(endpoint, tag_name=tag_name, page=page, **kwargs) }}
+                            {% else %}
+                                {{ url_for(endpoint, page=page, **kwargs) }}
+                            {% endif %}">{{ page }}
+                        </a>
+                    </li>
+                {% endif %}
             {% else %}
-              {{ url_for(endpoint, page=pagination.page+1, **kwargs) }}
+                <li class="disabled"><a href="#">&hellip;</a></li>
             {% endif %}
-          {% else %}
-            #
-          {% endif %}">
-        &raquo;
-      </a>
-    </li>
-  </ul>
+        {% endfor %}
+
+        <li {% if not pagination.has_next %}class="disabled"{% endif %}>
+            <a href="
+                {% if pagination.has_next %}
+                    {% if category_name %}
+                        {{ url_for(endpoint, category_name=category_name, page=pagination.page+1, **kwargs) }}
+                    {% elif tag_name %}
+                        {{ url_for(endpoint, tag_name=tag_name, page=pagination.page+1, **kwargs) }}
+                    {% else %}
+                        {{ url_for(endpoint, page=pagination.page+1, **kwargs) }}
+                    {% endif %}
+                {% else %}
+                    #
+                {% endif %}">
+                    &raquo;
+            </a>
+        </li>
+    </ul>
 {% endmacro %}

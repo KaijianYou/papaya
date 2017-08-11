@@ -1,51 +1,52 @@
 <ul class="comments">
-  {% for comment in comments %}
-    <li class="comment comment-widget">
-      <div class="comment-thumbnail">
-        <a href="{{ url_for('main.user', username=comment.author.username) }}">
-          <img class="img-rounded profile-thumbnail" src="{{ comment.author.get_avatar(size=40) }}">
-        </a>
-      </div>
-      <div class="comment-content">
-        <div class="comment-date">
-          <span class="glyphicon glyphicon-calendar"></span>
-          {{ moment(comment.create_timestamp).format('YYYY-MM-DD') }}
-        </div>
-        <div class="comment-author">
-          <a href="{{ url_for('main.user', username=comment.author.username) }}">
-            {{ comment.author.username }}
-          </a>
-        </div>
-        <div class="comment-body">
-          {% if comment.disabled %}
-            <p>
-              <i>{{ gettext('This comment has been disabled by a moderator') }}.</i>
-            </p>
-          {% endif %}
-          {% if moderate or not comment.disabled %}
-            {% if comment.body_html %}
-              <!--"| safe" 通知 jinja2 不要转移 HTML 元素-->
-              {{ comment.body_html | safe }}
-            {% else %}
-              {{ comment.body }}
-            {% endif %}
-          {% endif %}
-        </div>
-        {% if moderate %}
-          <div class="comment-footer">
-            <br>
-            {% if comment.disabled %}
-              <a class="btn btn-info btn-custom" href="{{ url_for('main.moderate_enable', id=comment.id, page=page) }}">
-                {{ gettext('Enable') }}
-              </a>
-            {% else %}
-              <a class="btn btn-danger btn-custom" href="{{ url_for('main.moderate_disable', id=comment.id, page=page) }}">
-                {{ gettext('Disable') }}
-              </a>
-            {% endif %}
-          </div>
-        {% endif %}
-      </div>
-    </li>
-  {% endfor %}
+    {% for comment in comments %}
+        <li class="comment comment-widget">
+            <div class="comment-thumbnail">
+                <a href="{{ url_for('main.user', username=comment.author.username) }}">
+                    <img class="img-rounded profile-thumbnail" src="{{ comment.author.get_avatar(size=40) }}">
+                </a>
+            </div>
+            <div class="comment-content">
+                <div class="comment-date">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    {{ moment(comment.create_timestamp).format('YYYY-MM-DD') }}
+                </div>
+                <div class="comment-author">
+                    <a href="{{ url_for('main.user', username=comment.author.username) }}">
+                        {{ comment.author.username }}
+                    </a>
+                </div>
+                <div class="comment-body">
+                    {% if comment.disabled %}
+                        <p>
+                            <i>{{ gettext('This comment has been disabled by a moderator') }}.</i>
+                        </p>
+                    {% endif %}
+                    {% if moderate or not comment.disabled %}
+                        {% if comment.body_html %}
+                            <!--"| safe" 通知 jinja2 不要转移 HTML 元素-->
+                            {{ comment.body_html | safe }}
+                        {% else %}
+                            {{ comment.body }}
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% if moderate %}
+                    <div class="comment-footer">
+                        <br>
+                        {% if comment.disabled %}
+                            <a class="btn btn-info btn-custom"
+                               href="{{ url_for('main.moderate_enable', id=comment.id, page=page) }}">
+                                {{ gettext('Enable') }}
+                            </a>
+                        {% else %}
+                            <a class="btn btn-danger btn-custom" href="{{ url_for('main.moderate_disable', id=comment.id, page=page) }}">
+                                {{ gettext('Disable') }}
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </li>
+    {% endfor %}
 </ul>

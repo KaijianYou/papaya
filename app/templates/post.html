@@ -5,21 +5,21 @@
 {% block title %}Papaya - {{ gettext('Post') }}{% endblock title %}
 
 {% block page_content %}
-  {% include '_posts_detail.html' %}
+    {% include '_posts_detail.html' %}
 
-  {% if current_user.can(Permission.COMMENT) %}
-    <h4 id="comments">{{ gettext('Comments') }}</h4>
+    {% if current_user.can(Permission.COMMENT) %}
+        <h4 id="comments">{{ gettext('Comments') }}</h4>
 
-    <div class="comment-form">
-      {{ wtf.quick_form(form) }}
-    </div>
-  {% endif %}
+        <div class="comment-form">
+            {{ wtf.quick_form(form) }}
+        </div>
+    {% endif %}
 
-  {% include '_comments.html' %}
+    {% include '_comments.html' %}
 
-  {% if pagination %}
-    <div class="pagination">
-      {{ paginate_macro.pagination_widget(pagination, 'main.post', fragment='#comments', id=posts[0].id) }}
-    </div>
-  {% endif %}
+    {% if pagination %}
+        <div class="pagination">
+            {{ paginate_macro.pagination_widget(pagination, 'main.post', fragment='#comments', id=posts[0].id) }}
+        </div>
+    {% endif %}
 {% endblock page_content %}
