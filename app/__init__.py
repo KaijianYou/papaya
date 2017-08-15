@@ -3,6 +3,7 @@
 
 from flask import Flask
 from flask_babel import Babel
+from flask_babel import lazy_gettext as lazy_
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_mail import Mail
@@ -10,10 +11,8 @@ from flask_moment import Moment
 from flask_pagedown import PageDown
 from flask_sqlalchemy import SQLAlchemy
 from raven.contrib.flask import Sentry
-from flask_babel import lazy_gettext as lazy_
 
-from app.config import config
-
+from config import config
 
 bootstrap = Bootstrap()
 moment = Moment()
@@ -32,9 +31,11 @@ def register_extensions(app):
     mail.init_app(app)
     pagedown.init_app(app)
     babel.init_app(app)
-    env =  app.config['NAME']
+
+    env = app.config['NAME']
     if env == 'Development' or env == 'Production':
         sentry.init_app(app, dsn=app.config['SENTRY_DSN'])
+
     login_manager.init_app(app)
     login_manager.session_protection = 'strong'
     login_manager.login_view = 'auth.login'

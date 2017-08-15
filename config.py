@@ -54,8 +54,8 @@ class Config(object):
 
     JSON_AS_ASCII = False
 
-    @staticmethod
-    def init_app(app):
+    @classmethod
+    def init_app(cls, app):
         pass
 
 
