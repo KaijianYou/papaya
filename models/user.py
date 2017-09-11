@@ -196,13 +196,14 @@ class User(db.Model, UserMixin):
     def is_followed_by(self, user):
         return self.followers.filter_by(follower_id=user.id).first() is not None
 
+    @property
     def followed_posts(self):
         """获取已关注用户的文章"""
         return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
             .filter(Follow.follower_id == self.id)
 
-    def to_json(self):
-        user_json = {
+    def to_dict(self):
+        return {
             'url': url_for('api.get_user', id=self.id, _external=True),
             'username': self.username,
             'about_me': self.about_me,
@@ -213,7 +214,6 @@ class User(db.Model, UserMixin):
                                       _external=True),
             'post_count': self.posts.count(),
         }
-        return user_json
 
 
 class AnonymousUser(AnonymousUserMixin):

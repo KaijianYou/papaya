@@ -61,7 +61,7 @@ class Post(db.Model):
     def get_category_name(self):
         return Category.query.get(self.category_id).name
 
-    def to_json(self):
+    def to_dict(self):
         post_json = {
             'url': url_for('api.get_post', id=self.id, _external=True),
             'title': self.title,

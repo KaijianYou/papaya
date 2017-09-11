@@ -18,7 +18,8 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
     # 分页设置
-    POSTS_PER_PAGE = 10
+    USERS_PER_PAGE = 20
+    POSTS_PER_PAGE = 15
     FOLLOWERS_PER_PAGE = 20
     COMMENTS_PER_PAGE = 20
 

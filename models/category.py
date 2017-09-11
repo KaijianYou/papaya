@@ -36,12 +36,11 @@ class Category(db.Model):
                            for category in categories]
         return categories_list
 
-    def to_json(self):
-        category_json = {
+    def to_dict(self):
+        return {
             'url': url_for('api.get_category', id=self.id, _external=True),
             'name': self.name,
             # 'posts': url_for('api.get_category_posts', id=self.id,
             #                  _external=True),
             'post_count': self.posts.count(),
         }
-        return category_json
