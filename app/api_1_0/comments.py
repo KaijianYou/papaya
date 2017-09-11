@@ -2,13 +2,13 @@
 
 
 
-from flask import jsonify, current_app
-from flask import request, g
-from flask import url_for
+from flask import jsonify, current_app, request, g, url_for
+from flask_babel import gettext as _
 
 from app import db
 from app.api_1_0 import api
 from app.api_1_0.decorators import permission_required
+from app.api_1_0.errors import not_found
 from models.post import Post
 from models.comment import Comment
 from models.role import Permission
@@ -44,7 +44,9 @@ def get_comment(id):
 
 @api.route('/posts/<int:id>/comments/')
 def get_post_comments(id):
-    post = Post.query.get_or_404(id)
+    post = Post.query.get(id)
+    if not post:
+        return not_found(_('The post not exists'))
     page = request.args.get('page', default=1, type=int)
     pagination = post.comments.order_by(Comment.create_timestamp.asc())\
         .paginate(page, per_page=current_app.config['COMMENTS_PER_PAGE'])
@@ -68,7 +70,9 @@ def get_post_comments(id):
 @api.route('/posts/<int:id>/comments/', methods=['POST'])
 @permission_required(Permission.COMMENT)
 def new_post_comments(id):
-    post = Post.query.get_or_404(id)
+    post = Post.query.get(id)
+    if not post:
+        return not_found(_('The post not exists'))
     comment = Comment.from_dict(request.json)
     comment.author = g.current_user
     comment.post = post

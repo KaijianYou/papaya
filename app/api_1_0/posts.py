@@ -2,18 +2,21 @@
 
 
 from flask import request, g, url_for, current_app, jsonify
+from flask_babel import gettext as _
 
 from app import db
 from app.api_1_0 import api
 from app.api_1_0.decorators import permission_required
-from app.api_1_0.errors import forbidden
+from app.api_1_0.errors import forbidden, not_found
 from models.post import Post
 from models.role import Permission
 
 
 @api.route('/posts/<int:id>')
 def get_post(id):
-    post = Post.query.get_or_404(id)
+    post = Post.query.get(id)
+    if not post:
+        return not_found(_('The post not exists'))
     return jsonify(post.to_dict())
 
 
@@ -56,7 +59,9 @@ def new_post():
 @api.route('/posts/<int:id>', methods=['PUT'])
 @permission_required(Permission.WRITE_ARTICLES)
 def edit_post(id):
-    post = Post.query.get_or_404(id)
+    post = Post.query.get(id)
+    if not post:
+        return not_found(_('The post not exists'))
     if g.current_user != post.author and \
             not g.current_user.can(Permission.ADMINISTER):
         return forbidden('permission denied')
