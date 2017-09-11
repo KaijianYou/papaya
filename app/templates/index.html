@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% import "_paginate_macro.html" as paginate_macro %}
+{% extends "common/base.html" %}
+{% import "common/_paginate_macro.html" as paginate_macro %}
 
 {% block title %}Papaya{% endblock title %}
 
@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                 <div class="post-tabs">
-                    {% include '_posts_preview.html' %}
+                    {% include 'post/_posts_preview.html' %}
 
                     <div class="pagination">
                         {{ paginate_macro.pagination_widget(pagination, endpoint, category_name=category_name, tag_name=tag_name) }}

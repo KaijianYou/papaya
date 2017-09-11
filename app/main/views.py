@@ -22,13 +22,8 @@ from werkzeug.contrib.atom import AtomFeed
 from app import db, babel
 from app.decorators import admin_required, permission_required
 from app.main import main
-from app.main.forms import (
-    EditProfileForm,
-    EditProfileAdminForm,
-    PostForm,
-    CommentForm,
-    WeatherForm
-)
+from app.main.forms import EditProfileForm, EditProfileAdminForm, PostForm, \
+    CommentForm, WeatherForm
 from models.post import Post
 from models.category import Category
 from models.comment import Comment
@@ -148,7 +143,7 @@ def user(username):
                   per_page=current_app.config['POSTS_PER_PAGE'],
                   error_out=False)
     posts = pagination.items
-    return render_template('user.html',
+    return render_template('user/user.html',
                            user=user,
                            posts=posts,
                            pagination=pagination)
@@ -170,7 +165,7 @@ def edit_profile():
     form.real_name.data = current_user.real_name
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', form=form)
+    return render_template('user/edit_profile.html', form=form)
 
 
 @main.route('/user/edit-profile/<int:id>', methods=['GET', 'POST'])
@@ -199,7 +194,7 @@ def edit_profile_admin(id):
     form.real_name.data = user.real_name
     form.location.data = user.location
     form.about_me.data = user.about_me
-    return render_template('edit_profile.html', form=form, user=user)
+    return render_template('user/edit_profile.html', form=form, user=user)
 
 
 @main.route('/publish-post', methods=['GET', 'POST'])
@@ -220,7 +215,7 @@ def publish_post():
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('main.show_all_posts'))
-    return render_template('publish_post.html', form=form, user=user)
+    return render_template('post/publish_post.html', form=form, user=user)
 
 
 @main.route('/edit-post/<int:id>', methods=['GET', 'POST'])
@@ -245,7 +240,7 @@ def edit_post(id):
     form.category.data = post.category_id
     form.tags.data = post.tags
     form.body.data = post.body
-    return render_template('edit_post.html', form=form)
+    return render_template('post/edit_post.html', form=form)
 
 
 @main.route('/follow/<username>')
@@ -298,7 +293,7 @@ def followers(username):
                   error_out=False)
     follows = [{'user': item.follower, 'create_timestamp': item.create_timestamp}
                for item in pagination.items]
-    return render_template('followers.html',
+    return render_template('user/followers.html',
                            user=user,
                            title=_('\'s followers'),
                            endpoint='main.followers',
@@ -320,7 +315,7 @@ def followed_by(username):
                   error_out=False)
     follows = [{'user': item.followed, 'create_timestamp': item.create_timestamp}
                for item in pagination.items]
-    return render_template('followers.html',
+    return render_template('user/followers.html',
                            user=user,
                            title=_(' has followed'),
                            endpoint='main.followers',
@@ -365,7 +360,7 @@ def post(id):
                   per_page=current_app.config['COMMENTS_PER_PAGE'],
                   error_out=False)
     comments = pagination.items
-    return render_template('post.html',
+    return render_template('post/post.html',
                            posts=[post],
                            prev_post=prev_post,
                            next_post=next_post,

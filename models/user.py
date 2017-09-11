@@ -12,14 +12,12 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db
-from app import login_manager
 from models.post import Post
 from models.follow import Follow
 from models.role import Role, Permission
 
 
 class User(db.Model, UserMixin):
-
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -219,17 +217,8 @@ class User(db.Model, UserMixin):
 
 
 class AnonymousUser(AnonymousUserMixin):
-
     def can(self, permissions):
         return False
 
     def is_administrator(self):
         return False
-
-
-login_manager.anonymous_user = AnonymousUser
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))

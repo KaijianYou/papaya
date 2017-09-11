@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 
-from utils.request_utils import is_safe_url
 from flask import abort
 from flask import flash
 from flask import redirect
@@ -10,24 +9,15 @@ from flask import request
 from flask import url_for
 from flask_babel import gettext as _
 from flask_login import current_user
-from flask_login import (
-    login_user,
-    logout_user,
-    login_required
-)
+from flask_login import login_user, logout_user, login_required
 
 from app import db
 from app.auth import auth
-from app.auth.forms import (
-    LoginForm,
-    RegistrationForm,
-    ChangePasswordForm,
-    ResetPasswordForm,
-    ResetPasswordRequestForm,
-    ChangeEmailForm
-)
+from app.auth.forms import LoginForm, RegistrationForm, ChangePasswordForm, \
+    ResetPasswordForm, ResetPasswordRequestForm, ChangeEmailForm
 from models.user import User
 from utils.email_utils import EmailUtils
+from utils.request_utils import is_safe_url
 
 
 @auth.before_app_request

@@ -4,20 +4,10 @@
 from flask_babel import lazy_gettext as lazy_
 from flask_pagedown.fields import PageDownField
 from flask_wtf import FlaskForm
-from wtforms import (
-    StringField,
-    SubmitField,
-    BooleanField,
-    SelectField,
+from wtforms import StringField, SubmitField, BooleanField, SelectField, \
     TextAreaField
-)
 from wtforms import ValidationError
-from wtforms.validators import (
-    DataRequired,
-    Length,
-    Email,
-    Regexp
-)
+from wtforms.validators import DataRequired, Length, Email, Regexp
 
 from models.category import Category
 from models.role import Role
@@ -98,7 +88,7 @@ class PostForm(FlaskForm):
     submit = SubmitField(lazy_('Publish'))
 
     def __init__(self, *args, **kwargs):
-        super(PostForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.category.choices = \
             [(category.id, category.name)
              for category in Category.query.order_by(Category.name).all()]

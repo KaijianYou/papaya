@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% import "_paginate_macro.html" as paginate_macro %}
+{% extends "common/base.html" %}
+{% import "common/_paginate_macro.html" as paginate_macro %}
 
 {% block title %}Papaya - {{ user.username }}{% endblock title %}
 
@@ -94,7 +94,7 @@
     </div>
 
     <h3>{{ gettext('Posts by %(username)s', username=user.username) }}</h3>
-    {% include '_posts_preview.html' %}
+    {% include 'post/_posts_preview.html' %}
 
     <div class="pagination">
         {{ paginate_macro.pagination_widget(pagination, '.index') }}

@@ -15,7 +15,6 @@ class Permission:
     # | 管理员权限           | 0b10000000 (0x80) | 管理网站                   |
     # -------------------------------------------------------------------------
     """
-
     FOLLOW = 0x01
     COMMENT = 0x02
     WRITE_ARTICLES = 0x04
@@ -34,7 +33,6 @@ class Role(db.Model):
     # | 管理员   | 0b11111111 (0xff)  | 具有所有权限，包括修改其他用户所属角色的权限 |
     # --------------------------------------------------------------------------------
     """
-
     __tablename__ = 'roles'
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

@@ -14,6 +14,7 @@ from raven.contrib.flask import Sentry
 
 from config import config
 
+
 bootstrap = Bootstrap()
 moment = Moment()
 db = SQLAlchemy()
@@ -36,10 +37,17 @@ def register_extensions(app):
     if env == 'Development' or env == 'Production':
         sentry.init_app(app, dsn=app.config['SENTRY_DSN'])
 
+    from models.user import User, AnonymousUser
+
     login_manager.init_app(app)
     login_manager.session_protection = 'strong'
     login_manager.login_view = 'auth.login'
     login_manager.login_message = lazy_('Please log in to access this page')
+    login_manager.anonymous_user = AnonymousUser
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
 
 
 def register_blueprint(app):

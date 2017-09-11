@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 from datetime import datetime
 
 import bleach
@@ -11,7 +12,6 @@ from models.category import Category
 
 
 class Post(db.Model):
-
     __tablename__ = 'posts'
 
     id = db.Column(db.Integer, primary_key=True)
