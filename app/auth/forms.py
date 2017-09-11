@@ -11,19 +11,17 @@ from models.user import User
 
 
 class LoginForm(FlaskForm):
-
     email = StringField(lazy_('Email'),
                         validators=[DataRequired(), Length(1, 64), Email()],
                         render_kw={'placeholder': lazy_('Email')})
     password = PasswordField(lazy_('Password'),
                              validators=[DataRequired()],
                              render_kw={'placeholder': lazy_('Password')})
-    remeber_me = BooleanField(lazy_('Keep me logged in'))
+    remember_me = BooleanField(lazy_('Keep me logged in'))
     submit = SubmitField(lazy_('Log In'))
 
 
 class RegistrationForm(FlaskForm):
-
     email = StringField(lazy_('Email'),
                         validators=[DataRequired(), Length(1, 64), Email()],
                         render_kw={'placeholder': lazy_('Email')})
@@ -62,7 +60,6 @@ class RegistrationForm(FlaskForm):
 
 
 class ChangePasswordForm(FlaskForm):
-
     old_password = PasswordField(lazy_('Old password'),
                                  validators=[DataRequired()],
                                  render_kw={'placeholder': lazy_('Old password')})
@@ -79,7 +76,6 @@ class ChangePasswordForm(FlaskForm):
 
 
 class ResetPasswordRequestForm(FlaskForm):
-
     email = StringField(lazy_('Email'),
                         validators=[DataRequired(), Length(1, 64), Email()],
                         render_kw={'placeholder': lazy_('Email')})
@@ -91,7 +87,6 @@ class ResetPasswordRequestForm(FlaskForm):
 
 
 class ResetPasswordForm(FlaskForm):
-
     email = StringField(lazy_('Email'),
                         validators=[DataRequired(), Length(1, 64), Email()])
     password = PasswordField(lazy_('New password'), validators=[DataRequired()])
@@ -108,7 +103,6 @@ class ResetPasswordForm(FlaskForm):
 
 
 class ChangeEmailForm(FlaskForm):
-
     email = StringField(lazy_('New email'),
                         validators=[DataRequired(), Length(1, 64), Email()],
                         render_kw={'placeholder': lazy_('New email')})

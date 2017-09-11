@@ -42,6 +42,7 @@ def register_extensions(app):
     login_manager.init_app(app)
     login_manager.session_protection = 'strong'
     login_manager.login_view = 'auth.login'
+    login_manager.refresh_view = 'auth.login'
     login_manager.login_message = lazy_('Please log in to access this page')
     login_manager.anonymous_user = AnonymousUser
 
