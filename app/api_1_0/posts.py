@@ -42,7 +42,7 @@ def get_posts():
 @api.route('/posts/', methods=['POST'])
 @permission_required(Permission.WRITE_ARTICLES)
 def new_post():
-    post = Post.from_json(request.json)
+    post = Post.from_dict(request.json)
     post.author = g.current_user
     db.session.add(post)
     db.session.commit()
@@ -60,7 +60,7 @@ def edit_post(id):
     if g.current_user != post.author and \
             not g.current_user.can(Permission.ADMINISTER):
         return forbidden('permission denied')
-    post = Post.from_json(request.json)
+    post = Post.from_dict(request.json)
     db.session.add(post)
     db.session.commit()
     return jsonify(post.to_dict())

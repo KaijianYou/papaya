@@ -69,7 +69,7 @@ def get_post_comments(id):
 @permission_required(Permission.COMMENT)
 def new_post_comments(id):
     post = Post.query.get_or_404(id)
-    comment = Comment.from_json(request.json)
+    comment = Comment.from_dict(request.json)
     comment.author = g.current_user
     comment.post = post
     db.session.add(comment)

@@ -78,7 +78,7 @@ class Post(db.Model):
         return post_json
 
     @staticmethod
-    def from_json(post_json):
+    def from_dict(post_json):
         title = post_json.get('title')
         if not title:
             raise ValueError('post does not have a title')
