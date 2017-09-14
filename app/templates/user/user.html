@@ -24,7 +24,7 @@
                 </p>
             {% endif %}
 
-            {% if current_user.is_administrator() %}
+            {% if current_user.can(Permission.MODERATE_USER) %}
                 <p>
                     {{ gettext('Email') }}:
                     <a href="mailto:{{ user.email }}">{{ user.email }}</a>
@@ -35,7 +35,7 @@
                 <p>{{ gettext('About me') }}: {{ user.about_me }}</p>{% endif %}
 
             <p>
-                {{ gettext('Register date') }}: {{ moment(user.register_date).format('YYYY/MM/DD, HH:mm:ss') }}
+                {{ gettext('Register date') }}: {{ moment(user.create_datetime).format('YYYY/MM/DD, HH:mm:ss') }}
                 <br/>
                 {# 渲染相对时间，随着时间的推移自动刷新显示的时间 #}
                 {{ gettext('Last visited') }}: {{ moment(user.last_visited).fromNow(refresh=True) }}
@@ -53,7 +53,7 @@
                     </a>
                 {% endif %}
 
-                {% if current_user.is_administrator() %}
+                {% if current_user.can(Permission.MODERATE_USER) %}
                     <a class="btn btn-danger"
                        href="{{ url_for('main.edit_profile_admin', id=user.id) }}">
                         {{ gettext('Edit Profile [Admin]') }}
@@ -64,13 +64,11 @@
             <p>
                 {% if current_user.can(Permission.FOLLOW) and user != current_user %}
                     {% if not current_user.is_following(user) %}
-                        <a href="{{ url_for('main.follow', username=user.username) }}"
-                           class="btn btn-primary">
+                        <a href="{{ url_for('main.follow', username=user.username) }}" class="btn btn-primary">
                             {{ gettext('Follow') }}
                         </a>
                     {% else %}
-                        <a href="{{ url_for('main.unfollow', username=user.username) }}"
-                           class="btn btn-default">
+                        <a href="{{ url_for('main.unfollow', username=user.username) }}" class="btn btn-default">
                             {{ gettext('Unfollow') }}
                         </a>
                     {% endif %}
@@ -78,11 +76,11 @@
 
                 <a href="{{ url_for('main.followers', username=user.username) }}">
                     {{ gettext('Followers') }}:
-                    <span class="badge">{{ user.followers.count() - 1 }}</span>
+                    <span class="badge">{{ user.followers.count() }}</span>
                 </a>
                 <a href="{{ url_for('main.followed_by', username=user.username) }}">
                     {{ gettext('Following') }}:
-                    <span class="badge">{{ user.followed.count() - 1 }}</span>
+                    <span class="badge">{{ user.followed.count() }}</span>
                 </a>
 
                 {% if current_user.is_authenticated and user != current_user and user.is_following(current_user) %}

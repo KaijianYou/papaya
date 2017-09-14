@@ -43,7 +43,7 @@ def get_articles():
 
 
 @api.route('/articles/', methods=['POST'])
-@permission_required(Permission.WRITE_ARTICLES)
+@permission_required(Permission.WRITE_ARTICLE)
 def new_article():
     article = Article.from_dict(request.json)
     article.author = g.current_user
@@ -57,13 +57,13 @@ def new_article():
 
 
 @api.route('/articles/<int:id>', methods=['PUT'])
-@permission_required(Permission.WRITE_ARTICLES)
+@permission_required(Permission.WRITE_ARTICLE)
 def edit_article(id):
     article = Article.query.get(id)
     if not article:
         return not_found(_('The article not exists'))
     if g.current_user != article.author and \
-            not g.current_user.can(Permission.MODERATE_ARTICLES):
+            not g.current_user.can(Permission.MODERATE_ARTICLE):
         return forbidden('permission denied')
     article = Article.from_dict(request.json)
     db.session.add(article)

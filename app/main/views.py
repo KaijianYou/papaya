@@ -62,11 +62,10 @@ def show_all_articles():
     pagination = Article.query\
         .order_by(Article.id.desc())\
         .paginate(page,
-                  per_page=current_app.config['ARTICLES_PER_PAGE'],
-                  error_out=False)
+                  per_page=current_app.config['ARTICLES_PER_PAGE'])
     articles = pagination.items
     return render_template('index.html',
-                           articless=articles,
+                           articles=articles,
                            endpoint='main.show_all_articles',
                            categories_list=Category.get_categories(),
                            pagination=pagination)
@@ -77,7 +76,7 @@ def show_all_articles():
 def show_followed_articles():
     if current_user.is_authenticated:
         page = request.args.get('page', 1, type=int)
-        pagination = current_user.followed_articles()\
+        pagination = current_user.followed_articles\
             .order_by(Article.id.desc())\
             .paginate(page,
                       per_page=current_app.config['ARTICLES_PER_PAGE'],
@@ -166,7 +165,7 @@ def edit_profile():
 
 @main.route('/user/edit-profile/<int:id>', methods=['GET', 'POST'])
 @login_required
-@permission_required(Permission.MODERATE_USERS)
+@permission_required(Permission.MODERATE_USER)
 def edit_profile_admin(id):
     user = User.query.get_or_404(id)
     form = EditProfileAdminForm(user=user)
@@ -197,7 +196,7 @@ def edit_profile_admin(id):
 @login_required
 def publish_article():
     form = ArticleForm()
-    if current_user.can(Permission.WRITE_ARTICLES) and \
+    if current_user.can(Permission.WRITE_ARTICLE) and \
             form.validate_on_submit():
         title = form.title.data
         category = Category.query.get(form.category.data)
@@ -218,7 +217,7 @@ def publish_article():
 def edit_article(id):
     article = Article.query.get_or_404(id)
     if current_user != article.author and \
-            not current_user.can(Permission.MODERATE_ARTICLES):
+            not current_user.can(Permission.MODERATE_ARTICLE):
         abort(403)
 
     form = ArticleForm()
@@ -368,7 +367,7 @@ def article(id):
 
 @main.route('/moderate')
 @login_required
-@permission_required(Permission.MODERATE_COMMENTS)
+@permission_required(Permission.MODERATE_COMMENT)
 def moderate():
     page = request.args.get('page', 1, type=int)
     pagination = Comment.query\
@@ -385,7 +384,7 @@ def moderate():
 
 @main.route('/moderate/enable/<int:id>')
 @login_required
-@permission_required(Permission.MODERATE_COMMENTS)
+@permission_required(Permission.MODERATE_COMMENT)
 def moderate_enable(id):
     comment = Comment.query.get_or_404(id)
     comment.disabled = False
@@ -397,7 +396,7 @@ def moderate_enable(id):
 
 @main.route('/moderate/disable/<int:id>')
 @login_required
-@permission_required(Permission.MODERATE_COMMENTS)
+@permission_required(Permission.MODERATE_COMMENT)
 def moderate_disable(id):
     comment = Comment.query.get_or_404(id)
     comment.disabled = True

@@ -100,7 +100,7 @@ class UserModelTestCase(unittest.TestCase):
         u = User(username='birdman', password='tiger', email='birdman@gmail.com')
         db.session.add(u)
         db.session.commit()
-        self.assertTrue((datetime.utcnow() - u.register_date).total_seconds() < 3)
+        self.assertTrue((datetime.utcnow() - u.create_datetime).total_seconds() < 3)
         self.assertTrue((datetime.utcnow() - u.last_visited).total_seconds() < 3)
 
     def test_duplicate_email_change_token(self):

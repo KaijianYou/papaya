@@ -71,7 +71,7 @@
                        class="btn btn-primary btn-custom">
                         {{ gettext('Edit') }}
                     </a>
-                {% elif current_user.is_administrator() %}
+                {% elif current_user.can(Permission.MODERATE_ARTICLE) %}
                     <a href="{{ url_for('main.edit_article', id=article.id) }}"
                        class="btn btn-danger btn-custom">
                         {{ gettext('Edit [Admin]') }}

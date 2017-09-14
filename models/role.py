@@ -8,10 +8,10 @@ from models.base import BaseMixin
 class Permission:
     FOLLOW = 0x01  # 关注别人
     COMMENT = 0x02  # 发表评论
-    WRITE_ARTICLES = 0x04  # 发布文章
-    MODERATE_COMMENTS = 0x08  # 管理评论
-    MODERATE_ARTICLES = 0x10  # 管理文章
-    MODERATE_USERS = 0x20  # 管理用户
+    WRITE_ARTICLE = 0x04  # 发布文章
+    MODERATE_COMMENT = 0x08  # 管理评论
+    MODERATE_ARTICLE = 0x10  # 管理文章
+    MODERATE_USER = 0x20  # 管理用户
     ASSIGN_MODERATOR = 0x40  # 任命管理员
 
 
@@ -40,22 +40,22 @@ class Role(db.Model, BaseMixin):
             'User': (
                 Permission.FOLLOW |
                 Permission.COMMENT |
-                Permission.WRITE_ARTICLES
+                Permission.WRITE_ARTICLE
             ),
             'Moderator': (
                 Permission.FOLLOW |
                 Permission.COMMENT |
-                Permission.WRITE_ARTICLES |
-                Permission.MODERATE_COMMENTS |
-                Permission.MODERATE_ARTICLES
+                Permission.WRITE_ARTICLE |
+                Permission.MODERATE_COMMENT |
+                Permission.MODERATE_ARTICLE
             ),
             'Administrator': (
                 Permission.FOLLOW |
                 Permission.COMMENT |
-                Permission.WRITE_ARTICLES |
-                Permission.MODERATE_COMMENTS |
-                Permission.MODERATE_ARTICLES |
-                Permission.MODERATE_USERS |
+                Permission.WRITE_ARTICLE |
+                Permission.MODERATE_COMMENT |
+                Permission.MODERATE_ARTICLE |
+                Permission.MODERATE_USER |
                 Permission.ASSIGN_MODERATOR
             )
         }

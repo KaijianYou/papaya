@@ -207,6 +207,3 @@ class User(db.Model, UserMixin, BaseMixin):
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
         return False
-
-    def is_administrator(self):
-        return False
