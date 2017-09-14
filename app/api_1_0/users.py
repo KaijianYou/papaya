@@ -25,7 +25,7 @@ def get_user_posts(id):
         return not_found(_('The user not exists'))
 
     page = request.args.get('page', default=1, type=int)
-    pagination = user.posts.order_by(Post.create_timestamp.desc())\
+    pagination = user.posts.order_by(Post.create_datetime.desc())\
         .paginate(page, per_page=current_app.config['POSTS_PER_PAGE'])
     posts = pagination.items
 
@@ -49,7 +49,7 @@ def get_user_followed_posts(id):
     if not user:
         return not_found('The user not exists')
     page = request.args.get('page', default=1, type=int)
-    pagination = user.followed_posts.order_by(Post.create_timestamp.desc())\
+    pagination = user.followed_posts.order_by(Post.create_datetime.desc())\
         .paginate(page, per_page=current_app.config['POSTS_PER_PAGE'])
     posts = pagination.items
     prev = None

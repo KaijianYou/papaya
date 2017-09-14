@@ -23,7 +23,7 @@ def get_post(id):
 @api.route('/posts/')
 def get_posts():
     page = request.args.get('page', default=1, type=int)
-    pagination = Post.query.order_by(Post.create_timestamp.desc())\
+    pagination = Post.query.order_by(Post.create_datetime.desc())\
         .paginate(page=page, per_page=current_app.config['POSTS_PER_PAGE'])
     posts = pagination.items
 

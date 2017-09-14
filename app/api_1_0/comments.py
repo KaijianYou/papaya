@@ -17,7 +17,7 @@ from models.role import Permission
 @api.route('/comments/')
 def get_comments():
     page = request.args.get('page', default=1, type=int)
-    pagination = Comment.query.order_by(Comment.create_timestamp.desc())\
+    pagination = Comment.query.order_by(Comment.create_datetime.desc())\
         .paginate(page, per_page=current_app.config['COMMENTS_PER_PAGE'])
     comments = pagination.items
 
@@ -48,7 +48,7 @@ def get_post_comments(id):
     if not post:
         return not_found(_('The post not exists'))
     page = request.args.get('page', default=1, type=int)
-    pagination = post.comments.order_by(Comment.create_timestamp.asc())\
+    pagination = post.comments.order_by(Comment.create_datetime.asc())\
         .paginate(page, per_page=current_app.config['COMMENTS_PER_PAGE'])
     comments = pagination.items
 

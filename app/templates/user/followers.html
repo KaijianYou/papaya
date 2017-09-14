@@ -24,7 +24,7 @@
                             {{ follow.user.username }}
                         </a>
                     </td>
-                    <td>{{ moment(follow.create_timestamp).format('YYYY/MM/DD, HH:mm:ss') }}</td>
+                    <td>{{ moment(follow.create_datetime).format('YYYY/MM/DD, HH:mm:ss') }}</td>
                 </tr>
             {% endif %}
         {% endfor %}

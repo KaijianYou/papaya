@@ -32,7 +32,7 @@ def get_categories_posts(id):
     if not category:
         return not_found(_('The category not exists'))
     page = request.args.get('page', default=1, type=int)
-    pagination = category.posts.order_by(Post.create_timestamp.desc())\
+    pagination = category.posts.order_by(Post.create_datetime.desc())\
         .paginate(page=page, per_page=current_app.config['POSTS_PER_PAGE'])
     posts = pagination.items
     prev = None

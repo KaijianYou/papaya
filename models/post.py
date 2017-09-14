@@ -20,8 +20,8 @@ class Post(db.Model):
     tags = db.Column(db.String(200), nullable=False)
     body = db.Column(db.Text, nullable=False)
     body_html = db.Column(db.Text)
-    create_timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    update_timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    create_datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    update_datetime = db.Column(db.DateTime, default=datetime.utcnow)
     read_count = db.Column(db.Integer, default=0)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
@@ -69,8 +69,8 @@ class Post(db.Model):
             'tags': self.get_tags(),
             'body': self.body,
             'body_html': self.body_html,
-            'create_time': self.create_timestamp,
-            'update_time': self.update_timestamp,
+            'create_time': self.create_datetime,
+            'update_time': self.update_datetime,
             'author': url_for('api.get_user', id=self.author_id, _external=True),
             'comments': url_for('api.get_post_comments', id=self.id, _external=True),
             'comment_count': self.comments.count(),

@@ -291,7 +291,7 @@ def followers(username):
         .paginate(page,
                   per_page=current_app.config['FOLLOWERS_PER_PAGE'],
                   error_out=False)
-    follows = [{'user': item.follower, 'create_timestamp': item.create_timestamp}
+    follows = [{'user': item.follower, 'create_datetime': item.create_datetime}
                for item in pagination.items]
     return render_template('user/followers.html',
                            user=user,
@@ -313,7 +313,7 @@ def followed_by(username):
         .paginate(page,
                   per_page=current_app.config['FOLLOWERS_PER_PAGE'],
                   error_out=False)
-    follows = [{'user': item.followed, 'create_timestamp': item.create_timestamp}
+    follows = [{'user': item.followed, 'create_datetime': item.create_datetime}
                for item in pagination.items]
     return render_template('user/followers.html',
                            user=user,
@@ -328,12 +328,12 @@ def post(id):
     post = Post.query.get_or_404(id)
     prev_post = Post.query\
         .filter(and_(Post.author_id == post.author_id,
-                     Post.create_timestamp < post.create_timestamp))\
+                     Post.create_datetime < post.create_datetime))\
         .order_by(Post.id.desc())\
         .first()
     next_post = Post.query\
         .filter(and_(Post.author_id == post.author_id,
-                     Post.create_timestamp > post.create_timestamp))\
+                     Post.create_datetime > post.create_datetime))\
         .order_by(Post.id.asc()).first()
 
     if request.method == 'GET':
@@ -462,7 +462,7 @@ def recent_feed():
                  content_type='html',
                  author=post.author.username,
                  url=make_external(url_for('main.post', id=post.id)),
-                 updated=post.update_timestamp)
+                 updated=post.update_datetime)
     return feed.get_response()
 
 

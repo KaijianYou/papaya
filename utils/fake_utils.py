@@ -41,7 +41,7 @@ class FakeUtils(object):
         for i in range(count):
             user = User.query.offset(randint(0, user_count - 1)).first()
             post = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
-                        create_timestamp=forgery_py.date.date(True),
+                        create_datetime=forgery_py.date.date(True),
                         author=user)
             db.session.add(post)
             db.session.commit()
