@@ -123,32 +123,35 @@ class UserModelTestCase(unittest.TestCase):
         db.session.add(u1)
         db.session.add(u2)
         db.session.commit()
+
         self.assertFalse(u1.is_following(u2))
         self.assertFalse(u1.is_followed_by(u2))
 
-        timestamp_before = datetime.utcnow()
+        before_datetime = datetime.utcnow()
         u1.follow(u2)
         db.session.add(u1)
         db.session.commit()
-        timestamp_after = datetime.utcnow()
+        after_datetime = datetime.utcnow()
+
         self.assertTrue(u1.is_following(u2))
         self.assertFalse(u1.is_followed_by(u2))
         self.assertTrue(u2.is_followed_by(u1))
-        self.assertTrue(u1.followed.count() == 2)
-        self.assertTrue(u2.followers.count() == 2)
+        self.assertEqual(u1.followed.count(), 1)
+        self.assertEqual(u2.followers.count(), 1)
 
         f = u1.followed.all()[-1]
         self.assertTrue(f.followed == u2)
-        self.assertTrue(timestamp_before <= f.create_timestamp <= timestamp_after)
+        self.assertTrue(before_datetime <= f.create_datetime <= after_datetime)
         f = u2.followers.all()[0]
         self.assertTrue(f.follower == u1)
 
         u1.unfollow(u2)
         db.session.add(u1)
         db.session.commit()
-        self.assertTrue(u1.followed.count() == 1)
-        self.assertTrue(u2.followers.count() == 1)
-        self.assertTrue(Follow.query.count() == 2)
+
+        self.assertEqual(u1.followed.count(), 0)
+        self.assertEqual(u2.followers.count(), 0)
+        self.assertEqual(Follow.query.count(), 0)
 
         u2.follow(u1)
         db.session.add(u1)
@@ -156,4 +159,5 @@ class UserModelTestCase(unittest.TestCase):
         db.session.commit()
         db.session.delete(u2)
         db.session.commit()
-        self.assertTrue(Follow.query.count() == 1)
+
+        self.assertEqual(Follow.query.count(), 0)

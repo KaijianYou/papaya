@@ -52,15 +52,10 @@ class User(db.Model, UserMixin, BaseMixin):
             if self.email == current_app.config['ADMIN_EMAIL']:
                 self.role = Role.query.filter_by(permissions=0xff).first()
             if self.role is None:
-                self.role = Role.query.filter_by(default=True).first()
+                self.role = Role.query.filter_by(name='User').first()
 
         if self.email is not None and self.avatar_hash is None:
             self.avatar_hash = hashlib.md5(self.email.encode('utf-8')).hexdigest()
-
-        self.followed.append(Follow(followed=self))  # 把自己设为自己的关注者
-
-    def __repr__(self):
-        return '<User %s>' % self.username
 
     @property
     def password(self):
@@ -168,14 +163,14 @@ class User(db.Model, UserMixin, BaseMixin):
 
     def follow(self, user):
         if not self.is_following(user):
-            f = Follow(follower=self, followed=user)
-            db.session.add(f)
+            follow = Follow(follower=self, followed=user)
+            db.session.add(follow)
             db.session.commit()
 
     def unfollow(self, user):
-        f = self.followed.filter_by(followed_id=user.id).first()
-        if f:
-            db.session.delete(f)
+        follow = self.followed.filter_by(followed_id=user.id).first()
+        if follow:
+            db.session.delete(follow)
             db.session.commit()
 
     def is_following(self, user):

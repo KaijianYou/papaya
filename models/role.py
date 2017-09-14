@@ -22,9 +22,6 @@ class Role(db.Model, BaseMixin):
     permissions = db.Column(db.Integer)
     users = db.relationship('User', backref='role', lazy='dynamic')
 
-    def __repr__(self):
-        return '<Role %s>' % self.name
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

@@ -18,8 +18,6 @@ class FlaskClientTestCase(unittest.TestCase):
         self.app = create_app('test')
         self.app_context = self.app.app_context()
         self.app_context.push()
-        self.ctx = self.app.test_request_context()
-        self.ctx.push()
         self.client = self.app.test_client(use_cookies=True)
 
         db.create_all()

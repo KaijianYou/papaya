@@ -17,9 +17,6 @@ class Comment(db.Model, BaseMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def __repr__(self):
-        return '<Comment %s>' % self.body
-
     def to_dict(self):
         return {
             'url': url_for('api.get_comment', id=self.id, _external=True),

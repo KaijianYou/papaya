@@ -16,9 +16,6 @@ class Category(db.Model, BaseMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def __repr__(self):
-        return '<Category %s>' % self.name
-
     @staticmethod
     def insert_categories():
         categories_list = [

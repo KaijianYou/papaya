@@ -25,9 +25,6 @@ class Article(db.Model, BaseMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def __repr__(self):
-        return '<Article %s>' % self.title
-
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
         allowed_tags = [
