@@ -4,7 +4,6 @@
 from functools import wraps
 
 from app.api_1_0.errors import forbidden
-from models.role import Permission
 
 
 def permission_required(permissions):
@@ -16,7 +15,3 @@ def permission_required(permissions):
             return func(*argc, **kwargs)
         return wrapper
     return decorator
-
-
-def admin_required(func):
-    return permission_required(Permission.ADMINISTER)(func)

@@ -10,11 +10,12 @@ from flask_script import Shell
 
 from app import create_app
 from app import db
-from models.post import Post
 from models.category import Category
+from models.article import Article
 from models.comment import Comment
 from models.role import Role, Permission
 from models.user import User
+from models.follow import Follow
 
 
 def make_shell_context():
@@ -23,9 +24,10 @@ def make_shell_context():
                 User=User,
                 Role=Role,
                 Permission=Permission,
-                Post=Post,
+                Article=Article,
                 Comment=Comment,
-                Category=Category)
+                Category=Category,
+                Follow=Follow)
 
 
 app = create_app(os.getenv('PAPAYA_CONFIG') or 'default')
@@ -46,7 +48,6 @@ def deploy():
     upgrade()
 
     Role.insert_roles()
-    User.add_self_follows()
     Category.insert_categories()
 
 

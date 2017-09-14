@@ -51,7 +51,6 @@ A simple blog system based on Flask -- a framework for Python.<br/>
     (venv) $ python manage.py shell
     >>> Role.insert_roles()
     >>> Category.insert_categories()
-    >>> User.add_self_follows()
 
 
 ### Set environment variables

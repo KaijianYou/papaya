@@ -11,15 +11,15 @@
         <div class="row">
             <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                 <div class="search-result">
-                    {% if posts %}
-                        <strong>关于 <b>"{{ keyword }}"</b> 的搜索结果一共有 <b>{{ num_posts }}</b> 条</strong>
+                    {% if articles %}
+                        <strong>关于 <b>"{{ keyword }}"</b> 的搜索结果一共有 <b>{{ num_articles }}</b> 条</strong>
                     {% else %}
                         <strong>没有关于 <b>"{{ keyword }}"</b> 的内容</strong>
                     {% endif %}
                 </div>
 
-                <div class="post-tabs">
-                    {% include 'post/_posts_preview.html' %}
+                <div class="article-tabs">
+                    {% include 'article/_articles_preview.html' %}
                 </div>
             </div>
 

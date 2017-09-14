@@ -41,7 +41,7 @@
                 {{ gettext('Last visited') }}: {{ moment(user.last_visited).fromNow(refresh=True) }}
             </p>
 
-            <p>{{ user.posts.count() }} {{ gettext('blog posts') }}</p>
+            <p>{{ user.articles.count() }} {{ gettext('blog articles') }}</p>
 
             <p>{{ user.comments.count() }} {{ gettext('comments') }}</p>
 
@@ -93,8 +93,8 @@
         </div>
     </div>
 
-    <h3>{{ gettext('Posts by %(username)s', username=user.username) }}</h3>
-    {% include 'post/_posts_preview.html' %}
+    <h3>{{ gettext('Articles published by %(username)s', username=user.username) }}</h3>
+    {% include 'article/_articles_preview.html' %}
 
     <div class="pagination">
         {{ paginate_macro.pagination_widget(pagination, '.index') }}

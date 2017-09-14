@@ -3,7 +3,7 @@
 
 from app import db
 from models.user import User
-from models.post import Post
+from models.article import Article
 
 
 class FakeUtils(object):
@@ -32,7 +32,7 @@ class FakeUtils(object):
                 db.session.rollback()
 
     @staticmethod
-    def generate_fake_posts(count=100):
+    def generate_fake_articles(count=100):
         from random import seed, randint
         import forgery_py
 
@@ -40,8 +40,8 @@ class FakeUtils(object):
         user_count = User.query.count()
         for i in range(count):
             user = User.query.offset(randint(0, user_count - 1)).first()
-            post = Post(body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
-                        create_datetime=forgery_py.date.date(True),
-                        author=user)
-            db.session.add(post)
+            article = Article(body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
+                              create_datetime=forgery_py.date.date(True),
+                              author=user)
+            db.session.add(article)
             db.session.commit()

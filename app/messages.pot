@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-09-11 16:14+0800\n"
+"POT-Creation-Date: 2017-09-14 19:28+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,13 +21,13 @@ msgstr ""
 msgid "Please log in to access this page"
 msgstr ""
 
-#: app/api_1_0/categories.py:17 app/api_1_0/categories.py:33
-msgid "The category not exists"
+#: app/api_1_0/articles.py:19 app/api_1_0/articles.py:64
+#: app/api_1_0/comments.py:49 app/api_1_0/comments.py:75
+msgid "The article not exists"
 msgstr ""
 
-#: app/api_1_0/comments.py:49 app/api_1_0/comments.py:75
-#: app/api_1_0/posts.py:19 app/api_1_0/posts.py:64
-msgid "The post not exists"
+#: app/api_1_0/categories.py:17 app/api_1_0/categories.py:33
+msgid "The category not exists"
 msgstr ""
 
 #: app/api_1_0/users.py:17 app/api_1_0/users.py:25
@@ -219,8 +219,8 @@ msgstr ""
 msgid "More than one tag should separate them by comma"
 msgstr ""
 
-#: app/main/forms.py:84 app/templates/post/post.html:5
-msgid "Post"
+#: app/main/forms.py:84 app/templates/article/article.html:5
+msgid "Article"
 msgstr ""
 
 #: app/main/forms.py:85
@@ -239,49 +239,49 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: app/main/views.py:162
+#: app/main/views.py:158
 msgid "Your profile has been updated"
 msgstr ""
 
-#: app/main/views.py:187
+#: app/main/views.py:183
 msgid "The profile has been updated"
 msgstr ""
 
-#: app/main/views.py:236
-msgid "The post has been updated"
+#: app/main/views.py:232
+msgid "The article has been updated"
 msgstr ""
 
-#: app/main/views.py:252 app/main/views.py:270 app/main/views.py:286
-#: app/main/views.py:308
+#: app/main/views.py:248 app/main/views.py:266 app/main/views.py:282
+#: app/main/views.py:304
 msgid "Invalid user"
 msgstr ""
 
-#: app/main/views.py:256
+#: app/main/views.py:252
 msgid "You are already following this user"
 msgstr ""
 
-#: app/main/views.py:260
+#: app/main/views.py:256
 msgid "You are now following"
 msgstr ""
 
-#: app/main/views.py:274
+#: app/main/views.py:270
 msgid "You are not following this user"
 msgstr ""
 
-#: app/main/views.py:278
+#: app/main/views.py:274
 #, python-format
 msgid "Your are not following %(username)s anymore"
 msgstr ""
 
-#: app/main/views.py:298
+#: app/main/views.py:294
 msgid "'s followers"
 msgstr ""
 
-#: app/main/views.py:320
+#: app/main/views.py:316
 msgid " has followed"
 msgstr ""
 
-#: app/main/views.py:350
+#: app/main/views.py:347
 msgid "Your comment has been published"
 msgstr ""
 
@@ -344,6 +344,35 @@ msgstr ""
 
 #: app/templates/weather.html:14
 msgid "Weather"
+msgstr ""
+
+#: app/templates/article/_articles_detail.html:87
+#: app/templates/article/_articles_preview.html:72
+msgid "Edit"
+msgstr ""
+
+#: app/templates/article/_articles_detail.html:92
+#: app/templates/article/_articles_preview.html:77
+msgid "Edit [Admin]"
+msgstr ""
+
+#: app/templates/article/_articles_preview.html:82
+msgid "Read more"
+msgstr ""
+
+#: app/templates/article/article.html:11
+msgid "Comments"
+msgstr ""
+
+#: app/templates/article/edit_article.html:4
+#: app/templates/article/edit_article.html:8
+msgid "Edit Article"
+msgstr ""
+
+#: app/templates/article/publish_article.html:4
+#: app/templates/article/publish_article.html:8
+#: app/templates/common/base.html:82
+msgid "Publish Article"
 msgstr ""
 
 #: app/templates/auth/change_email.html:5
@@ -503,16 +532,11 @@ msgid "To reset your password please click on the following link"
 msgstr ""
 
 #: app/templates/common/base.html:70
-msgid "All Post"
+msgid "All Article"
 msgstr ""
 
 #: app/templates/common/base.html:76
-msgid "Followed Post"
-msgstr ""
-
-#: app/templates/common/base.html:82 app/templates/post/publish_post.html:4
-#: app/templates/post/publish_post.html:8
-msgid "Publish Post"
+msgid "Followed Article"
 msgstr ""
 
 #: app/templates/common/base.html:96
@@ -541,28 +565,6 @@ msgstr ""
 
 #: app/templates/common/base.html:211
 msgid "Back to top"
-msgstr ""
-
-#: app/templates/post/_posts_detail.html:87
-#: app/templates/post/_posts_preview.html:72
-msgid "Edit"
-msgstr ""
-
-#: app/templates/post/_posts_detail.html:92
-#: app/templates/post/_posts_preview.html:77
-msgid "Edit [Admin]"
-msgstr ""
-
-#: app/templates/post/_posts_preview.html:82
-msgid "Read more"
-msgstr ""
-
-#: app/templates/post/edit_post.html:4 app/templates/post/edit_post.html:8
-msgid "Edit Post"
-msgstr ""
-
-#: app/templates/post/post.html:11
-msgid "Comments"
 msgstr ""
 
 #: app/templates/user/edit_profile.html:4 app/templates/user/user.html:52
@@ -602,7 +604,7 @@ msgid "Last visited"
 msgstr ""
 
 #: app/templates/user/user.html:44
-msgid "blog posts"
+msgid "blog articles"
 msgstr ""
 
 #: app/templates/user/user.html:46
@@ -635,7 +637,7 @@ msgstr ""
 
 #: app/templates/user/user.html:96
 #, python-format
-msgid "Posts by %(username)s"
+msgid "Articles published by %(username)s"
 msgstr ""
 
 #: utils/email_utils.py:42

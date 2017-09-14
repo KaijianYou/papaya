@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-09-11 16:14+0800\n"
+"POT-Creation-Date: 2017-09-14 19:28+0800\n"
 "PO-Revision-Date: 2017-03-05 15:08+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hans_CN\n"
@@ -22,14 +22,14 @@ msgstr ""
 msgid "Please log in to access this page"
 msgstr "请先登录"
 
+#: app/api_1_0/articles.py:19 app/api_1_0/articles.py:64
+#: app/api_1_0/comments.py:49 app/api_1_0/comments.py:75
+msgid "The article not exists"
+msgstr "找不到该文章"
+
 #: app/api_1_0/categories.py:17 app/api_1_0/categories.py:33
 msgid "The category not exists"
 msgstr "该目录不存在"
-
-#: app/api_1_0/comments.py:49 app/api_1_0/comments.py:75
-#: app/api_1_0/posts.py:19 app/api_1_0/posts.py:64
-msgid "The post not exists"
-msgstr "该文章不存在"
 
 #: app/api_1_0/users.py:17 app/api_1_0/users.py:25
 msgid "The user not exists"
@@ -220,8 +220,8 @@ msgstr "标签"
 msgid "More than one tag should separate them by comma"
 msgstr "标签多于一个则用 \",\" 分隔"
 
-#: app/main/forms.py:84 app/templates/post/post.html:5
-msgid "Post"
+#: app/main/forms.py:84 app/templates/article/article.html:5
+msgid "Article"
 msgstr "文章"
 
 #: app/main/forms.py:85
@@ -240,49 +240,49 @@ msgstr "城市"
 msgid "Search"
 msgstr "查询"
 
-#: app/main/views.py:162
+#: app/main/views.py:158
 msgid "Your profile has been updated"
 msgstr "您的个人资料已经更新"
 
-#: app/main/views.py:187
+#: app/main/views.py:183
 msgid "The profile has been updated"
 msgstr "个人资料已经更新"
 
-#: app/main/views.py:236
-msgid "The post has been updated"
+#: app/main/views.py:232
+msgid "The article has been updated"
 msgstr "文章已经更新"
 
-#: app/main/views.py:252 app/main/views.py:270 app/main/views.py:286
-#: app/main/views.py:308
+#: app/main/views.py:248 app/main/views.py:266 app/main/views.py:282
+#: app/main/views.py:304
 msgid "Invalid user"
 msgstr "无效的用户"
 
-#: app/main/views.py:256
+#: app/main/views.py:252
 msgid "You are already following this user"
 msgstr "您已经关注了该用户"
 
-#: app/main/views.py:260
+#: app/main/views.py:256
 msgid "You are now following"
 msgstr "已关注"
 
-#: app/main/views.py:274
+#: app/main/views.py:270
 msgid "You are not following this user"
 msgstr "您没有关注此用户"
 
-#: app/main/views.py:278
+#: app/main/views.py:274
 #, python-format
 msgid "Your are not following %(username)s anymore"
 msgstr "您已经不再关注 %(username)s"
 
-#: app/main/views.py:298
+#: app/main/views.py:294
 msgid "'s followers"
 msgstr " 的关注者"
 
-#: app/main/views.py:320
+#: app/main/views.py:316
 msgid " has followed"
 msgstr " 关注了"
 
-#: app/main/views.py:350
+#: app/main/views.py:347
 msgid "Your comment has been published"
 msgstr "评论成功"
 
@@ -346,6 +346,35 @@ msgstr "日期"
 #: app/templates/weather.html:14
 msgid "Weather"
 msgstr "天气"
+
+#: app/templates/article/_articles_detail.html:87
+#: app/templates/article/_articles_preview.html:72
+msgid "Edit"
+msgstr "编辑"
+
+#: app/templates/article/_articles_detail.html:92
+#: app/templates/article/_articles_preview.html:77
+msgid "Edit [Admin]"
+msgstr "编辑 [管理员]"
+
+#: app/templates/article/_articles_preview.html:82
+msgid "Read more"
+msgstr "阅读全文"
+
+#: app/templates/article/article.html:11
+msgid "Comments"
+msgstr "评论"
+
+#: app/templates/article/edit_article.html:4
+#: app/templates/article/edit_article.html:8
+msgid "Edit Article"
+msgstr "编辑文章"
+
+#: app/templates/article/publish_article.html:4
+#: app/templates/article/publish_article.html:8
+#: app/templates/common/base.html:82
+msgid "Publish Article"
+msgstr "发布文章"
 
 #: app/templates/auth/change_email.html:5
 msgid "Change Email Address"
@@ -504,17 +533,12 @@ msgid "To reset your password please click on the following link"
 msgstr "为了重设您的密码，请点击下面的链接"
 
 #: app/templates/common/base.html:70
-msgid "All Post"
-msgstr "全部文章"
+msgid "All Article"
+msgstr "所有文章"
 
 #: app/templates/common/base.html:76
-msgid "Followed Post"
+msgid "Followed Article"
 msgstr "关注文章"
-
-#: app/templates/common/base.html:82 app/templates/post/publish_post.html:4
-#: app/templates/post/publish_post.html:8
-msgid "Publish Post"
-msgstr "发布文章"
 
 #: app/templates/common/base.html:96
 msgid "Moderate Comments"
@@ -543,28 +567,6 @@ msgstr "退出"
 #: app/templates/common/base.html:211
 msgid "Back to top"
 msgstr "回到顶端"
-
-#: app/templates/post/_posts_detail.html:87
-#: app/templates/post/_posts_preview.html:72
-msgid "Edit"
-msgstr "编辑"
-
-#: app/templates/post/_posts_detail.html:92
-#: app/templates/post/_posts_preview.html:77
-msgid "Edit [Admin]"
-msgstr "编辑 [管理员]"
-
-#: app/templates/post/_posts_preview.html:82
-msgid "Read more"
-msgstr "阅读全文"
-
-#: app/templates/post/edit_post.html:4 app/templates/post/edit_post.html:8
-msgid "Edit Post"
-msgstr "编辑文章"
-
-#: app/templates/post/post.html:11
-msgid "Comments"
-msgstr "评论"
 
 #: app/templates/user/edit_profile.html:4 app/templates/user/user.html:52
 msgid "Edit Profile"
@@ -603,8 +605,8 @@ msgid "Last visited"
 msgstr "最近访问"
 
 #: app/templates/user/user.html:44
-msgid "blog posts"
-msgstr "篇文章"
+msgid "blog articles"
+msgstr "篇博客"
 
 #: app/templates/user/user.html:46
 msgid "comments"
@@ -636,7 +638,7 @@ msgstr "此用户已关注您"
 
 #: app/templates/user/user.html:96
 #, python-format
-msgid "Posts by %(username)s"
+msgid "Articles published by %(username)s"
 msgstr "%(username)s 发布的文章"
 
 #: utils/email_utils.py:42
@@ -650,4 +652,3 @@ msgstr "验证您的账号"
 #: utils/email_utils.py:66
 msgid "Reset your password"
 msgstr "重设您的密码"
-

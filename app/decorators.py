@@ -7,8 +7,6 @@ from threading import Thread
 from flask import abort
 from flask_login import current_user
 
-from models.role import Permission
-
 
 def permission_required(permission):
     """检查用户权限"""
@@ -20,10 +18,6 @@ def permission_required(permission):
             return func(*args, **kwargs)
         return wrapper
     return decorator
-
-
-def admin_required(func):
-    return permission_required(Permission.ADMINISTER)(func)
 
 
 def async_task(func):

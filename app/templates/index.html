@@ -19,8 +19,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                <div class="post-tabs">
-                    {% include 'post/_posts_preview.html' %}
+                <div class="article-tabs">
+                    {% include 'article/_articles_preview.html' %}
 
                     <div class="pagination">
                         {{ paginate_macro.pagination_widget(pagination, endpoint, category_name=category_name, tag_name=tag_name) }}
@@ -92,7 +92,7 @@
 
                     <div class="side-widget">
                         <div class="widget-heading"
-                             data-anijs="if: click, do: zoomIn animated, to: .post-title">
+                             data-anijs="if: click, do: zoomIn animated, to: .article-title">
                             <span class="glyphicon glyphicon-cog"></span> 功能
                         </div>
                         <div class="widget-body">

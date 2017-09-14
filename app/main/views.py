@@ -20,11 +20,11 @@ from sqlalchemy.sql import func, and_
 from werkzeug.contrib.atom import AtomFeed
 
 from app import db, babel
-from app.decorators import admin_required, permission_required
+from app.decorators import permission_required
 from app.main import main
-from app.main.forms import EditProfileForm, EditProfileAdminForm, PostForm, \
+from app.main.forms import EditProfileForm, EditProfileAdminForm, ArticleForm, \
     CommentForm, WeatherForm
-from models.post import Post
+from models.article import Article
 from models.category import Category
 from models.comment import Comment
 from models.role import Role, Permission
@@ -38,19 +38,17 @@ def get_locale():
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    from utils.qiniu_utils import QiniuUtils
-    print(QiniuUtils.generate_upload_token())
     page = request.args.get('page', 1, type=int)
-    pagination = Post.query\
+    pagination = Article.query\
         .outerjoin(Comment)\
-        .group_by(Post.id)\
+        .group_by(Article.id)\
         .order_by(desc(func.count(Comment.id)))\
         .paginate(page,
-                  per_page=current_app.config['POSTS_PER_PAGE'],
+                  per_page=current_app.config['ARTICLES_PER_PAGE'],
                   error_out=False)
-    posts = pagination.items
+    articles = pagination.items
     return render_template('index.html',
-                           posts=posts,
+                           articles=articles,
                            endpoint='main.index',
                            categories_list=Category.get_categories(),
                            pagination=pagination)
@@ -59,36 +57,35 @@ def index():
 
 
 @main.route('/all', methods=['GET', 'POST'])
-def show_all_posts():
+def show_all_articles():
     page = request.args.get('page', 1, type=int)
-    pagination = Post.query\
-        .order_by(Post.id.desc())\
+    pagination = Article.query\
+        .order_by(Article.id.desc())\
         .paginate(page,
-                  per_page=current_app.config['POSTS_PER_PAGE'],
+                  per_page=current_app.config['ARTICLES_PER_PAGE'],
                   error_out=False)
-    posts = pagination.items
+    articles = pagination.items
     return render_template('index.html',
-                           posts=posts,
-                           endpoint='main.show_all_posts',
+                           articless=articles,
+                           endpoint='main.show_all_articles',
                            categories_list=Category.get_categories(),
                            pagination=pagination)
 
 
 @main.route('/followed')
 @login_required
-def show_followed_posts():
+def show_followed_articles():
     if current_user.is_authenticated:
-        query = current_user.followed_posts()
         page = request.args.get('page', 1, type=int)
-        pagination = query\
-            .order_by(Post.id.desc())\
+        pagination = current_user.followed_articles()\
+            .order_by(Article.id.desc())\
             .paginate(page,
-                      per_page=current_app.config['POSTS_PER_PAGE'],
+                      per_page=current_app.config['ARTICLES_PER_PAGE'],
                       error_out=False)
-        posts = pagination.items
+        articles = pagination.items
         return render_template('index.html',
-                               endpoint='main.show_followed_posts',
-                               posts=posts,
+                               endpoint='main.show_followed_articles',
+                               articles=articles,
                                categories_list=Category.get_categories(),
                                pagination=pagination)
     return redirect(url_for('.index'))
@@ -97,18 +94,17 @@ def show_followed_posts():
 @main.route('/category/<string:category_name>', methods=['GET', 'POST'])
 def category(category_name):
     category_id = Category.query.filter_by(name=category_name).first().id
-    posts = Post.query\
-        .join(Category, Post.category_id == Category.id)\
-        .filter(Category.id == category_id)
     page = request.args.get('page', 1, type=int)
-    pagination = posts\
-        .order_by(Post.id.desc())\
+    pagination = Article.query\
+        .join(Category, Article.category_id == Category.id)\
+        .filter(Category.id == category_id)\
+        .order_by(Article.id.desc())\
         .paginate(page,
-                  per_page=current_app.config['POSTS_PER_PAGE'],
+                  per_page=current_app.config['ARTICLES_PER_PAGE'],
                   error_out=False)
-    posts = pagination.items
+    articles = pagination.items
     return render_template('index.html',
-                           posts=posts,
+                           articles=articles,
                            endpoint='main.category',
                            category_name=category_name,
                            categories_list=Category.get_categories(),
@@ -117,16 +113,16 @@ def category(category_name):
 
 @main.route('/tag/<string:tag_name>', methods=['GET', 'POST'])
 def tag(tag_name):
-    posts = Post.query.filter(Post.tags.like('%' + tag_name + '%'))
     page = request.args.get('page', 1, type=int)
-    pagination = posts\
-        .order_by(Post.id.desc())\
+    pagination = Article.query\
+        .filter(Article.tags.like('%' + tag_name + '%'))\
+        .order_by(Article.id.desc())\
         .paginate(page,
-                  per_page=current_app.config['POSTS_PER_PAGE'],
+                  per_page=current_app.config['ARTICLES_PER_PAGE'],
                   error_out=False)
-    posts = pagination.items
+    articles = pagination.items
     return render_template('index.html',
-                           posts=posts,
+                           articles=articles,
                            endpoint='main.tag',
                            tag_name=tag_name,
                            categories_list=Category.get_categories(),
@@ -137,15 +133,15 @@ def tag(tag_name):
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
-    pagination = user.posts\
-        .order_by(Post.id.desc())\
+    pagination = user.articles\
+        .order_by(Article.id.desc())\
         .paginate(page,
-                  per_page=current_app.config['POSTS_PER_PAGE'],
+                  per_page=current_app.config['ARTICLES_PER_PAGE'],
                   error_out=False)
-    posts = pagination.items
+    articles = pagination.items
     return render_template('user/user.html',
                            user=user,
-                           posts=posts,
+                           articles=articles,
                            pagination=pagination)
 
 
@@ -170,7 +166,7 @@ def edit_profile():
 
 @main.route('/user/edit-profile/<int:id>', methods=['GET', 'POST'])
 @login_required
-@admin_required
+@permission_required(Permission.MODERATE_USERS)
 def edit_profile_admin(id):
     user = User.query.get_or_404(id)
     form = EditProfileAdminForm(user=user)
@@ -197,50 +193,50 @@ def edit_profile_admin(id):
     return render_template('user/edit_profile.html', form=form, user=user)
 
 
-@main.route('/publish-post', methods=['GET', 'POST'])
+@main.route('/publish-article', methods=['GET', 'POST'])
 @login_required
-def publish_post():
-    form = PostForm()
+def publish_article():
+    form = ArticleForm()
     if current_user.can(Permission.WRITE_ARTICLES) and \
             form.validate_on_submit():
         title = form.title.data
         category = Category.query.get(form.category.data)
         tags = form.tags.data
         body = form.body.data
-        post = Post(title=title,
-                    category=category,
-                    tags=tags,
-                    body=body,
-                    author=current_user._get_current_object())
-        db.session.add(post)
+        article = Article(title=title,
+                          category=category,
+                          tags=tags,
+                          body=body,
+                          author=current_user._get_current_object())
+        db.session.add(article)
         db.session.commit()
-        return redirect(url_for('main.show_all_posts'))
-    return render_template('post/publish_post.html', form=form, user=user)
+        return redirect(url_for('main.show_all_articles'))
+    return render_template('article/publish_article.html', form=form, user=user)
 
 
-@main.route('/edit-post/<int:id>', methods=['GET', 'POST'])
-def edit_post(id):
-    post = Post.query.get_or_404(id)
-    if current_user != post.author and \
-            not current_user.can(Permission.ADMINISTER):
+@main.route('/edit-article/<int:id>', methods=['GET', 'POST'])
+def edit_article(id):
+    article = Article.query.get_or_404(id)
+    if current_user != article.author and \
+            not current_user.can(Permission.MODERATE_ARTICLES):
         abort(403)
 
-    form = PostForm()
+    form = ArticleForm()
     if form.validate_on_submit():
-        post.title = form.title.data
-        post.category = Category.query.get(form.category.data)
-        post.tags = form.tags.data
-        post.body = form.body.data
-        db.session.add(post)
+        article.title = form.title.data
+        article.category = Category.query.get(form.category.data)
+        article.tags = form.tags.data
+        article.body = form.body.data
+        db.session.add(article)
         db.session.commit()
-        flash(_('The post has been updated'), 'success')
-        return redirect(url_for('main.post', id=post.id))
+        flash(_('The article has been updated'), 'success')
+        return redirect(url_for('main.article', id=article.id))
 
-    form.title.data = post.title
-    form.category.data = post.category_id
-    form.tags.data = post.tags
-    form.body.data = post.body
-    return render_template('post/edit_post.html', form=form)
+    form.title.data = article.title
+    form.category.data = article.category_id
+    form.tags.data = article.tags
+    form.body.data = article.body
+    return render_template('article/edit_article.html', form=form)
 
 
 @main.route('/follow/<username>')
@@ -323,47 +319,48 @@ def followed_by(username):
                            follows=follows)
 
 
-@main.route('/post/<int:id>', methods=['GET', 'POST'])
-def post(id):
-    post = Post.query.get_or_404(id)
-    prev_post = Post.query\
-        .filter(and_(Post.author_id == post.author_id,
-                     Post.create_datetime < post.create_datetime))\
-        .order_by(Post.id.desc())\
+@main.route('/article/<int:id>', methods=['GET', 'POST'])
+def article(id):
+    article = Article.query.get_or_404(id)
+    # TODO 此处需优化
+    prev_article = Article.query\
+        .filter(and_(Article.author_id == article.author_id,
+                     Article.create_datetime < article.create_datetime))\
+        .order_by(Article.id.desc())\
         .first()
-    next_post = Post.query\
-        .filter(and_(Post.author_id == post.author_id,
-                     Post.create_datetime > post.create_datetime))\
-        .order_by(Post.id.asc()).first()
+    next_article = Article.query\
+        .filter(and_(Article.author_id == article.author_id,
+                     Article.create_datetime > article.create_datetime))\
+        .order_by(Article.id.asc()).first()
 
     if request.method == 'GET':
-        post.read_count += 1
+        article.read_count += 1
     db.session.commit()
     form = CommentForm()
 
     if form.validate_on_submit():
         comment = Comment(body=form.body.data,
-                          post=post,
+                          article=article,
                           author=current_user._get_current_object())
         db.session.add(comment)
         db.session.commit()
         flash(_('Your comment has been published'), 'success')
-        return redirect(url_for('main.post', id=post.id, page=-1))
+        return redirect(url_for('main.article', id=article.id, page=-1))
 
     page = request.args.get('page', 1, type=int)
     if page == -1:
-        page = ((post.comments.count() - 1) //
+        page = ((article.comments.count() - 1) //
                 current_app.config['COMMENTS_PER_PAGE'] + 1)
-    pagination = post.comments\
+    pagination = article.comments\
         .order_by(Comment.id.asc())\
         .paginate(page,
                   per_page=current_app.config['COMMENTS_PER_PAGE'],
                   error_out=False)
     comments = pagination.items
-    return render_template('post/post.html',
-                           posts=[post],
-                           prev_post=prev_post,
-                           next_post=next_post,
+    return render_template('article/article.html',
+                           articles=[article],
+                           prev_article=prev_article,
+                           next_article=next_article,
                            form=form,
                            comments=comments,
                            pagination=pagination)
@@ -443,7 +440,7 @@ def weather_forecast():
 
 @main.route('/tags_string')
 def tags_string():
-    return Post.string_from_tags()
+    return Article.string_from_tags()
 
 
 def make_external(url):
@@ -455,14 +452,14 @@ def recent_feed():
     feed = AtomFeed('Recent Articles',
                     feed_url=request.url,
                     url=request.url_root)
-    posts = Post.query.order_by(Post.id.desc()).limit(15).all()
-    for post in posts:
-        feed.add(post.title,
-                 post.body_html,
+    articles = Article.query.order_by(Article.id.desc()).limit(15).all()
+    for article in articles:
+        feed.add(article.title,
+                 article.body_html,
                  content_type='html',
-                 author=post.author.username,
-                 url=make_external(url_for('main.post', id=post.id)),
-                 updated=post.update_datetime)
+                 author=article.author.username,
+                 url=make_external(url_for('main.article', id=article.id)),
+                 updated=article.update_datetime)
     return feed.get_response()
 
 
@@ -471,12 +468,12 @@ def search():
     keyword = request.form.get('keyword')
     if not keyword:
         return redirect(url_for('main.index'))
-    posts = Post.query.all()
-    results = [post for post in posts
-               if keyword in post.title or keyword in post.body]
+    articles = Article.query.all()
+    results = [article for article in articles
+               if keyword in article.title or keyword in article.body]
     return render_template('search_result.html',
-                           posts=results,
-                           num_posts = len(results),
+                           articles=results,
+                           num_articles = len(results),
                            keyword=keyword)
 
 

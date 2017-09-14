@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
 
 
-from datetime import datetime
-
 from flask import url_for
 
 from app import db
+from models.base import BaseMixin
 
 
-class Comment(db.Model):
+class Comment(db.Model, BaseMixin):
     __tablename__ = 'comments'
 
-    id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(200))
-    create_datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    disabled = db.Column(db.Boolean, default=False)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return '<Comment %s>' % self.body
 
     def to_dict(self):
         return {
@@ -24,7 +26,7 @@ class Comment(db.Model):
             'body': self.body,
             'create_datetime': self.create_datetime,
             'author': url_for('api.get_user', id=self.author_id, _external=True),
-            'post': url_for('api.get_post', id=self.post_id, _external=True),
+            'article': url_for('api.get_article', id=self.article_id, _external=True),
         }
 
     @staticmethod

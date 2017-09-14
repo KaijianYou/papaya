@@ -65,8 +65,7 @@ def register_blueprint(app):
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
     from .api_1_0 import api as api_1_0_blueprint
-    from .api_1_0 import posts
-    from .api_1_0 import authentication, posts, users, comments, categories, errors
+    from .api_1_0 import authentication, articles, users, comments, categories, errors
     app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1.0')
 
 

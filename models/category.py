@@ -4,14 +4,17 @@
 from flask import url_for
 
 from app import db
+from models.base import BaseMixin
 
 
-class Category(db.Model):
+class Category(db.Model, BaseMixin):
     __tablename__ = 'categories'
 
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), nullable=False, unique=True)
-    posts = db.relationship('Post', backref='category', lazy='dynamic')
+    articles = db.relationship('Article', backref='category', lazy='dynamic')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def __repr__(self):
         return '<Category %s>' % self.name
@@ -24,7 +27,7 @@ class Category(db.Model):
         ]
         for category_name in categories_list:
             category = Category.query.filter_by(name=category_name).first()
-            if category is None:
+            if not category:
                 category = Category(name=category_name)
                 db.session.add(category)
         db.session.commit()
@@ -32,7 +35,7 @@ class Category(db.Model):
     @staticmethod
     def get_categories():
         categories = Category.query.all()
-        categories_list = [(category.name, category.posts.count())
+        categories_list = [(category.name, category.articles.count())
                            for category in categories]
         return categories_list
 
@@ -40,7 +43,6 @@ class Category(db.Model):
         return {
             'url': url_for('api.get_category', id=self.id, _external=True),
             'name': self.name,
-            # 'posts': url_for('api.get_category_posts', id=self.id,
-            #                  _external=True),
-            'post_count': self.posts.count(),
+            'articles': url_for('api.get_category_articles', id=self.id,  _external=True),
+            'article_count': self.articles.count(),
         }

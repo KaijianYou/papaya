@@ -19,7 +19,7 @@ class Config(object):
 
     # 分页设置
     USERS_PER_PAGE = 20
-    POSTS_PER_PAGE = 15
+    ARTICLES_PER_PAGE = 15
     FOLLOWERS_PER_PAGE = 20
     COMMENTS_PER_PAGE = 20
 

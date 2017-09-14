@@ -1,33 +1,32 @@
 # -*- coding: utf-8 -*-
 
 
-from datetime import datetime
-
 import bleach
 from flask import url_for
 from markdown import markdown
 
 from app import db
+from models.base import BaseMixin
 from models.category import Category
 
 
-class Post(db.Model):
-    __tablename__ = 'posts'
+class Article(db.Model, BaseMixin):
+    __tablename__ = 'articles'
 
-    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), index=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
     tags = db.Column(db.String(200), nullable=False)
     body = db.Column(db.Text, nullable=False)
     body_html = db.Column(db.Text)
-    create_datetime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    update_datetime = db.Column(db.DateTime, default=datetime.utcnow)
     read_count = db.Column(db.Integer, default=0)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    comments = db.relationship('Comment', backref='post', lazy='dynamic')
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    comments = db.relationship('Comment', backref='article', lazy='dynamic')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def __repr__(self):
-        return '<Post %s>' % self.title
+        return '<Article %s>' % self.title
 
     @staticmethod
     def on_changed_body(target, value, oldvalue, initiator):
@@ -49,9 +48,9 @@ class Post(db.Model):
         tags_list = [tag for tag in self.tags.split(',') if tag]
         return tags_list
 
-    @staticmethod
-    def string_from_tags():
-        posts = Post.query.all()
+    @classmethod
+    def string_from_tags(cls):
+        posts = cls.query.all()
         tags_set = set()
         for post in posts:
             tags_set.update(set(post.get_tags()))
@@ -62,39 +61,38 @@ class Post(db.Model):
         return Category.query.get(self.category_id).name
 
     def to_dict(self):
-        post_json = {
+        return {
             'url': url_for('api.get_post', id=self.id, _external=True),
             'title': self.title,
             'category': url_for('api.get_category', id=self.category_id, _external=True),
             'tags': self.get_tags(),
             'body': self.body,
             'body_html': self.body_html,
-            'create_time': self.create_datetime,
-            'update_time': self.update_datetime,
+            'create_datetime': self.create_datetime,
+            'update_datetime': self.update_datetime,
             'author': url_for('api.get_user', id=self.author_id, _external=True),
             'comments': url_for('api.get_post_comments', id=self.id, _external=True),
             'comment_count': self.comments.count(),
         }
-        return post_json
 
     @staticmethod
-    def from_dict(post_json):
-        title = post_json.get('title')
+    def from_dict(article_dict):
+        title = article_dict.get('title')
         if not title:
-            raise ValueError('post does not have a title')
-        category = post_json.get('category')
+            raise ValueError('article does not have a title')
+        category = article_dict.get('category')
         if not category:
-            raise ValueError('post does not have a category')
+            raise ValueError('article does not have a category')
         if not Category.query.filter_by(name=category).first():
             raise ValueError('wrong category')
-        tags = post_json.get('tags')
+        tags = article_dict.get('tags')
         if not tags:
             raise ValueError('post does not have tags')
-        body = post_json.get('body')
+        body = article_dict.get('body')
         if not body:
             raise ValueError('post does not have a body')
-        return Post(title=title, tags=tags, body=body)
+        return Article(title=title, tags=tags, body=body)
 
 
 # 当 Post 实例的 body 字段更新，on_changed_body 会被自动调用
-db.event.listen(Post.body, 'set', Post.on_changed_body)
+db.event.listen(Article.body, 'set', Article.on_changed_body)

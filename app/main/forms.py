@@ -70,7 +70,7 @@ class EditProfileAdminForm(FlaskForm):
             raise ValidationError(lazy_('Username already in use'))
 
 
-class PostForm(FlaskForm):
+class ArticleForm(FlaskForm):
     title = StringField(lazy_('Title'),
                         validators=[DataRequired(), Length(1, 64)],
                         render_kw={'placeholder': lazy_('Title')})
@@ -81,7 +81,7 @@ class PostForm(FlaskForm):
                        validators=[DataRequired(), Length(1, 200)],
                        render_kw={'placeholder': lazy_('More than one tag should'
                                                        ' separate them by comma')})
-    body = PageDownField(lazy_('Post'), validators=[DataRequired()])
+    body = PageDownField(lazy_('Article'), validators=[DataRequired()])
     submit = SubmitField(lazy_('Publish'))
 
     def __init__(self, *args, **kwargs):

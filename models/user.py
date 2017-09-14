@@ -12,28 +12,27 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db
-from models.post import Post
+from models.base import BaseMixin
+from models.article import Article
 from models.follow import Follow
-from models.role import Role, Permission
+from models.role import Role
 
 
-class User(db.Model, UserMixin):
+class User(db.Model, UserMixin, BaseMixin):
     __tablename__ = 'users'
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(64), nullable=False, index=True)
     password_hash = db.Column(db.String(128), nullable=False)
-    role_id = db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
     real_name = db.Column(db.String(64))
     email = db.Column(db.String(64), unique=True, index=True, nullable=False)
-    location = db.Column(db.String(64),)
+    location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
-    register_date = db.Column(db.DateTime(), default=datetime.utcnow)
     last_visited = db.Column(db.DateTime(), default=datetime.utcnow)
     confirmed = db.Column(db.Boolean, default=False)
     avatar_hash = db.Column(db.String(32))
     avatar_url = db.Column(db.String(256))
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    role_id = db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
+    articles = db.relationship('Article', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
     followed = db.relationship('Follow',
                                foreign_keys=[Follow.follower_id],
@@ -46,8 +45,8 @@ class User(db.Model, UserMixin):
                                 lazy='dynamic',
                                 cascade='all, delete-orphan')
 
-    def __init__(self, **kwargs):
-        super(User, self).__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         if self.role is None:
             if self.email == current_app.config['ADMIN_EMAIL']:
@@ -90,14 +89,6 @@ class User(db.Model, UserMixin):
         except Exception:
             return False
         return User.query.get(data['id'], None)
-
-    @staticmethod
-    def add_self_follows():
-        for user in User.query.all():
-            if not user.is_following(user):
-                user.follow(user)
-                db.session.add(user)
-                db.session.commit()
 
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
@@ -156,13 +147,10 @@ class User(db.Model, UserMixin):
         return self.role is not None and \
                (self.role.permissions & permissions) == permissions
 
-    def is_administrator(self):
-        return self.can(Permission.ADMINISTER)
-
     def update_last_visited(self):
         self.last_visited = datetime.utcnow()
         db.session.add(self)
-        # db.session.commit()
+        db.session.commit()
 
     def get_avatar(self, size=100, default='identicon', rating='g'):
         """从 gravatar 网站获取头像"""
@@ -197,9 +185,10 @@ class User(db.Model, UserMixin):
         return self.followers.filter_by(follower_id=user.id).first() is not None
 
     @property
-    def followed_posts(self):
+    def followed_articles(self):
         """获取已关注用户的文章"""
-        return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
+        return Article.query\
+            .join(Follow, Follow.followed_id == Article.author_id)\
             .filter(Follow.follower_id == self.id)
 
     def to_dict(self):
@@ -207,12 +196,11 @@ class User(db.Model, UserMixin):
             'url': url_for('api.get_user', id=self.id, _external=True),
             'username': self.username,
             'about_me': self.about_me,
-            'register_date': self.register_date,
             'last_visit': self.last_visited,
-            'posts': url_for('api.get_user_posts', id=self.id, _external=True),
-            'followed_posts': url_for('api.get_user_followed_posts', id=self.id,
+            'articles': url_for('api.get_user_articles', id=self.id, _external=True),
+            'followed_articles': url_for('api.get_user_followed_articles', id=self.id,
                                       _external=True),
-            'post_count': self.posts.count(),
+            'article_count': self.articles.count(),
         }
 
 

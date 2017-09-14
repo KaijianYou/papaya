@@ -1,11 +1,11 @@
 {% extends "common/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Papaya - {{ gettext('Edit Post') }}{% endblock title %}
+{% block title %}Papaya - {{ gettext('Edit Article') }}{% endblock title %}
 
 {% block page_content %}
     <div class="page-header">
-        <h1>{{ gettext('Edit Post') }}</h1>
+        <h1>{{ gettext('Edit Article') }}</h1>
     </div>
     <div>
         {{ wtf.quick_form(form) }}
