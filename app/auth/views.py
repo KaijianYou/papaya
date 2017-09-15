@@ -16,8 +16,8 @@ from app.auth import auth
 from app.auth.forms import LoginForm, RegistrationForm, ChangePasswordForm, \
     ResetPasswordForm, ResetPasswordRequestForm, ChangeEmailForm
 from models.user import User
-from utils.email_utils import EmailUtils
-from utils.request_utils import is_safe_url
+from utils.email_util import EmailUtils
+from utils.request_util import is_safe_url
 
 
 @auth.before_app_request

@@ -34,16 +34,6 @@ class User(db.Model, UserMixin, BaseMixin):
     role_id = db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
     articles = db.relationship('Article', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
-    # followed = db.relationship('Follow',
-    #                            foreign_keys=[Follow.follower_id],
-    #                            backref=db.backref('follower', lazy='joined'),
-    #                            lazy='dynamic',
-    #                            cascade='all, delete-orphan')
-    # followers = db.relationship('Follow',
-    #                             foreign_keys=[Follow.followed_id],
-    #                             backref=db.backref('followed', lazy='joined'),
-    #                             lazy='dynamic',
-    #                             cascade='all, delete-orphan')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -196,7 +186,7 @@ class User(db.Model, UserMixin, BaseMixin):
             'last_visit': self.last_visited,
             'articles': url_for('api.get_user_articles', id=self.id, _external=True),
             'followed_articles': url_for('api.get_user_followed_articles', id=self.id,
-                                      _external=True),
+                                         _external=True),
             'article_count': self.articles.count(),
         }
 

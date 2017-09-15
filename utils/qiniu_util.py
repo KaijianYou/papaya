@@ -22,8 +22,8 @@ class QiniuUtils(object):
 
     @classmethod
     def save(cls, key, data, mime_type='application/octet-stream'):
-        up_token = cls.generate_upload_token()
-        ret, info = qiniu.put_data(up_token, key, data, key, mime_type=mime_type)
+        upload_token = cls.generate_upload_token()
+        ret, info = qiniu.put_data(upload_token, key, data, key, mime_type=mime_type)
         print(ret)
         print(info)
 
