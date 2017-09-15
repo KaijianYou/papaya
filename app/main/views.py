@@ -29,6 +29,7 @@ from models.category import Category
 from models.comment import Comment
 from models.role import Role, Permission
 from models.user import User
+from models.follow import Follow
 
 
 @babel.localeselector
@@ -131,6 +132,8 @@ def tag(tag_name):
 @main.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
+    followed_count = Follow.query.filter_by(follower_id=user.id, enable=True).count()
+    followers_count = Follow.query.filter_by(followed_id=user.id, enable=True).count()
     page = request.args.get('page', 1, type=int)
     pagination = user.articles\
         .order_by(Article.id.desc())\
@@ -140,6 +143,8 @@ def user(username):
     articles = pagination.items
     return render_template('user/user.html',
                            user=user,
+                           followed_count=followed_count,
+                           followers_count=followers_count,
                            articles=articles,
                            pagination=pagination)
 
@@ -282,12 +287,17 @@ def followers(username):
         return redirect(url_for('main.index'))
 
     page = request.args.get('page', 1, type=int)
-    pagination = user.followers\
-        .paginate(page,
-                  per_page=current_app.config['FOLLOWERS_PER_PAGE'],
-                  error_out=False)
-    follows = [{'user': item.follower, 'create_datetime': item.create_datetime}
-               for item in pagination.items]
+    per_page = current_app.config['FOLLOWERS_PER_PAGE']
+    pagination = Follow.query.with_entities(Follow, User)\
+        .join(User, User.id == Follow.follower_id)\
+        .filter(Follow.followed_id == user.id,
+                Follow.enable == True)\
+        .order_by(Follow.id.desc())\
+        .paginate(page, per_page=per_page, error_out=False)
+    follows = [{
+        'user': item.User,
+        'create_datetime': item.Follow.create_datetime
+    } for item in pagination.items]
     return render_template('user/followers.html',
                            user=user,
                            title=_('\'s followers'),
@@ -304,12 +314,17 @@ def followed_by(username):
         return redirect(url_for('main.index'))
 
     page = request.args.get('page', 1, type=int)
-    pagination = user.followed\
-        .paginate(page,
-                  per_page=current_app.config['FOLLOWERS_PER_PAGE'],
-                  error_out=False)
-    follows = [{'user': item.followed, 'create_datetime': item.create_datetime}
-               for item in pagination.items]
+    per_page = current_app.config['FOLLOWERS_PER_PAGE']
+    pagination = Follow.query.with_entities(Follow, User) \
+        .join(User, User.id == Follow.followed_id) \
+        .filter(Follow.follower_id == user.id,
+                Follow.enable == True) \
+        .order_by(Follow.id.desc()) \
+        .paginate(page, per_page=per_page, error_out=False)
+    follows = [{
+        'user': item.User,
+        'create_datetime': item.Follow.create_datetime
+    } for item in pagination.items]
     return render_template('user/followers.html',
                            user=user,
                            title=_(' has followed'),
@@ -321,7 +336,6 @@ def followed_by(username):
 @main.route('/article/<int:id>', methods=['GET', 'POST'])
 def article(id):
     article = Article.query.get_or_404(id)
-    # TODO 此处需优化
     prev_article = Article.query\
         .filter(and_(Article.author_id == article.author_id,
                      Article.create_datetime < article.create_datetime))\

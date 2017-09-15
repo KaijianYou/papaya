@@ -6,7 +6,7 @@
 {% block page_content %}
     <div class="page-header">
         <div class="avatar">
-            <img class="img-rounded profile-thumbnail shake-chunk" src="{{ user.get_avatar(size=240) }}"/>
+            <img class="img-rounded profile-thumbnail shake-chunk" src="{{ user.get_avatar_url(size=240) }}"/>
         </div>
 
         <button class="btn-upload-avatar btn-default btn">{{ gettext('Upload New Avatar') }}</button>
@@ -76,11 +76,11 @@
 
                 <a href="{{ url_for('main.followers', username=user.username) }}">
                     {{ gettext('Followers') }}:
-                    <span class="badge">{{ user.followers.count() }}</span>
+                    <span class="badge">{{ followers_count }}</span>
                 </a>
                 <a href="{{ url_for('main.followed_by', username=user.username) }}">
                     {{ gettext('Following') }}:
-                    <span class="badge">{{ user.followed.count() }}</span>
+                    <span class="badge">{{ followed_count }}</span>
                 </a>
 
                 {% if current_user.is_authenticated and user != current_user and user.is_following(current_user) %}
@@ -103,8 +103,8 @@
     {{ super() }}
 
     <script>
-        $('.btn-upload-avatar').on('click', function (event) {
-            $.ajax({}).done(function (data) {
+        $('.btn-upload-avatar').on('click', function(event) {
+            $.ajax({}).done(function(data) {
 
             });
         });

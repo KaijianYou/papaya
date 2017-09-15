@@ -77,24 +77,24 @@ class UserModelTestCase(unittest.TestCase):
         u.update_last_visited()
         self.assertTrue(u.last_visited > last_visited_before)
 
-    def test_get_avatar(self):
+    def test_get_avatar_url(self):
         u = User(username='birdman', password='tiger', email='birdman@gmail.com')
         with self.app.test_request_context('/'):
-            avatar = u.get_avatar()
-            avatar_256 = u.get_avatar(size=256)
-            avatar_pg = u.get_avatar(rating='pg')
-            avatar_retro = u.get_avatar(default='retro')
+            avatar_url = u.get_avatar_url()
+            avatar_256_url = u.get_avatar_url(size=256)
+            avatar_pg_url = u.get_avatar_url(rating='pg')
+            avatar_retro_url = u.get_avatar_url(default='retro')
 
         with self.app.test_request_context('/', base_url='https://example.com'):
-            avatar_ssl = u.get_avatar()
+            avatar_ssl_url = u.get_avatar_url()
 
         self.assertTrue('http://www.gravatar.com/avatar/' +
-                        '1d0a5d31e8cfa492465874300982b8c8' in avatar)
-        self.assertTrue('s=256' in avatar_256)
-        self.assertTrue('r=pg' in avatar_pg)
-        self.assertTrue('d=retro' in avatar_retro)
+                        '1d0a5d31e8cfa492465874300982b8c8' in avatar_url)
+        self.assertTrue('s=256' in avatar_256_url)
+        self.assertTrue('r=pg' in avatar_pg_url)
+        self.assertTrue('d=retro' in avatar_retro_url)
         self.assertTrue('http://secure.gravatar.com/avatar/' +
-                        '1d0a5d31e8cfa492465874300982b8c8' in avatar_ssl)
+                        '1d0a5d31e8cfa492465874300982b8c8' in avatar_ssl_url)
 
     def test_timestamps(self):
         u = User(username='birdman', password='tiger', email='birdman@gmail.com')

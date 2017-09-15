@@ -34,16 +34,16 @@ class User(db.Model, UserMixin, BaseMixin):
     role_id = db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
     articles = db.relationship('Article', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
-    followed = db.relationship('Follow',
-                               foreign_keys=[Follow.follower_id],
-                               backref=db.backref('follower', lazy='joined'),
-                               lazy='dynamic',
-                               cascade='all, delete-orphan')
-    followers = db.relationship('Follow',
-                                foreign_keys=[Follow.followed_id],
-                                backref=db.backref('followed', lazy='joined'),
-                                lazy='dynamic',
-                                cascade='all, delete-orphan')
+    # followed = db.relationship('Follow',
+    #                            foreign_keys=[Follow.follower_id],
+    #                            backref=db.backref('follower', lazy='joined'),
+    #                            lazy='dynamic',
+    #                            cascade='all, delete-orphan')
+    # followers = db.relationship('Follow',
+    #                             foreign_keys=[Follow.followed_id],
+    #                             backref=db.backref('followed', lazy='joined'),
+    #                             lazy='dynamic',
+    #                             cascade='all, delete-orphan')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -147,14 +147,14 @@ class User(db.Model, UserMixin, BaseMixin):
         db.session.add(self)
         db.session.commit()
 
-    def get_avatar(self, size=100, default='identicon', rating='g'):
+    def get_avatar_url(self, size=100, default='identicon', rating='g'):
         """从 gravatar 网站获取头像"""
         if request.is_secure:
             url = 'http://secure.gravatar.com/avatar'
         else:
             url = 'http://www.gravatar.com/avatar'
         hash_code = hashlib.md5(self.email.encode('utf-8')).hexdigest()
-        return '{url}/{hash_code}?s={size}&d={default}&r={rating}' \
+        return '{url}/{hash_code}?s={size}&d={default}&r={rating}'\
             .format(url=url,
                     hash_code=hash_code,
                     size=size,
@@ -163,21 +163,23 @@ class User(db.Model, UserMixin, BaseMixin):
 
     def follow(self, user):
         if not self.is_following(user):
-            follow = Follow(follower=self, followed=user)
+            follow = Follow(follower_id=self.id, followed_id=user.id)
             db.session.add(follow)
             db.session.commit()
 
     def unfollow(self, user):
-        follow = self.followed.filter_by(followed_id=user.id).first()
+        follow = Follow.query.filter_by(followed_id=user.id, follower_id=self.id).first()
         if follow:
             db.session.delete(follow)
             db.session.commit()
 
     def is_following(self, user):
-        return self.followed.filter_by(followed_id=user.id).first() is not None
+        return Follow.query.filter_by(followed_id=user.id,
+                                      follower_id=self.id).first() is not None
 
     def is_followed_by(self, user):
-        return self.followers.filter_by(follower_id=user.id).first() is not None
+        return Follow.query.filter_by(follower_id=user.id,
+                                      followed_id=self.id).first() is not None
 
     @property
     def followed_articles(self):
