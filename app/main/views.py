@@ -315,11 +315,11 @@ def followed_by(username):
 
     page = request.args.get('page', 1, type=int)
     per_page = current_app.config['FOLLOWERS_PER_PAGE']
-    pagination = Follow.query.with_entities(Follow, User) \
-        .join(User, User.id == Follow.followed_id) \
+    pagination = Follow.query.with_entities(Follow, User)\
+        .join(User, User.id == Follow.followed_id)\
         .filter(Follow.follower_id == user.id,
-                Follow.enable == True) \
-        .order_by(Follow.id.desc()) \
+                Follow.enable == True)\
+        .order_by(Follow.id.desc())\
         .paginate(page, per_page=per_page, error_out=False)
     follows = [{
         'user': item.User,
@@ -456,10 +456,6 @@ def tags_string():
     return Article.string_from_tags()
 
 
-def make_external(url):
-    return urllib.parse.urljoin(request.url_root, url)
-
-
 @main.route('/feed')
 def recent_feed():
     feed = AtomFeed('Recent Articles',
@@ -471,7 +467,7 @@ def recent_feed():
                  article.body_html,
                  content_type='html',
                  author=article.author.username,
-                 url=make_external(url_for('main.article', id=article.id)),
+                 url=url_for('main.article', id=article.id, _external=True),
                  updated=article.update_datetime)
     return feed.get_response()
 
