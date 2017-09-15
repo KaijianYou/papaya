@@ -23,7 +23,7 @@
                     {% include 'article/_articles_preview.html' %}
 
                     <div class="pagination">
-                        {{ paginate_macro.pagination_widget(pagination, endpoint, category_name=category_name, tag_name=tag_name) }}
+                        {{ paginate_macro.pagination_widget(pagination, endpoint, category_name=category_name, tag=tag) }}
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                                     {% for category in categories_list %}
                                         {% if category[1] %}
                                             <li>
-                                                <a href="{{ url_for('main.category', category_name=category[0]) }}">
+                                                <a href="{{ url_for('main.show_category_articles', category_name=category[0]) }}">
                                                     {{ category[0] }}
                                                     ({{ category[1] }})
                                                 </a>

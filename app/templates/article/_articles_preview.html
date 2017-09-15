@@ -12,7 +12,7 @@
         <div class="article-content">
             <span class="btn article-category">
                 {% set category_name = article.get_category_name() %}
-                <a href="{{ url_for('main.category', category_name=category_name) }}">
+                <a href="{{ url_for('main.show_category_articles', category_name=category_name) }}">
                     {{ category_name }}
                 </a>
             </span>
@@ -46,7 +46,7 @@
                 <div class="article-tags">
                     {% if article.tags %}
                         {% for i, tag in enumerate(article.get_tags()) %}
-                            <a href="{{ url_for('main.tag', tag_name=tag) }}">
+                            <a href="{{ url_for('main.show_tag_articles', tag=tag) }}">
                                 <span class="btn-xs btn-custom btn-article-tag-{{ i % 6 }}">
                                     {{ tag }}
                                 </span>

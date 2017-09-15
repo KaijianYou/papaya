@@ -40,30 +40,27 @@ def get_locale():
 @main.route('/', methods=['GET', 'POST'])
 def index():
     page = request.args.get('page', 1, type=int)
+    per_page = current_app.config['ARTICLES_PER_PAGE']
     pagination = Article.query\
         .outerjoin(Comment)\
         .group_by(Article.id)\
         .order_by(desc(func.count(Comment.id)))\
-        .paginate(page,
-                  per_page=current_app.config['ARTICLES_PER_PAGE'],
-                  error_out=False)
+        .paginate(page, per_page=per_page, error_out=False)
     articles = pagination.items
     return render_template('index.html',
                            articles=articles,
                            endpoint='main.index',
                            categories_list=Category.get_categories(),
                            pagination=pagination)
-    # user_agent = request.headers.get('User-Agent')
-    # return '<p>Your browser is %s</p>' % user_agent
 
 
 @main.route('/all', methods=['GET', 'POST'])
 def show_all_articles():
     page = request.args.get('page', 1, type=int)
+    per_page = current_app.config['ARTICLES_PER_PAGE']
     pagination = Article.query\
         .order_by(Article.id.desc())\
-        .paginate(page,
-                  per_page=current_app.config['ARTICLES_PER_PAGE'])
+        .paginate(page, per_page=per_page, error_out=False)
     articles = pagination.items
     return render_template('index.html',
                            articles=articles,
@@ -77,11 +74,10 @@ def show_all_articles():
 def show_followed_articles():
     if current_user.is_authenticated:
         page = request.args.get('page', 1, type=int)
+        per_page = current_app.config['ARTICLES_PER_PAGE']
         pagination = current_user.followed_articles\
             .order_by(Article.id.desc())\
-            .paginate(page,
-                      per_page=current_app.config['ARTICLES_PER_PAGE'],
-                      error_out=False)
+            .paginate(page, per_page=per_page, error_out=False)
         articles = pagination.items
         return render_template('index.html',
                                endpoint='main.show_followed_articles',
@@ -92,39 +88,37 @@ def show_followed_articles():
 
 
 @main.route('/category/<string:category_name>', methods=['GET', 'POST'])
-def category(category_name):
+def show_category_articles(category_name):
     category_id = Category.query.filter_by(name=category_name).first().id
     page = request.args.get('page', 1, type=int)
+    per_page = current_app.config['ARTICLES_PER_PAGE']
     pagination = Article.query\
         .join(Category, Article.category_id == Category.id)\
         .filter(Category.id == category_id)\
         .order_by(Article.id.desc())\
-        .paginate(page,
-                  per_page=current_app.config['ARTICLES_PER_PAGE'],
-                  error_out=False)
+        .paginate(page, per_page=per_page, error_out=False)
     articles = pagination.items
     return render_template('index.html',
                            articles=articles,
-                           endpoint='main.category',
+                           endpoint='main.show_category_articles',
                            category_name=category_name,
                            categories_list=Category.get_categories(),
                            pagination=pagination)
 
 
-@main.route('/tag/<string:tag_name>', methods=['GET', 'POST'])
-def tag(tag_name):
+@main.route('/tag/<string:tag>', methods=['GET', 'POST'])
+def show_tag_articles(tag):
     page = request.args.get('page', 1, type=int)
+    per_page = current_app.config['ARTICLES_PER_PAGE']
     pagination = Article.query\
-        .filter(Article.tags.like('%' + tag_name + '%'))\
+        .filter(Article.tags.like('%' + tag + '%'))\
         .order_by(Article.id.desc())\
-        .paginate(page,
-                  per_page=current_app.config['ARTICLES_PER_PAGE'],
-                  error_out=False)
+        .paginate(page, per_page=per_page, error_out=False)
     articles = pagination.items
     return render_template('index.html',
                            articles=articles,
-                           endpoint='main.tag',
-                           tag_name=tag_name,
+                           endpoint='main.show_tag_articles',
+                           tag=tag,
                            categories_list=Category.get_categories(),
                            pagination=pagination)
 
@@ -135,11 +129,10 @@ def user(username):
     followed_count = Follow.query.filter_by(follower_id=user.id, enable=True).count()
     followers_count = Follow.query.filter_by(followed_id=user.id, enable=True).count()
     page = request.args.get('page', 1, type=int)
+    per_page = current_app.config['ARTICLES_PER_PAGE']
     pagination = user.articles\
         .order_by(Article.id.desc())\
-        .paginate(page,
-                  per_page=current_app.config['ARTICLES_PER_PAGE'],
-                  error_out=False)
+        .paginate(page, per_page=per_page, error_out=False)
     articles = pagination.items
     return render_template('user/user.html',
                            user=user,
@@ -344,7 +337,8 @@ def article(id):
     next_article = Article.query\
         .filter(and_(Article.author_id == article.author_id,
                      Article.create_datetime > article.create_datetime))\
-        .order_by(Article.id.asc()).first()
+        .order_by(Article.id.asc())\
+        .first()
 
     if request.method == 'GET':
         article.read_count += 1
@@ -364,11 +358,10 @@ def article(id):
     if page == -1:
         page = ((article.comments.count() - 1) //
                 current_app.config['COMMENTS_PER_PAGE'] + 1)
+    per_page = current_app.config['COMMENTS_PER_PAGE']
     pagination = article.comments\
         .order_by(Comment.id.asc())\
-        .paginate(page,
-                  per_page=current_app.config['COMMENTS_PER_PAGE'],
-                  error_out=False)
+        .paginate(page, per_page=per_page, error_out=False)
     comments = pagination.items
     return render_template('article/article.html',
                            articles=[article],
@@ -384,11 +377,10 @@ def article(id):
 @permission_required(Permission.MODERATE_COMMENT)
 def moderate():
     page = request.args.get('page', 1, type=int)
+    per_page = current_app.config['COMMENTS_PER_PAGE']
     pagination = Comment.query\
         .order_by(Comment.id.desc())\
-        .paginate(page,
-                  per_page=current_app.config['COMMENTS_PER_PAGE'],
-                  error_out=False)
+        .paginate(page, per_page=per_page, error_out=False)
     comments = pagination.items
     return render_template('moderate.html',
                            comments=comments,
@@ -430,11 +422,12 @@ def weather_forecast():
     form = WeatherForm()
     if form.validate_on_submit():
         city = form.city.data
-        param = urllib.parse\
-            .urlencode({'cityname': city,
-                        'dtype': current_app.config['JUHE_DATA_TYPE'],
-                        'format': current_app.config['JUHE_DATA_FORMAT'],
-                        'key': current_app.config['JUHE_API_KEY']})
+        param = urllib.parse.urlencode({
+            'cityname': city,
+            'dtype': current_app.config['JUHE_DATA_TYPE'],
+            'format': current_app.config['JUHE_DATA_FORMAT'],
+            'key': current_app.config['JUHE_API_KEY']
+        })
         url = current_app.config['JUHE_WEATHER_URL'] + '?' + param
         result = json.loads(urllib.request.urlopen(url).read().decode('utf-8'))
         if result['error_code'] != 0:

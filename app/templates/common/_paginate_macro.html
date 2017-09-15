@@ -1,16 +1,10 @@
-{% macro pagination_widget(pagination, endpoint, category_name='', tag_name='', fragment='') %}
+{% macro pagination_widget(pagination, endpoint, fragment='') %}
     <!-- 分页 -->
     <ul class="pagination">
         <li {% if not pagination.has_prev %} class="disabled" {% endif %}>
             <a href="
                 {% if pagination.has_prev %}
-                    {% if category_name %}
-                        {{ url_for(endpoint, category_name=category_name, page=pagination.page-1, **kwargs) }}
-                    {% elif tag_name %}
-                        {{ url_for(endpoint, tag_name=tag_name, page=pagination.page-1, **kwargs) }}
-                    {% else %}
-                        {{ url_for(endpoint, page=pagination.page-1, **kwargs) }}
-                    {% endif %}
+                    {{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}{{ fragment }}
                 {% else %}
                     #
                 {% endif %}">
@@ -22,27 +16,11 @@
             {% if page %}
                 {% if page == pagination.page %}
                     <li class="active">
-                        <a href="
-                            {% if category_name %}
-                                {{ url_for(endpoint, category_name=category_name, page=page, **kwargs) }}
-                            {% elif tag_name %}
-                                {{ url_for(endpoint, tag_name=tag_name, page=page, **kwargs) }}
-                            {% else %}
-                                {{ url_for(endpoint, page=page, **kwargs) }}
-                            {% endif %}">{{ page }}
-                        </a>
+                        <a href="{{ url_for(endpoint, page=page, **kwargs) }}{{ fragment }}">{{ page }}</a>
                     </li>
                 {% else %}
                     <li>
-                        <a href="
-                            {% if category_name %}
-                                {{ url_for(endpoint, category_name=category_name, page=page, **kwargs) }}
-                            {% elif tag_name %}
-                                {{ url_for(endpoint, tag_name=tag_name, page=page, **kwargs) }}
-                            {% else %}
-                                {{ url_for(endpoint, page=page, **kwargs) }}
-                            {% endif %}">{{ page }}
-                        </a>
+                        <a href="{{ url_for(endpoint, page=page, **kwargs) }}{{ fragment }}">{{ page }}</a>
                     </li>
                 {% endif %}
             {% else %}
@@ -53,13 +31,7 @@
         <li {% if not pagination.has_next %}class="disabled"{% endif %}>
             <a href="
                 {% if pagination.has_next %}
-                    {% if category_name %}
-                        {{ url_for(endpoint, category_name=category_name, page=pagination.page+1, **kwargs) }}
-                    {% elif tag_name %}
-                        {{ url_for(endpoint, tag_name=tag_name, page=pagination.page+1, **kwargs) }}
-                    {% else %}
-                        {{ url_for(endpoint, page=pagination.page+1, **kwargs) }}
-                    {% endif %}
+                    {{ url_for(endpoint, page=pagination.next_num, **kwargs) }}{{ fragment }}
                 {% else %}
                     #
                 {% endif %}">
