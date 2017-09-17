@@ -136,28 +136,27 @@ class UserModelTestCase(unittest.TestCase):
         self.assertTrue(u1.is_following(u2))
         self.assertFalse(u1.is_followed_by(u2))
         self.assertTrue(u2.is_followed_by(u1))
-        self.assertEqual(u1.followed.count(), 1)
-        self.assertEqual(u2.followers.count(), 1)
+        u1_followed_count = Follow.query.filter_by(follower_id=u1.id,
+                                                   enable=True).count()
+        self.assertEqual(u1_followed_count, 1)
+        u2_follower_count = Follow.query.filter_by(followed_id=u2.id,
+                                                   enable=True).count()
+        self.assertEqual(u2_follower_count, 1)
 
-        f = u1.followed.all()[-1]
-        self.assertTrue(f.followed == u2)
+        f = Follow.query.filter_by(follower_id=u1.id).all()[-1]
+        self.assertTrue(f.followed_id == u2.id)
         self.assertTrue(before_datetime <= f.create_datetime <= after_datetime)
-        f = u2.followers.all()[0]
-        self.assertTrue(f.follower == u1)
+        f = Follow.query.filter_by(followed_id=u2.id).all()[0]
+        self.assertTrue(f.follower_id == u1.id)
 
         u1.unfollow(u2)
         db.session.add(u1)
         db.session.commit()
 
-        self.assertEqual(u1.followed.count(), 0)
-        self.assertEqual(u2.followers.count(), 0)
-        self.assertEqual(Follow.query.count(), 0)
-
-        u2.follow(u1)
-        db.session.add(u1)
-        db.session.add(u2)
-        db.session.commit()
-        db.session.delete(u2)
-        db.session.commit()
-
-        self.assertEqual(Follow.query.count(), 0)
+        u1_followed_count = Follow.query.filter_by(follower_id=u1.id,
+                                                   enable=True).count()
+        self.assertEqual(u1_followed_count, 0)
+        u2_follower_count = Follow.query.filter_by(followed_id=u2.id,
+                                                   enable=True).count()
+        self.assertEqual(u2_follower_count, 0)
+        self.assertEqual(Follow.query.filter_by(enable=True).count(), 0)

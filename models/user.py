@@ -152,24 +152,31 @@ class User(db.Model, UserMixin, BaseMixin):
                     rating=rating)
 
     def follow(self, user):
-        if not self.is_following(user):
+        follow = Follow.query.filter_by(followed_id=user.id,
+                                        follower_id=self.id).first()
+        if follow:
+            follow.update(enable=True)
+        else:
             follow = Follow(follower_id=self.id, followed_id=user.id)
             db.session.add(follow)
             db.session.commit()
 
     def unfollow(self, user):
-        follow = Follow.query.filter_by(followed_id=user.id, follower_id=self.id).first()
+        follow = Follow.query\
+            .filter_by(followed_id=user.id, follower_id=self.id, enable=True)\
+            .first()
         if follow:
-            db.session.delete(follow)
-            db.session.commit()
+            follow.update(enable=False)
 
     def is_following(self, user):
         return Follow.query.filter_by(followed_id=user.id,
-                                      follower_id=self.id).first() is not None
+                                      follower_id=self.id,
+                                      enable=True).first() is not None
 
     def is_followed_by(self, user):
         return Follow.query.filter_by(follower_id=user.id,
-                                      followed_id=self.id).first() is not None
+                                      followed_id=self.id,
+                                      enable=True).first() is not None
 
     @property
     def followed_articles(self):

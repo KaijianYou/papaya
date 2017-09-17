@@ -22,8 +22,8 @@ from werkzeug.contrib.atom import AtomFeed
 from app import db, babel
 from app.decorators import permission_required
 from app.main import main
-from app.main.forms import EditProfileForm, EditProfileAdminForm, ArticleForm, \
-    CommentForm, WeatherForm
+from app.main.forms import EditProfileForm, EditProfileAdminForm, \
+    ArticleForm, CommentForm, WeatherForm
 from models.article import Article
 from models.category import Category
 from models.comment import Comment
@@ -497,3 +497,14 @@ def after_request(response):
                                                query.duration,
                                                query.context))
     return response
+
+
+@main.route('/shutdown')
+def server_shutdown():
+    if not current_app.testing:
+        abort(404)
+    shutdown = request.environ.get('werkzeug.server.shutdown')
+    if not shutdown:
+        abort(500)
+    shutdown()
+    return 'Shutting down...'
