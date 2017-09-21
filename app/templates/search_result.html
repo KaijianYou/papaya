@@ -1,35 +1,36 @@
-{% extends "index.html" %}
+{% extends 'index.html' %}
 
 {% block title %}{{ super() }}{% endblock title %}
 
 {% block page_content %}
-    {% block page_header %}
-        {{ super() }}
-    {% endblock page_header %}
+  {% block page_header %}
+    {{ super() }}
+  {% endblock page_header %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
-                <div class="search-result">
-                    {% if articles %}
-                        <strong>关于 <b>"{{ keyword }}"</b> 的搜索结果一共有 <b>{{ num_articles }}</b> 条</strong>
-                    {% else %}
-                        <strong>没有关于 <b>"{{ keyword }}"</b> 的内容</strong>
-                    {% endif %}
-                </div>
-
-                <div class="article-tabs">
-                    {% include 'article/_articles_preview.html' %}
-                </div>
-            </div>
-
-            {% block side_widget %}
-                {{ super() }}
-            {% endblock side_widget %}
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+        <div class="search-result">
+          {% if articles %}
+            <strong>关于 <b>"{{ keyword }}"</b> 的搜索结果一共有 <b>{{ num_articles }}</b>
+              条</strong>
+          {% else %}
+            <strong>没有关于 <b>"{{ keyword }}"</b> 的内容</strong>
+          {% endif %}
         </div>
+
+        <div class="article-tabs">
+          {% include 'article/_articles_preview.html' %}
+        </div>
+      </div>
+
+      {% block side_widget %}
+        {{ super() }}
+      {% endblock side_widget %}
     </div>
+  </div>
 {% endblock page_content %}
 
 {% block scripts %}
-    {{ super() }}
+  {{ super() }}
 {% endblock scripts %}}

@@ -1,99 +1,92 @@
 <!-- 文章列表 -->
 <ul class="articles">
-{% for article in articles %}
+  {% for article in articles %}
     <li class="article article-widget">
-        <div class="article-thumbnail">
-            <a href="{{ url_for('main.user', username=article.author.username) }}">
-                <img class="img-rounded profile-thumbnail"
-                     src="{{ article.author.get_avatar_url(size=40) }}">
-            </a>
-        </div>
+      <div class="article-thumbnail">
+        <a href="{{ url_for('main.user', username=article.author.username) }}">
+          <img class="img-rounded profile-thumbnail" src="{{ article.author.get_avatar_url(size=40) }}">
+        </a>
+      </div>
 
-        <div class="article-content">
+      <div class="article-content">
         <span class="btn article-category">
             {% set category_name = article.get_category_name() %}
-            <a href="{{ url_for('main.show_category_articles', category_name=category_name) }}">
-                {{ category_name }}
-            </a>
+            <a href="{{ url_for('main.show_category_articles', category_name=category_name) }}">{{ category_name }}</a>
         </span>
         <div class="article-author">
-            <a href="{{ url_for('main.user', username=article.author.username) }}">
-                {{ article.author.username }}
-            </a>
+          <a href="{{ url_for('main.user', username=article.author.username) }}">{{ article.author.username }}</a>
         </div>
 
         <div class="article-title">
-            {% if article.title %}
-                <h3>{{ article.title }}</h3>
-            {% endif %}
+          {% if article.title %}
+            <h3>{{ article.title }}</h3>
+          {% endif %}
         </div>
 
         <div class="article-info">
-            <span>
-                <span class="glyphicon glyphicon-calendar"></span>
-                {{ moment(article.create_datetime).format('YYYY-MM-DD') }}
-            </span>
-            <span>
-                <span class="glyphicon glyphicon-comment"></span>
-                {{ article.comments.count() }}
-            </span>
-            <span>
-                <span class="glyphicon glyphicon-eye-open"></span>
-                {{ article.read_count }}
-            </span>
-                <div class="article-tags">
-                    {% if article.tags %}
-                        {% for i, tag in enumerate(article.get_tags()) %}
-                            <a href="{{ url_for('main.show_tag_articles', tag=tag) }}">
-                                <span class="btn-xs btn-custom btn-article-tag-{{ i % 6 }}">{{ tag }}</span>
-                            </a>
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="article-body">
-                {% if article.body_html %}
-                    <!--"| safe" 通知 jinja2 不要转义 HTML 元素-->
-                    {{ article.body_html | safe }}
-                {% else %}
-                    {{ article.body }}
-                {% endif %}
-            </div>
-
-            <div class="article-nav hidden-xs">
-                <span class="article-nav-prev">
-                    上一篇：
-                    {% if prev_article %}
-                        <a href="/article/{{ prev_article.id }}">{{ prev_article.title }}</a>
-                    {% else %}
-                        没有了
-                    {% endif %}
-                </span>
-                <span class="article-nav-next">
-                    下一篇：
-                    {% if next_article %}
-                        <a href="/article/{{ next_article.id }}">{{ next_article.title }}</a>
-                    {% else %}
-                        没有了
-                    {% endif %}
-                </span>
-            </div>
-
-            <div class="article-footer hidden-xs">
-                {% if current_user == article.author %}
-                    <a href="{{ url_for('main.edit_article', id=article.id) }}"
-                       class="btn btn-primary btn-custom">
-                        {{ gettext('Edit') }}
-                    </a>
-                {% elif current_user.can(Permission.MODERATE_ARTICLE) %}
-                    <a href="{{ url_for('main.edit_article', id=article.id) }}"
-                       class="btn btn-danger btn-custom">
-                        {{ gettext('Edit [Admin]') }}
-                    </a>
-                {% endif %}
-            </div>
+          <span>
+            <span class="glyphicon glyphicon-calendar"></span>
+            {{ moment(article.create_datetime).format('YYYY-MM-DD') }}
+          </span>
+          <span>
+            <span class="glyphicon glyphicon-comment"></span>
+            {{ article.comments.count() }}
+          </span>
+          <span>
+            <span class="glyphicon glyphicon-eye-open"></span>
+            {{ article.read_count }}
+          </span>
+          <div class="article-tags">
+            {% if article.tags %}
+              {% for i, tag in enumerate(article.get_tags()) %}
+                <a href="{{ url_for('main.show_tag_articles', tag=tag) }}">
+                  <span class="btn-xs btn-custom btn-article-tag-{{ i % 6 }}">{{ tag }}</span>
+                </a>
+              {% endfor %}
+            {% endif %}
+          </div>
         </div>
+
+        <div class="article-body">
+          {% if article.body_html %}
+            <!--"| safe" 通知 jinja2 不要转义 HTML 元素-->
+            {{ article.body_html | safe }}
+          {% else %}
+            {{ article.body }}
+          {% endif %}
+        </div>
+
+        <div class="article-nav hidden-xs">
+          <span class="article-nav-prev">
+              上一篇：
+            {% if prev_article %}
+              <a href="/article/{{ prev_article.id }}">{{ prev_article.title }}</a>
+            {% else %}
+              没有了
+            {% endif %}
+          </span>
+          <span class="article-nav-next">
+            下一篇：
+            {% if next_article %}
+              <a href="/article/{{ next_article.id }}">{{ next_article.title }}</a>
+            {% else %}
+              没有了
+            {% endif %}
+          </span>
+        </div>
+
+        <div class="article-footer hidden-xs">
+          {% if current_user == article.author %}
+            <a href="{{ url_for('main.edit_article', id=article.id) }}" class="btn btn-primary btn-custom">
+              {{ gettext('Edit') }}
+            </a>
+          {% elif current_user.can(Permission.MODERATE_ARTICLE) %}
+            <a href="{{ url_for('main.edit_article', id=article.id) }}" class="btn btn-danger btn-custom">
+              {{ gettext('Edit [Admin]') }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
     </li>
-{% endfor %}
+  {% endfor %}
 </ul>

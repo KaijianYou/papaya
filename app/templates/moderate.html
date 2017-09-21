@@ -1,19 +1,19 @@
-{% extends "common/base.html" %}
-{% import "common/_paginate_macro.html" as paginate_macro %}
+{% extends 'common/base.html' %}
+{% import 'common/_paginate_macro.html' as paginate_macro %}
 
 {% block title %}Papaya -{{ gettext('Comment Moderation') }}{% endblock title %}
 
 {% block page_content %}
-    <div class="page-header">
-        <h1>{{ gettext('Comment Moderation') }}</h1>
+  <div class="page-header">
+    <h1>{{ gettext('Comment Moderation') }}</h1>
+  </div>
+
+  {% set moderate = True %}
+  {% include 'comment/_comments.html' %}
+
+  {% if pagination %}
+    <div class="pagination">
+      {{ paginate_macro.pagination_widget(pagination, '.moderate') }}
     </div>
-
-    {% set moderate = True %}
-    {% include 'comment/_comments.html' %}
-
-    {% if pagination %}
-        <div class="pagination">
-            {{ paginate_macro.pagination_widget(pagination, '.moderate') }}
-        </div>
-    {% endif %}
+  {% endif %}
 {% endblock page_content %}

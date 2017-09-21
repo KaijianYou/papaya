@@ -11,6 +11,10 @@ A simple blog system based on Flask -- a framework for Python.<br/>
 中文版：《Flask Web开发  基于Python的Web应用开发实战》，作者：Miguel Grinberg，译者：安道，人民邮电出版社 2015，ISBN: 978-7-115-37399-1
 
 
+## Environment
+    Python 3.5+
+
+
 ## Quick Start
 ### Install and run database
     # Mac OS X

@@ -1,112 +1,98 @@
-{% extends "common/base.html" %}
-{% import "common/_paginate_macro.html" as paginate_macro %}
+{% extends 'common/base.html' %}
+{% import 'common/_paginate_macro.html' as paginate_macro %}
 
 {% block title %}Papaya - {{ user.username }}{% endblock title %}
 
 {% block page_content %}
-    <div class="page-header">
-        <div class="avatar">
-            <img class="img-rounded profile-thumbnail shake-chunk" src="{{ user.get_avatar_url(size=240) }}"/>
-        </div>
-
-        <button class="btn-upload-avatar btn-default btn">{{ gettext('Upload New Avatar') }}</button>
-
-        <div class="profile-header">
-            <h1 data-anijs="if: click, do: rollIn animated, to: .profile-header">{{ user.username }}</h1>
-
-            {% if user.real_name or user.location %}
-                <p>
-                    {% if user.real_name %}{{ user.real_name }}{% endif %}
-                    {% if user.location %}
-                        {{ gettext('From') }}:
-                        <a href="http://maps.google.com/?q={{ user.location }}">{{ user.location }}</a>
-                    {% endif %}
-                </p>
-            {% endif %}
-
-            {% if current_user.can(Permission.MODERATE_USER) %}
-                <p>
-                    {{ gettext('Email') }}:
-                    <a href="mailto:{{ user.email }}">{{ user.email }}</a>
-                </p>
-            {% endif %}
-
-            {% if user.about_me %}
-                <p>{{ gettext('About me') }}: {{ user.about_me }}</p>{% endif %}
-
-            <p>
-                {{ gettext('Register date') }}: {{ moment(user.create_datetime).format('YYYY/MM/DD, HH:mm:ss') }}
-                <br/>
-                {# 渲染相对时间，随着时间的推移自动刷新显示的时间 #}
-                {{ gettext('Last visited') }}: {{ moment(user.last_visited).fromNow(refresh=True) }}
-            </p>
-
-            <p>{{ user.articles.count() }} {{ gettext('blog articles') }}</p>
-
-            <p>{{ user.comments.count() }} {{ gettext('comments') }}</p>
-
-            <p>
-                {% if user == current_user %}
-                    <a class="btn btn-default"
-                       href="{{ url_for('main.edit_profile') }}">
-                        {{ gettext('Edit Profile') }}
-                    </a>
-                {% endif %}
-
-                {% if current_user.can(Permission.MODERATE_USER) %}
-                    <a class="btn btn-danger"
-                       href="{{ url_for('main.edit_profile_admin', id=user.id) }}">
-                        {{ gettext('Edit Profile [Admin]') }}
-                    </a>
-                {% endif %}
-            </p>
-
-            <p>
-                {% if current_user.can(Permission.FOLLOW) and user != current_user %}
-                    {% if not current_user.is_following(user) %}
-                        <a href="{{ url_for('main.follow', username=user.username) }}" class="btn btn-primary">
-                            {{ gettext('Follow') }}
-                        </a>
-                    {% else %}
-                        <a href="{{ url_for('main.unfollow', username=user.username) }}" class="btn btn-default">
-                            {{ gettext('Unfollow') }}
-                        </a>
-                    {% endif %}
-                {% endif %}
-
-                <a href="{{ url_for('main.followers', username=user.username) }}">
-                    {{ gettext('Followers') }}:
-                    <span class="badge">{{ followers_count }}</span>
-                </a>
-                <a href="{{ url_for('main.followed_by', username=user.username) }}">
-                    {{ gettext('Following') }}:
-                    <span class="badge">{{ followed_count }}</span>
-                </a>
-
-                {% if current_user.is_authenticated and user != current_user and user.is_following(current_user) %}
-                    |
-                    <span class="label label-default">{{ gettext('Follows you') }}</span>
-                {% endif %}
-            </p>
-        </div>
+  <div class="page-header">
+    <div class="avatar">
+      <img class="img-rounded profile-thumbnail shake-chunk" src="{{ user.get_avatar_url(size=240) }}"/>
     </div>
 
-    <h3>{{ gettext('Articles published by %(username)s', username=user.username) }}</h3>
-    {% include 'article/_articles_preview.html' %}
+    <button class="btn-upload-avatar btn-default btn">{{ gettext('Upload New Avatar') }}</button>
 
-    <div class="pagination">
-        {{ paginate_macro.pagination_widget(pagination, '.index') }}
+    <div class="profile-header">
+      <h1 data-anijs="if: click, do: rollIn animated, to: .profile-header">{{ user.username }}</h1>
+
+      {% if user.real_name or user.location %}
+        <p>
+          {% if user.real_name %}{{ user.real_name }}{% endif %}
+          {% if user.location %}
+            {{ gettext('From') }}: <a href="http://maps.google.com/?q={{ user.location }}">{{ user.location }}</a>
+          {% endif %}
+        </p>
+      {% endif %}
+      {% if current_user.can(Permission.MODERATE_USER) %}
+        <p>{{ gettext('Email') }}: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+      {% endif %}
+      {% if user.about_me %}
+        <p>{{ gettext('About me') }}: {{ user.about_me }}</p>
+      {% endif %}
+      <p>
+        {{ gettext('Register date') }}: {{ moment(user.create_datetime).format('YYYY/MM/DD, HH:mm:ss') }}
+        <br/>
+        {# 渲染相对时间，随着时间的推移自动刷新显示的时间 #}
+        {{ gettext('Last visited') }}: {{ moment(user.last_visited).fromNow(refresh=True) }}
+      </p>
+      <p>{{ user.articles.count() }} {{ gettext('blog articles') }}</p>
+      <p>{{ user.comments.count() }} {{ gettext('comments') }}</p>
+      <p>
+        {% if user == current_user %}
+          <a class="btn btn-default" href="{{ url_for('main.edit_profile') }}">
+            {{ gettext('Edit Profile') }}
+          </a>
+        {% endif %}
+        {% if current_user.can(Permission.MODERATE_USER) %}
+          <a class="btn btn-danger" href="{{ url_for('main.edit_profile_admin', id=user.id) }}">
+            {{ gettext('Edit Profile [Admin]') }}
+          </a>
+        {% endif %}
+      </p>
+      <p>
+        {% if current_user.can(Permission.FOLLOW) and user != current_user %}
+          {% if not current_user.is_following(user) %}
+            <a href="{{ url_for('main.follow', username=user.username) }}" class="btn btn-primary">
+              {{ gettext('Follow') }}
+            </a>
+          {% else %}
+            <a href="{{ url_for('main.unfollow', username=user.username) }}" class="btn btn-default">
+              {{ gettext('Unfollow') }}
+            </a>
+          {% endif %}
+        {% endif %}
+        <a href="{{ url_for('main.followers', username=user.username) }}">
+          {{ gettext('Followers') }}:
+          <span class="badge">{{ followers_count }}</span>
+        </a>
+        <a href="{{ url_for('main.followed_by', username=user.username) }}">
+          {{ gettext('Following') }}:
+          <span class="badge">{{ followed_count }}</span>
+        </a>
+
+        {% if current_user.is_authenticated and user != current_user and user.is_following(current_user) %}
+          |
+          <span class="label label-default">{{ gettext('Follows you') }}</span>
+        {% endif %}
+      </p>
     </div>
+  </div>
+
+  <h3>{{ gettext('Articles published by %(username)s', username=user.username) }}</h3>
+  {% include 'article/_articles_preview.html' %}
+
+  <div class="pagination">
+    {{ paginate_macro.pagination_widget(pagination, '.index') }}
+  </div>
 {% endblock page_content %}
 
 {% block scripts %}
-    {{ super() }}
+  {{ super() }}
 
-    <script>
-        $('.btn-upload-avatar').on('click', function(event) {
-            $.ajax({}).done(function(data) {
+  <script>
+    $('.btn-upload-avatar').on('click', function(event) {
+      $.ajax({}).done(function(data) {
 
-            });
-        });
-    </script>
+      });
+    });
+  </script>
 {% endblock scripts %}

@@ -40,7 +40,7 @@ def register_extensions(app):
     from models.user import User, AnonymousUser
 
     login_manager.init_app(app)
-    login_manager.session_protection = 'strong'
+    login_manager.session_protection = 'basic'
     login_manager.login_view = 'auth.login'
     login_manager.refresh_view = 'auth.login'
     login_manager.login_message = lazy_('Please log in to access this page')
@@ -52,16 +52,20 @@ def register_extensions(app):
 
 
 def register_blueprint(app):
-    from .main import main as main_blueprint
-    from .main import views, errors
+    from app.main import main as main_blueprint
+    from app.main import views, errors
     app.register_blueprint(main_blueprint)
 
-    from .auth import auth as auth_blueprint
-    from .auth import views
+    from app.auth import auth as auth_blueprint
+    from app.auth import views
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
-    from .admin import admin as admin_blueprint
-    from .admin import views
+    from app.admin import admin as admin_blueprint
+    from app.admin import views
+    from app.admin.auth import views
+    from app.admin.user import views
+    from app.admin.comment import views
+    from app.admin.article import views
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
     from .api_1_0 import api as api_1_0_blueprint

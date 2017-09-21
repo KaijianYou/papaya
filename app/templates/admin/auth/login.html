@@ -1,0 +1,98 @@
+{% extends 'admin/common/base.html' %}
+
+{% block title %}登录 - Papaya 后台{% endblock title %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='unicorn/css/unicorn-login.css') }}">
+{% endblock styles %}
+
+{% block container %}
+  <div id="logo">
+    <img src="{{ url_for('static', filename='unicorn/img/logo.png') }}" alt=""/>
+  </div>
+
+  <div id="user">
+    <div class="avatar">
+      <div class="inner"></div>
+      <img src="img/demo/av1_1.jpg"/>
+    </div>
+    <div class="text">
+      <h4>您好，<span class="user_name"></span></h4>
+    </div>
+  </div>
+
+  <div id="loginbox">
+    <form id="loginform" action="admin/index.html">
+      <p>请输入用户名和密码</p>
+      <div class="input-group input-sm">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+        <input class="form-control" type="text" id="username" placeholder="用户名"/>
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+        <input class="form-control" type="password" id="password" placeholder="密码"/>
+      </div>
+      <div class="form-actions clearfix">
+        <div class="pull-left">
+          <a href="#registerform" class="flip-link to-register blue">注册</a>
+        </div>
+        <div class="pull-right">
+          <a href="#recoverform" class="flip-link to-recover grey">忘记密码？</a>
+        </div>
+        <input type="submit" class="btn btn-block btn-primary btn-default" value="登录"/>
+      </div>
+    </form>
+
+    <form id="recoverform" action="#">
+      <p>在输入框中输入您的邮箱地址，我们会发送一封邮件告知您如何重设密码</p>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+        <input class="form-control" type="text" placeholder="邮箱地址"/>
+      </div>
+      <div class="form-actions clearfix">
+        <div class="pull-left">
+          <a href="#loginform" class="grey flip-link to-login">登录</a>
+        </div>
+        <div class="pull-right">
+          <a href="#registerform" class="blue flip-link to-register">注册</a>
+        </div>
+        <input type="submit" class="btn btn-block btn-inverse" value="继续"/>
+      </div>
+    </form>
+
+    <form id="registerform" action="#">
+      <p>请填写注册信息</p>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+        <input class="form-control" type="text" placeholder="请输入用户名"/>
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+        <input class="form-control" type="password" placeholder="请输入密码"/>
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+        <input class="form-control" type="password" placeholder="再次输入密码"/>
+      </div>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+        <input class="form-control" type="text" placeholder="请输入邮件地址"/>
+      </div>
+      <div class="form-actions clearfix">
+        <div class="pull-left">
+          <a href="#loginform" class="grey flip-link to-login">登录</a>
+        </div>
+        <div class="pull-right">
+          <a href="#recoverform" class="grey flip-link to-recover">忘记密码？</a>
+        </div>
+        <input type="submit" class="btn btn-block btn-success" value="注册"/>
+      </div>
+    </form>
+  </div>
+{% endblock container %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='unicorn/js/unicorn.login.js') }}"></script>
+{% endblock scripts %}

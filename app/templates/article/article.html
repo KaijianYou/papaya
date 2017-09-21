@@ -1,25 +1,25 @@
-{% extends "common/base.html" %}}
-{% import "bootstrap/wtf.html" as wtf %}
-{% import "common/_paginate_macro.html" as paginate_macro %}
+{% extends 'common/base.html' %}}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% import 'common/_paginate_macro.html' as paginate_macro %}
 
 {% block title %}Papaya - {{ gettext('Article') }}{% endblock title %}
 
 {% block page_content %}
-    {% include 'article/_articles_detail.html' %}
+  {% include 'article/_articles_detail.html' %}
 
-    {% if current_user.can(Permission.COMMENT) %}
-        <h4 id="comments">{{ gettext('Comments') }}</h4>
+  {% if current_user.can(Permission.COMMENT) %}
+    <h4 id="comments">{{ gettext('Comments') }}</h4>
 
-        <div class="comment-form">
-            {{ wtf.quick_form(form) }}
-        </div>
-    {% endif %}
+    <div class="comment-form">
+      {{ wtf.quick_form(form) }}
+    </div>
+  {% endif %}
 
-    {% include 'comment/_comments.html' %}
+  {% include 'comment/_comments.html' %}
 
-    {% if pagination %}
-        <div class="pagination">
-            {{ paginate_macro.pagination_widget(pagination, 'main.article', fragment='#comments', id=articles[0].id) }}
-        </div>
-    {% endif %}
+  {% if pagination %}
+    <div class="pagination">
+      {{ paginate_macro.pagination_widget(pagination, 'main.article', fragment='#comments', id=articles[0].id) }}
+    </div>
+  {% endif %}
 {% endblock page_content %}

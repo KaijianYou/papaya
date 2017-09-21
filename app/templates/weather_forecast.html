@@ -1,12 +1,12 @@
-{% extends "common/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends 'common/base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block page_content %}
-    <div class="page-header">
-        <h1>{{ gettext('Weather Forecast') }}</h1>
-    </div>
+  <div class="page-header">
+    <h1>{{ gettext('Weather Forecast') }}</h1>
+  </div>
 
-    <div class="col-md-4">
-        {{ wtf.quick_form(form) }}
-    </div>
+  <div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+  </div>
 {% endblock page_content %}
