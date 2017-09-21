@@ -13,6 +13,7 @@ class Permission:
     MODERATE_ARTICLE = 0x10  # 管理文章
     MODERATE_USER = 0x20  # 管理用户
     ASSIGN_MODERATOR = 0x40  # 任命管理员
+    COLLECT = 0x80  # 收藏文章
 
 
 class Role(db.Model, BaseMixin):
@@ -28,8 +29,8 @@ class Role(db.Model, BaseMixin):
     @staticmethod
     def insert_roles():
         """
-        匿名用户：未登录的用户。只有阅读文章权限
-        普通用户：具有发布文章、发表评论和关注其他用户的权限。新用户的默认角色
+        匿名用户：未登录的用户。只能阅读文章
+        普通用户：具有发布文章、发表评论、收藏文章和关注其他用户的权限。新用户的默认角色
         协管员：管理评论和文章的权限
         管理员：具有所有权限，包括修改其他用户所属角色的权限，任命协管员的权限
         """
@@ -37,14 +38,16 @@ class Role(db.Model, BaseMixin):
             'User': (
                 Permission.FOLLOW |
                 Permission.COMMENT |
-                Permission.WRITE_ARTICLE
+                Permission.WRITE_ARTICLE |
+                Permission.COLLECT
             ),
             'Moderator': (
                 Permission.FOLLOW |
                 Permission.COMMENT |
                 Permission.WRITE_ARTICLE |
                 Permission.MODERATE_COMMENT |
-                Permission.MODERATE_ARTICLE
+                Permission.MODERATE_ARTICLE |
+                Permission.COLLECT
             ),
             'Administrator': (
                 Permission.FOLLOW |
@@ -53,7 +56,8 @@ class Role(db.Model, BaseMixin):
                 Permission.MODERATE_COMMENT |
                 Permission.MODERATE_ARTICLE |
                 Permission.MODERATE_USER |
-                Permission.ASSIGN_MODERATOR
+                Permission.ASSIGN_MODERATOR |
+                Permission.COLLECT
             )
         }
 

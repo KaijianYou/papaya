@@ -10,11 +10,11 @@ class CollectionType(object):
     ARTICLE = 1  # 文章
 
 
-class Collections(db.Model, BaseMixin):
+class Collection(db.Model, BaseMixin):
     """用户收藏表"""
     __tablename__ = 'collections'
 
-    owner_id = db.Column(db.Integer, index=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     item_id = db.Column(db.Integer, index=True)
     type = db.Column(db.Integer)
 

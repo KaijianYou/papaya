@@ -34,6 +34,7 @@ class User(db.Model, UserMixin, BaseMixin):
     role_id = db.Column('role_id', db.Integer, db.ForeignKey('roles.id'))
     articles = db.relationship('Article', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
+    collections = db.relationship('Collection', backref='user', lazy='dynamic')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
