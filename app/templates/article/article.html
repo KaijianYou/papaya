@@ -23,3 +23,62 @@
     </div>
   {% endif %}
 {% endblock page_content %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+    $('.article-upvote').on('click', function(event) {
+      event.preventDefault()
+      var that = $(this)
+      if (that.attr('disabled')) {
+        return
+      }
+      article_id = that.attr('data-id')
+      type = that.attr('data-type')
+      $.post('/article/' + article_id + '/upvote/' + type, {
+
+      }).done(function(data) {
+        if (data.success) {
+          that.addClass('disabled')
+          that.html('赞(' + data.upvote_count + ')')
+          if (type === 'add') {
+            that.attr('data-type', 'remove')
+            that.css('background', '#D4D4D4')
+          } else {
+            that.attr('data-type', 'add')
+            that.css('background', 'rgba(0, 204, 204, 0.5)')
+          }
+        }
+      }).fail(function(data) {
+        alert('操作失败，请刷新重试！')
+      })
+    })
+
+    $('.article-downvote').on('click', function(event) {
+        event.preventDefault()
+        var that = $(this)
+        if (that.attr('disabled')) {
+          return
+        }
+        article_id = that.attr('data-id')
+        type = that.attr('data-type')
+        $.post('/article/' + article_id + '/downvote/' + type, {
+
+        }).done(function(data) {
+          if (data.success) {
+          that.addClass('disabled')
+          that.html('踩(' + data.downvote_count + ')')
+          if (type === 'add') {
+            that.attr('data-type', 'remove')
+            that.css('background', '#D4D4D4')
+          } else {
+            that.attr('data-type', 'add')
+            that.css('background', 'rgba(0, 204, 204, 0.5)')
+          }
+        }
+        }).fail(function(data) {
+          alert('操作失败，请刷新重试！')
+        })
+      })
+  </script>
+{% endblock scripts %}

@@ -56,6 +56,21 @@
           {% endif %}
         </div>
 
+        <div class="article-vote hidden-xs">
+          <span class="article-upvote"
+              {% if current_user.is_anonymous %} disabled style="background: #D4D4D4;"
+              {% elif hasUpVoted %} style="background: #D4D4D4;"
+              {% endif %} data-id="{{ article.id }}" data-type="{% if hasUpVoted %}remove{% else %}add{% endif %}">
+            赞({{ upvote_count}})
+          </span>
+          <span class="article-downvote"
+              {% if current_user.is_anonymous %} disabled style="background: #D4D4D4;"
+              {% elif hasDownVoted %} style="background: #D4D4D4;"
+              {% endif %} data-id="{{ article.id }}" data-type="{% if hasDownVoted %}remove{% else %}add{% endif %}">
+            踩({{ downvote_count }})
+          </span>
+        </div>
+
         <div class="article-nav hidden-xs">
           <span class="article-nav-prev">
               上一篇：

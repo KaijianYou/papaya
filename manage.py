@@ -17,6 +17,7 @@ from models.role import Role, Permission
 from models.user import User
 from models.follow import Follow
 from models.collection import Collection
+from models.article_vote import ArticleVote
 
 
 def make_shell_context():
@@ -29,7 +30,8 @@ def make_shell_context():
                 Comment=Comment,
                 Category=Category,
                 Follow=Follow,
-                Collection=Collection)
+                Collection=Collection,
+                ArticleVote=ArticleVote)
 
 
 app = create_app(os.getenv('PAPAYA_CONFIG') or 'default')

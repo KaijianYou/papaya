@@ -19,7 +19,8 @@ class Article(db.Model, BaseMixin):
     body_html = db.Column(db.Text)
     read_count = db.Column(db.Integer, default=0)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    votes = db.relationship('ArticleVote', backref='article', lazy='dynamic')
     comments = db.relationship('Comment', backref='article', lazy='dynamic')
 
     def __init__(self, *args, **kwargs):
@@ -32,14 +33,14 @@ class Article(db.Model, BaseMixin):
             'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul', 'h1',
             'h2', 'h3', 'p', 'hr', 'br', 'img'
         ]
-        attrs = {
+        attributes = {
             '*': ['class'],
             'a': ['href', 'rel'],
             'img': ['src', 'alt'],
         }
         target.body_html = bleach.linkify(bleach.clean(
             markdown(value, output_format='html'),
-            tags=allowed_tags, attributes=attrs, strip=True))
+            tags=allowed_tags, attributes=attributes, strip=True))
 
     def get_tags(self):
         tags_list = [tag for tag in self.tags.split(',') if tag]
@@ -67,6 +68,9 @@ class Article(db.Model, BaseMixin):
             'body_html': self.body_html,
             'create_datetime': self.create_datetime,
             'update_datetime': self.update_datetime,
+            'read_count': self.read_count,
+            'upvote_count': self.upvote_count,
+            'downvote_count': self.downvote_count,
             'author': url_for('api.get_user', id=self.author_id, _external=True),
             'comments': url_for('api.get_post_comments', id=self.id, _external=True),
             'comment_count': self.comments.count(),

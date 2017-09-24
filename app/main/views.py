@@ -24,12 +24,15 @@ from app.decorators import permission_required
 from app.main import main
 from app.main.forms import EditProfileForm, EditProfileAdminForm, \
     ArticleForm, CommentForm, WeatherForm
+from app.main.errors import VoteArticleError
 from models.article import Article
 from models.category import Category
 from models.comment import Comment
 from models.role import Role, Permission
+from models.article_vote import ArticleVote, VoteType
 from models.user import User
 from models.follow import Follow
+from utils.json_util import JSONUtil
 
 
 @babel.localeselector
@@ -363,10 +366,25 @@ def article(id):
         .order_by(Comment.id.asc())\
         .paginate(page, per_page=per_page, error_out=False)
     comments = pagination.items
+
+    upvotes = ArticleVote.query\
+        .filter_by(enable=True, article_id=article.id, type=VoteType.UP).all()
+    downvotes = ArticleVote.query\
+        .filter_by(enable=True, article_id=article.id, type=VoteType.DOWN).all()
+    if not current_user.is_anonymous:
+        hasUpVoted = current_user.id in {upvote.voter_id for upvote in upvotes}
+        hasDownVoted = current_user.id in {downvote.voter_id for downvote in downvotes}
+    else:
+        hasUpVoted = False
+        hasDownVoted = False
     return render_template('article/article.html',
                            articles=[article],
                            prev_article=prev_article,
                            next_article=next_article,
+                           upvote_count=len(upvotes),
+                           downvote_count=len(downvotes),
+                           hasUpVoted=hasUpVoted,
+                           hasDownVoted=hasDownVoted,
                            form=form,
                            comments=comments,
                            pagination=pagination)
@@ -417,6 +435,90 @@ def about():
     return render_template('about.html')
 
 
+@main.route('/article/<int:article_id>/upvote/<string:type>', methods=['POST'])
+def upvote_article(article_id, type):
+    article = Article.find_by_id(article_id)
+    if not article:
+        return JSONUtil.generate_error_response(VoteArticleError.ArticleNotExist)
+
+    downvote = ArticleVote.query\
+        .filter_by(enable=True,
+                   article_id=article_id,
+                   voter_id=current_user.id,
+                   type=VoteType.DOWN)\
+        .first()
+    if downvote:
+        return JSONUtil.generate_error_response(VoteArticleError.AlreadyDownVoted)
+
+    article_vote = ArticleVote.query\
+        .filter_by(article_id=article_id, voter_id=current_user.id, type=VoteType.UP)\
+        .first()
+    if type == 'add':
+        if not article_vote:
+            article_vote = ArticleVote(article_id=article_id,
+                                       voter_id=current_user.id,
+                                       type=VoteType.UP)
+            db.session.add(article_vote)
+            db.session.commit()
+        elif not article_vote.enable:
+            article_vote.update(enable=True)
+        else:
+            return JSONUtil.generate_error_response(VoteArticleError.AlreadyUpVoted)
+    elif type == 'remove':
+        if not article_vote or not article_vote.enable:
+            return JSONUtil.generate_error_response(VoteArticleError.NotUpVoted)
+        else:
+            article_vote.update(enable=False)
+    else:
+        return JSONUtil.generate_error_response(VoteArticleError.TypeError)
+
+    upvote_count = ArticleVote.query\
+        .filter_by(enable=True, article_id=article_id, type=VoteType.UP).count()
+    return JSONUtil.generate_result_response({'upvote_count': upvote_count})
+
+
+@main.route('/article/<int:article_id>/downvote/<string:type>', methods=['POST'])
+def downvote_article(article_id, type):
+    article = Article.find_by_id(article_id)
+    if not article:
+        return JSONUtil.generate_error_response(VoteArticleError.ArticleNotExist)
+
+    upvote = ArticleVote.query \
+        .filter_by(enable=True,
+                   article_id=article_id,
+                   voter_id=current_user.id,
+                   type=VoteType.UP) \
+        .first()
+    if upvote:
+        return JSONUtil.generate_error_response(VoteArticleError.AlreadyDownVoted)
+
+    article_vote = ArticleVote.query\
+        .filter_by(article_id=article_id, voter_id=current_user.id, type=VoteType.DOWN)\
+        .first()
+    if type == 'add':
+        if not article_vote:
+            article_vote = ArticleVote(article_id=article_id,
+                                       voter_id=current_user.id,
+                                       type=VoteType.DOWN)
+            db.session.add(article_vote)
+            db.session.commit()
+        elif not article_vote.enable:
+            article_vote.update(enable=True)
+        else:
+            return JSONUtil.generate_error_response(VoteArticleError.AlreadyDownVoted)
+    elif type == 'remove':
+        if not article_vote or not article.enable:
+            return JSONUtil.generate_error_response(VoteArticleError.NotDownVoted)
+        else:
+            article_vote.update(enable=False)
+    else:
+        return JSONUtil.generate_error_response(VoteArticleError.TypeError)
+
+    downvote_count = ArticleVote.query\
+        .filter_by(enable=True, article_id=article_id, type=VoteType.DOWN).count()
+    return JSONUtil.generate_result_response({'downvote_count': downvote_count})
+
+
 @main.route('/weather_forecast', methods=['GET', 'POST'])
 def weather_forecast():
     form = WeatherForm()
@@ -444,7 +546,7 @@ def weather_forecast():
     return render_template('weather_forecast.html', form=form)
 
 
-@main.route('/tags_string')
+@main.route('/tags-string')
 def tags_string():
     return Article.string_from_tags()
 

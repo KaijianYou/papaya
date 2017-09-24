@@ -26,7 +26,7 @@ def before_request():
         current_user.update_last_visited()
         if (not current_user.confirmed and
                 request.endpoint and
-                request.endpoint[:5] != 'auth.' and
+                not request.endpoint.startswith('auth.') and
                 request.endpoint != 'static'):
             return redirect(url_for('auth.unconfirmed'))
 
