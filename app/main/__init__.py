@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 from flask import Blueprint
 
 from models.role import Permission

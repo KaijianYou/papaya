@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 import bleach
 from flask import url_for
 from markdown import markdown
@@ -38,9 +35,11 @@ class Article(db.Model, BaseMixin):
             'a': ['href', 'rel'],
             'img': ['src', 'alt'],
         }
-        target.body_html = bleach.linkify(bleach.clean(
-            markdown(value, output_format='html'),
-            tags=allowed_tags, attributes=attributes, strip=True))
+        target.body_html = bleach.linkify(
+            bleach.clean(markdown(value, output_format='html'),
+                         tags=allowed_tags,
+                         attributes=attributes,
+                         strip=True))
 
     def get_tags(self):
         tags_list = [tag for tag in self.tags.split(',') if tag]

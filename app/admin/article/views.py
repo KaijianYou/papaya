@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 from flask import render_template, request, current_app
 from app.admin import admin
 from models.article import Article

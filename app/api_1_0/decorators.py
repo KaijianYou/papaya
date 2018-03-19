@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 from functools import wraps
 
 from app.api_1_0.errors import forbidden

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 from random import seed, randint
 
 import forgery_py
@@ -12,7 +9,7 @@ from models.article import Article
 from models.category import Category
 
 
-class FakeUtils(object):
+class FakeUtil(object):
     """利用 forgery_py 生成虚拟数据"""
 
     @staticmethod

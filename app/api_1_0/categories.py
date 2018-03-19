@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 from flask import jsonify, request, current_app, url_for
 from flask_babel import gettext as _
 

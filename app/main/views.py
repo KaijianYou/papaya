@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 import json
 import urllib.parse
 import urllib.request
@@ -50,11 +47,13 @@ def index():
         .order_by(desc(func.count(Comment.id)))\
         .paginate(page, per_page=per_page, error_out=False)
     articles = pagination.items
-    return render_template('index.html',
-                           articles=articles,
-                           endpoint='main.index',
-                           categories_list=Category.get_categories(),
-                           pagination=pagination)
+    context = {
+        'articles': articles,
+        'endpoint': 'main.index',
+        'categories_list': Category.get_categories(),
+        'pagination': pagination
+    }
+    return render_template('index.html', **context)
 
 
 @main.route('/all', methods=['GET', 'POST'])
@@ -439,7 +438,7 @@ def about():
 def upvote_article(article_id, type):
     article = Article.find_by_id(article_id)
     if not article:
-        return JSONUtil.generate_error_response(VoteArticleError.ArticleNotExist)
+        return JSONUtil.generate_error_json(VoteArticleError.ArticleNotExist)
 
     downvote = ArticleVote.query\
         .filter_by(enable=True,
@@ -448,7 +447,7 @@ def upvote_article(article_id, type):
                    type=VoteType.DOWN)\
         .first()
     if downvote:
-        return JSONUtil.generate_error_response(VoteArticleError.AlreadyDownVoted)
+        return JSONUtil.generate_error_json(VoteArticleError.AlreadyDownVoted)
 
     article_vote = ArticleVote.query\
         .filter_by(article_id=article_id, voter_id=current_user.id, type=VoteType.UP)\
@@ -463,25 +462,25 @@ def upvote_article(article_id, type):
         elif not article_vote.enable:
             article_vote.update(enable=True)
         else:
-            return JSONUtil.generate_error_response(VoteArticleError.AlreadyUpVoted)
+            return JSONUtil.generate_error_json(VoteArticleError.AlreadyUpVoted)
     elif type == 'remove':
         if not article_vote or not article_vote.enable:
-            return JSONUtil.generate_error_response(VoteArticleError.NotUpVoted)
+            return JSONUtil.generate_error_json(VoteArticleError.NotUpVoted)
         else:
             article_vote.update(enable=False)
     else:
-        return JSONUtil.generate_error_response(VoteArticleError.TypeError)
+        return JSONUtil.generate_error_json(VoteArticleError.TypeError)
 
     upvote_count = ArticleVote.query\
         .filter_by(enable=True, article_id=article_id, type=VoteType.UP).count()
-    return JSONUtil.generate_result_response({'upvote_count': upvote_count})
+    return JSONUtil.generate_result_json({'upvote_count': upvote_count})
 
 
 @main.route('/article/<int:article_id>/downvote/<string:type>', methods=['POST'])
 def downvote_article(article_id, type):
     article = Article.find_by_id(article_id)
     if not article:
-        return JSONUtil.generate_error_response(VoteArticleError.ArticleNotExist)
+        return JSONUtil.generate_error_json(VoteArticleError.ArticleNotExist)
 
     upvote = ArticleVote.query \
         .filter_by(enable=True,
@@ -490,7 +489,7 @@ def downvote_article(article_id, type):
                    type=VoteType.UP) \
         .first()
     if upvote:
-        return JSONUtil.generate_error_response(VoteArticleError.AlreadyDownVoted)
+        return JSONUtil.generate_error_json(VoteArticleError.AlreadyDownVoted)
 
     article_vote = ArticleVote.query\
         .filter_by(article_id=article_id, voter_id=current_user.id, type=VoteType.DOWN)\
@@ -505,18 +504,18 @@ def downvote_article(article_id, type):
         elif not article_vote.enable:
             article_vote.update(enable=True)
         else:
-            return JSONUtil.generate_error_response(VoteArticleError.AlreadyDownVoted)
+            return JSONUtil.generate_error_json(VoteArticleError.AlreadyDownVoted)
     elif type == 'remove':
         if not article_vote or not article.enable:
-            return JSONUtil.generate_error_response(VoteArticleError.NotDownVoted)
+            return JSONUtil.generate_error_json(VoteArticleError.NotDownVoted)
         else:
             article_vote.update(enable=False)
     else:
-        return JSONUtil.generate_error_response(VoteArticleError.TypeError)
+        return JSONUtil.generate_error_json(VoteArticleError.TypeError)
 
     downvote_count = ArticleVote.query\
         .filter_by(enable=True, article_id=article_id, type=VoteType.DOWN).count()
-    return JSONUtil.generate_result_response({'downvote_count': downvote_count})
+    return JSONUtil.generate_result_json({'downvote_count': downvote_count})
 
 
 @main.route('/weather_forecast', methods=['GET', 'POST'])

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 from flask_babel import lazy_gettext as lazy_
 from flask_pagedown.fields import PageDownField
 from flask_wtf import FlaskForm
@@ -31,13 +28,12 @@ class EditProfileAdminForm(FlaskForm):
                         validators=[DataRequired(), Length(1, 64), Email()],
                         render_kw={'placeholder': lazy_('Email')})
     username = StringField(lazy_('Username'),
-                           validators=[DataRequired(),
-                                       Length(1, 64),
-                                       Regexp('^[A-Za-z0-9_.]*$',
-                                              0,
-                                              lazy_('Username must have only'
-                                                    ' letters, numbers, "."'
-                                                    ' or "_"'))],
+                           validators=[
+                               DataRequired(),
+                               Length(1, 64),
+                               Regexp('^[A-Za-z0-9_.]*$', 0,
+                                      lazy_('Username must have only letters, numbers, "." or "_"'))
+                           ],
                            render_kw={'placeholder': lazy_('Username')})
     confirmed = BooleanField(lazy_('Confirmed'))
     role = SelectField(lazy_('Role'),
@@ -79,8 +75,7 @@ class ArticleForm(FlaskForm):
                            render_kw={'placeholder': lazy_('Category')})
     tags = StringField(lazy_('Tag'),
                        validators=[DataRequired(), Length(1, 200)],
-                       render_kw={'placeholder': lazy_('More than one tag should'
-                                                       ' separate them by comma')})
+                       render_kw={'placeholder': lazy_('More than one tag should separate them by comma')})
     body = PageDownField(lazy_('Article'), validators=[DataRequired()])
     submit = SubmitField(lazy_('Publish'))
 

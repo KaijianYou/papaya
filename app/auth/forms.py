@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 from flask_babel import lazy_gettext as lazy_
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
@@ -21,7 +18,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField(lazy_('Log In'))
 
 
-class RegistrationForm(FlaskForm):
+class RegisterForm(FlaskForm):
     email = StringField(lazy_('Email'),
                         validators=[DataRequired(), Length(1, 64), Email()],
                         render_kw={'placeholder': lazy_('Email')})
@@ -51,11 +48,11 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField(lazy_('Register'))
 
     def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first():
+        if User.query.filter_by(email=field.data, enable=True).first():
             raise ValidationError(lazy_('Email already registered'))
 
     def validate_username(self, field):
-        if User.query.filter_by(username=field.data).first():
+        if User.query.filter_by(username=field.data, enable=True).first():
             raise ValidationError(lazy_('Username already in use'))
 
 
@@ -82,7 +79,7 @@ class ResetPasswordRequestForm(FlaskForm):
     submit = SubmitField(lazy_('Reset Password'))
 
     def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first() is None:
+        if User.query.filter_by(email=field.data, enable=True).first() is None:
             raise ValidationError(lazy_('Unknown email address'))
 
 
@@ -98,7 +95,7 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField(lazy_('Reset Password'))
 
     def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first() is None:
+        if User.query.filter_by(email=field.data, enable=True).first() is None:
             raise ValidationError(lazy_('Unknown email address'))
 
 
@@ -112,5 +109,5 @@ class ChangeEmailForm(FlaskForm):
     submit = SubmitField(lazy_('Update Email Address'))
 
     def validate_email(self, field):
-        if User.query.filter_by(email=field.data).first():
+        if User.query.filter_by(email=field.data, enable=True).first():
             raise ValidationError(lazy_('Email already registered'))

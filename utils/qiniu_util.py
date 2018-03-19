@@ -1,13 +1,10 @@
-# -*- coding: utf-8 -*-
-
-
 from urllib.parse import urljoin
 
 from flask import current_app
 import qiniu
 
 
-class QiniuUtils(object):
+class QiniuUtil(object):
 
     app = current_app._get_current_object()
     access_key = app.config.get('QINIU_ACCESS_KEY', '')

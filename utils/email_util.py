@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 from flask_mail import Message
 from flask import current_app
 from flask import render_template
@@ -10,7 +7,7 @@ from app import mail
 from app.decorators import async_task
 
 
-class EmailUtils(object):
+class EmailUtil(object):
     @classmethod
     @async_task
     def _send_async_email(cls, app, message):

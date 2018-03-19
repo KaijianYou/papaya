@@ -1,22 +1,13 @@
-# -*- coding: utf-8 -*-
-
-
-from flask import abort
-from flask import flash
-from flask import redirect
-from flask import render_template
-from flask import request
-from flask import url_for
+from flask import abort, flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_user, logout_user, login_required
 from flask_babel import gettext as _
-from flask_login import current_user
-from flask_login import login_user, logout_user, login_required
 
 from app import db
 from app.auth import auth
-from app.auth.forms import LoginForm, RegistrationForm, ChangePasswordForm, \
+from app.auth.forms import LoginForm, RegisterForm, ChangePasswordForm, \
     ResetPasswordForm, ResetPasswordRequestForm, ChangeEmailForm
 from models.user import User
-from utils.email_util import EmailUtils
+from utils.email_util import EmailUtil
 from utils.request_util import is_safe_url
 
 
@@ -42,14 +33,14 @@ def unconfirmed():
 @login_required
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
-    EmailUtils.send_confirm_email(user=current_user, token=token)
+    EmailUtil.send_confirm_email(user=current_user, token=token)
     flash(_('A new confirmation email has been sent to you by email'), 'info')
     return redirect(url_for('main.index'))
 
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegistrationForm()
+    form = RegisterForm()
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     username=form.username.data,
@@ -58,7 +49,7 @@ def register():
         db.session.commit()
 
         token = user.generate_confirmation_token()
-        EmailUtils.send_confirm_email(user=user, token=token)
+        EmailUtil.send_confirm_email(user=user, token=token)
         flash(_('A confirmation email has been sent to you by email'), 'info')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
@@ -71,7 +62,7 @@ def confirm(token):
         return redirect(url_for('main.index'))
     if current_user.confirm(token):
         flash(_('You have confirmed your account. Thanks!'), 'success')
-        EmailUtils.send_new_user_email(user=current_user)
+        EmailUtil.send_new_user_email(user=current_user)
     else:
         flash(_('The confirmation link is invalid or has expired'), 'warning')
     return redirect(url_for('main.index'))
@@ -126,9 +117,9 @@ def reset_password_request():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None:
             token = user.generate_password_reset_token()
-            EmailUtils.send_reset_password_email(user=user,
-                                                 token=token,
-                                                 next=request.args.get(next))
+            EmailUtil.send_reset_password_email(user=user,
+                                                token=token,
+                                                next=request.args.get(next))
             flash(_('An email with instructions to reset '
                     'your password has been sent to you'),
                   'info')
@@ -162,10 +153,10 @@ def change_email_request():
             new_email = form.email.data
             # 将新设的邮箱账号保存到令牌中
             token = current_user.generate_email_change_token(new_email)
-            EmailUtils.send_change_email_email(new_email,
-                                               user=current_user,
-                                               token=token,
-                                               next=request.args.get(next))
+            EmailUtil.send_change_email_email(new_email,
+                                              user=current_user,
+                                              token=token,
+                                              next=request.args.get(next))
             flash(_('An email with instructions to confirm your '
                     'new email address has been sent to you.'), 'info')
             return redirect(url_for('main.index'))

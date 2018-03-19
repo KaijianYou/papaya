@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 import os
 
 
@@ -8,14 +5,14 @@ class Config(object):
 
     # 邮件设置
     MAIL_SUBJECT_PREFIX = 'Papaya - '
-    MAIL_SENDER = 'Papaya <' + os.environ.get('MAIL_USERNAME') + '>'
-    ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
+    MAIL_SENDER = 'Papaya <' + os.environ.get('PAPAYA_MAIL_USERNAME') + '>'
+    ADMIN_EMAIL = os.environ.get('PAPAYA_ADMIN_EMAIL')
     MAIL_SERVER = 'smtp.qq.com'
     MAIL_PORT = 465
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_USERNAME = os.environ.get('PAPAYA_MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('PAPAYA_MAIL_PASSWORD')
 
     # 分页设置
     USERS_PER_PAGE = 20
@@ -24,7 +21,7 @@ class Config(object):
     FOLLOWERS_PER_PAGE = 20
     COMMENTS_PER_PAGE = 20
 
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'WhyNotGoDie?'
+    SECRET_KEY = os.environ.get('PAPAYA_SECRET_KEY') or 'WhyNotGoDie?'
 
     # 国际化设置
     BABEL_DEFAULT_LOCALE = 'zh_Hans_CN'
@@ -65,7 +62,7 @@ class DevelopmentConfig(Config):
 
     NAME = 'dev'
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('PAPAYA_DEV_DATABASE_URL')
 
     # Sentry 配置
     SENTRY_DSN = 'https://269ded54b4d84ca2b27c70e972653dd9:9126d7016fe941a98b4ea8ccc8d1510b@sentry.io/194714'
@@ -80,13 +77,13 @@ class TestingConfig(Config):
     NAME = 'test'
     TESTING = True
     WTF_CSRF_ENABLED = False  # 禁用表单 CSRF 保护
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('PAPAYA_TEST_DATABASE_URL')
 
 
 class ProductionConfig(Config):
 
     NAME = 'prod'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('PAPAYA_DATABASE_URL')
 
     # Sentry 配置
     SENTRY_DSN = 'https://ccc720773a1040acaf1d484f9763f7db:e84abd18e1924143a554c5874305c435@sentry.io/194712'

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 from flask import Flask
 from flask_babel import Babel
 from flask_babel import lazy_gettext as lazy_

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 class JUHEErrorCodeType(object):
     @staticmethod
     def to_string(error_code):

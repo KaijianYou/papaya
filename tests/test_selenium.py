@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 import unittest
 import threading
 
@@ -10,7 +7,7 @@ from app import create_app, db
 from models.role import Role
 from models.user import User
 from models.category import Category
-from utils.fake_util import FakeUtils
+from utils.fake_util import FakeUtil
 
 
 class SeleniumTestCase(unittest.TestCase):
@@ -38,8 +35,8 @@ class SeleniumTestCase(unittest.TestCase):
         db.create_all()
         Role.insert_roles()
         Category.insert_categories()
-        FakeUtils.generate_fake_users(10)
-        FakeUtils.generate_fake_articles(10)
+        FakeUtil.generate_fake_users(10)
+        FakeUtil.generate_fake_articles(10)
 
         admin_role = Role.query.filter_by(name='Administrator').first()
         admin = User(email='singledog@gmail.com', username='john',
