@@ -20,17 +20,19 @@ from models.article_vote import ArticleVote
 
 
 def make_shell_context():
-    return dict(app=app,
-                db=db,
-                User=User,
-                Role=Role,
-                Permission=Permission,
-                Article=Article,
-                Comment=Comment,
-                Category=Category,
-                Follow=Follow,
-                Collection=Collection,
-                ArticleVote=ArticleVote)
+    return dict(
+        app=app,
+        db=db,
+        User=User,
+        Role=Role,
+        Permission=Permission,
+        Article=Article,
+        Comment=Comment,
+        Category=Category,
+        Follow=Follow,
+        Collection=Collection,
+        ArticleVote=ArticleVote
+    )
 
 
 app = create_app(os.getenv('PAPAYA_CONFIG') or 'default')
